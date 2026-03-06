@@ -3,6 +3,17 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\UsuarioController;
+use Illuminate\Support\Facades\RateLimiter; // <-- IMPORTANTE
+use Illuminate\Cache\RateLimiting\Limit;     // <-- IMPORTANTE
+use Illuminate\Http\Request;                 // <-- IMPORTANTE
+
+// ========================================================
+// 🛡️ FIX SEGURIDAD: LIMITADOR DE INTENTOS DE LOGIN
+// ========================================================
+// Forzamos el limitador aquí para que el sistema de autenticación lo encuentre inmediatamente.
+RateLimiter::for('login', function (Request $request) {
+    return Limit::perMinute(5)->by($request->email.$request->ip());
+});
 
 // ========================================================
 // 🌍 ZONA PÚBLICA: Pantalla del Estudiante
@@ -11,6 +22,11 @@ use App\Http\Controllers\UsuarioController;
 Route::get('/', function () {
     return view('welcome'); 
 })->name('inicio');
+
+// Ruta para el Panel de Gestión del Estudiante
+Route::get('/estudiante', function () {
+    return view('estudiante');
+})->name('estudiante.panel');
 
 // Ruta que el calendario lee para dibujar los cuadros de colores
 Route::get('/api/horarios', [App\Http\Controllers\HorarioController::class, 'getHorariosJson'])->name('api.horarios');
@@ -33,7 +49,6 @@ Route::middleware([
         $user = auth()->user();
 
         // SEGURIDAD: Si es admin, ve TODO. 
-        // Si es profesor, aplicamos filtro de user_id para evitar que vea clases ajenas.
         if ($user->rol === 'admin') {
             $horarios = \App\Models\HorarioAsesoria::orderBy('dia_semana')->get();
         } else {
@@ -46,21 +61,18 @@ Route::middleware([
     })->name('dashboard');
 
     // --- 2. GESTIÓN DE ASISTENCIA (DOCENTES Y ADMIN) ---
-    // Ver lista de estudiantes de una clase
     Route::get('/horarios/{id}/estudiantes', [HorarioController::class, 'verEstudiantes'])->name('horarios.estudiantes');
-    
-    // Marcar si asistió o no
     Route::put('/reservas/{id}/asistencia', [HorarioController::class, 'marcarAsistencia'])->name('reservas.asistencia');
-    
-    // Corregir error de dedo en la asistencia
     Route::put('/reservas/{id}/corregir', [HorarioController::class, 'corregirAsistencia'])->name('reservas.corregir');
-
-    // Eliminar una reserva (Remover estudiante de la lista)
     Route::delete('/reservas/{id}', [HorarioController::class, 'eliminarReserva'])->name('reservas.eliminar');
+    Route::get('/horarios/{id}/pdf', [HorarioController::class, 'generarPdf'])->name('horarios.pdf');
+    Route::post('/reservas/{id}/reporte', [HorarioController::class, 'generarReporteIndividual'])->name('reservas.reporte');
 
+    // --- 3. MÓDULO DE SEGUIMIENTO INDIVIDUAL (DOCENTES Y ADMIN) ---
+    Route::get('/seguimiento', [HorarioController::class, 'seguimientoIndex'])->name('seguimiento.index');
+    Route::get('/seguimiento/buscar', [HorarioController::class, 'seguimientoBuscar'])->name('seguimiento.buscar');
 
-    // --- 3. PODERES ADMINISTRATIVOS (SOLO ADMIN) ---
-    // Laravel permite proteger rutas específicas dentro del grupo
+    // --- 4. PODERES ADMINISTRATIVOS (SOLO ADMIN) ---
     Route::middleware(['can:admin-only'])->group(function () {
         // Importar datos desde Excel
         Route::post('/horarios/importar', [HorarioController::class, 'importar'])->name('horarios.importar');
@@ -73,8 +85,6 @@ Route::middleware([
         // Gestión de Roles de Usuarios
         Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
         Route::put('/usuarios/{id}/rol', [UsuarioController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
-
-        
     });
 
 });

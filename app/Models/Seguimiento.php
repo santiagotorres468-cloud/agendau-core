@@ -11,14 +11,14 @@ class Seguimiento extends Model
 
     // Aquí le damos permiso a TODOS los campos, incluyendo hora_registro
     protected $fillable = [
-        'estudiante_id',
-        'horario_id',
-        'fecha',
-        'estado',
-        'asistencia',
-        'observaciones',
-        'hora_registro'
-    ];
+    'horario_id',
+    'estudiante_id',
+    'fecha',
+    'hora_registro',
+    'estado',
+    'asistencia',
+    'evolucion', // <-- ¡AQUÍ ESTÁ EL PERMISO NUEVO!
+   ];
 
     public function estudiante()
     {

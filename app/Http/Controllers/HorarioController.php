@@ -3,57 +3,74 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Estudiante;
+use App\Models\HorarioAsesoria;
+use App\Models\Seguimiento;
+use App\Models\User;
 use App\Imports\HorariosImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str; // <-- NUEVO: Importado para limpiar nombres de archivos
 
 class HorarioController extends Controller
 {
+    // ==========================================
+    // IMPORTACIÓN Y GESTIÓN DE PROFESORES
+    // ==========================================
     public function importar(Request $request)
     {
-        // Validamos que sí o sí suban un archivo de Excel
-        $request->validate([
-            'archivo_excel' => 'required|mimes:xlsx,xls,csv'
-        ]);
-
-        // La magia de la librería: lee el archivo y lo manda a nuestro Importador
+        $request->validate(['archivo_excel' => 'required|mimes:xlsx,xls,csv']);
         Excel::import(new HorariosImport, $request->file('archivo_excel'));
-
-        // Devuelve al administrador a la página anterior con un mensaje de éxito
         return back()->with('exito', '¡Los horarios se han importado correctamente a la base de datos!');
     }
-    // Agrega esto debajo de tu función 'importar'
-public function verEstudiantes($id)
-{
-    $horario = \App\Models\HorarioAsesoria::findOrFail($id);
-    $user = auth()->user();
 
-    // SEGURIDAD: Si no es admin Y la clase no es suya, bloqueamos el acceso.
-    if ($user->rol !== 'admin' && $horario->user_id !== $user->id) {
-        abort(403, 'No tienes permiso para ver los estudiantes de esta clase.');
+    public function verEstudiantes($id)
+    {
+        $horario = HorarioAsesoria::findOrFail($id);
+        $user = auth()->user();
+
+        if ($user->rol !== 'admin' && $horario->user_id !== $user->id) {
+            abort(403, 'No tienes permiso para ver los estudiantes de esta clase.');
+        }
+
+        $reservas = Seguimiento::where('horario_id', $id)->with('estudiante')->get();
+        return view('profesor.estudiantes', compact('horario', 'reservas'));
     }
 
-    $reservas = \App\Models\Seguimiento::where('horario_id', $id)
-                    ->with('estudiante')
-                    ->get();
+    // ==========================================
+    // GENERACIÓN DE PDF PARA EL PROFESOR
+    // ==========================================
+    public function generarPdf($id)
+    {
+        $horario = HorarioAsesoria::findOrFail($id);
+        $user = auth()->user();
 
-    return view('profesor.estudiantes', compact('horario', 'reservas'));
-}
-    // Muestra la vista con el formulario para editar
-// 1. Mostrar el formulario de edición con la lista de profesores
+        // Candado de seguridad
+        if ($user->rol !== 'admin' && $horario->user_id !== $user->id) {
+            abort(403, 'No tienes permiso para descargar esta lista.');
+        }
+
+        $reservas = Seguimiento::where('horario_id', $id)->with('estudiante')->get();
+
+        // Generamos el PDF
+        $pdf = Pdf::loadView('profesor.pdf', compact('horario', 'reservas'));
+        
+        // CORRECCIÓN: Usamos Str::slug para evitar errores con tildes o caracteres raros en el nombre del archivo
+        $nombreArchivo = 'Lista_Asistencia_' . Str::slug($horario->curso_nombre) . '.pdf';
+        
+        return $pdf->download($nombreArchivo);
+    }
+
     public function editar($id)
     {
-        $horario = \App\Models\HorarioAsesoria::findOrFail($id);
-        
-        // Traemos a todos los usuarios que sean 'profesor' o 'admin' para llenar la lista desplegable
-        $profesores = \App\Models\User::whereIn('rol', ['profesor', 'admin'])->get();
-
+        $horario = HorarioAsesoria::findOrFail($id);
+        $profesores = User::whereIn('rol', ['profesor', 'admin'])->get();
         return view('horarios.editar', compact('horario', 'profesores'));
     }
 
-    // 2. Guardar los cambios en la base de datos
     public function actualizar(Request $request, $id)
     {
-        $horario = \App\Models\HorarioAsesoria::findOrFail($id);
+        $horario = HorarioAsesoria::findOrFail($id);
         
         $horario->update([
             'curso_nombre'   => $request->curso_nombre,
@@ -61,64 +78,54 @@ public function verEstudiantes($id)
             'dia_semana'     => $request->dia_semana,
             'hora_inicio'    => $request->hora_inicio,
             'hora_fin'       => $request->hora_fin,
-            'lugar'          => $request->lugar,
-            'user_id'        => $request->user_id, // ¡AQUÍ GUARDAMOS EL ID DEL PROFESOR!
+            'user_id'        => $request->user_id,
+            // LOS 4 NUEVOS CAMPOS MÁGICOS
+            'modalidad'      => $request->modalidad,
+            'sede'           => $request->sede,
+            'bloque'         => $request->bloque,
+            'aula'           => $request->aula,
         ]);
-
-        return redirect()->route('dashboard')->with('exito', '✅ Clase actualizada y profesor asignado correctamente.');
+        
+        return redirect()->route('dashboard')->with('exito', '✅ Clase actualizada con su nueva modalidad y ubicación.');
     }
 
-    // Borra la clase de la base de datos
     public function eliminar($id)
     {
-        \App\Models\HorarioAsesoria::findOrFail($id)->delete();
+        $horario = HorarioAsesoria::findOrFail($id)->delete();
         return redirect()->route('dashboard')->with('exito', '¡La clase fue eliminada del sistema!');
     }
-    // Borra la reserva del estudiante
+
+    // ==========================================
+    // GESTIÓN DE ASISTENCIAS Y RESERVAS (ADMIN/PROFESOR)
+    // ==========================================
     public function eliminarReserva($id)
     {
-        // Buscamos la reserva en la tabla seguimientos y la borramos
-        \App\Models\Seguimiento::findOrFail($id)->delete();
-        
-        // Devolvemos al profesor a la misma pantalla con un mensaje de éxito
+        Seguimiento::findOrFail($id)->delete();
         return back()->with('exito', '¡El estudiante fue removido de la clase correctamente!');
     }
-    // Registrar la asistencia del estudiante
+
     public function marcarAsistencia(Request $request, $id)
     {
-        $reserva = \App\Models\Seguimiento::findOrFail($id);
-        
-        // Cambiamos el estado para saber que ya fue evaluado y guardamos si asistió (1) o no (0)
-        $reserva->update([
-            'estado' => 'Evaluada',
-            'asistencia' => $request->asistencia
-        ]);
-        
-        $mensaje = $request->asistencia ? '✅ Asistencia registrada correctamente.' : '❌ Inasistencia registrada.';
-        
-        return back()->with('exito', $mensaje);
+        $reserva = Seguimiento::findOrFail($id);
+        $reserva->update(['estado' => 'Evaluada', 'asistencia' => $request->asistencia]);
+        return back()->with('exito', $request->asistencia ? '✅ Asistencia registrada correctamente.' : '❌ Inasistencia registrada.');
     }
-public function corregirAsistencia($id)
-{
-    $reserva = \App\Models\Seguimiento::findOrFail($id);
-    
-    // Devolvemos el estado a 'Programada' y limpiamos la asistencia
-    $reserva->update([
-        'estado' => 'Programada',
-        'asistencia' => null
-    ]);
-    
-    return back()->with('exito', 'Estado de asistencia restablecido. Ya puedes corregirlo.');
-}
-// --- LÓGICA DEL ESTUDIANTE (ZONA PÚBLICA) ---
 
-    // 1. Enviar los horarios al Calendario
+    public function corregirAsistencia($id)
+    {
+        $reserva = Seguimiento::findOrFail($id);
+        $reserva->update(['estado' => 'Programada', 'asistencia' => null]);
+        return back()->with('exito', 'Estado de asistencia restablecido. Ya puedes corregirlo.');
+    }
+
+    // ==========================================
+    // LÓGICA DEL ESTUDIANTE (ZONA PÚBLICA)
+    // ==========================================
     public function getHorariosJson()
     {
-        $horarios = \App\Models\HorarioAsesoria::all();
+        $horarios = HorarioAsesoria::all();
         $eventos = [];
         
-        // Mapeo para que FullCalendar entienda los días (Domingo=0, Lunes=1, etc.)
         $diasMap = [
             'Lunes' => 1, 'Martes' => 2, 'Miercoles' => 3, 'Miércoles' => 3,
             'Jueves' => 4, 'Viernes' => 5, 'Sabado' => 6, 'Sábado' => 6, 'Domingo' => 0
@@ -132,51 +139,117 @@ public function corregirAsistencia($id)
                 'title' => $h->curso_nombre . ' (' . $h->docente_nombre . ')',
                 'startTime' => $h->hora_inicio,
                 'endTime' => $h->hora_fin,
-                'daysOfWeek' => [$diaNum], // Esto hace que la clase se repita todas las semanas
-                'color' => '#002845', // Color azul oscuro institucional
+                'daysOfWeek' => [$diaNum],
+                'color' => '#002845',
                 'textColor' => '#ffffff',
                 'extendedProps' => [
                     'lugar' => $h->lugar,
-                    'docente' => $h->docente_nombre
+                    'docente' => $h->docente_nombre,
+                    'modalidad' => $h->modalidad, 
+                    'sede' => $h->sede,
+                    'bloque' => $h->bloque,
+                    'aula' => $h->aula
                 ]
             ];
         }
-        
         return response()->json($eventos);
     }
 
-    // 2. Guardar la reserva del estudiante
-// 2. Guardar la reserva del estudiante (Con Validación de la U)
 public function reservar(Request $request)
     {
-        // 1. Buscamos al estudiante por su cédula (esto seguro ya lo tienes)
-        $estudiante = \App\Models\Estudiante::where('cedula', $request->cedula)->first();
+        // 1. Agregamos 'fecha' a la validación obligatoria
+        $request->validate([
+            'cedula' => 'required|string|max:20',
+            'horario_id' => 'required|integer|exists:horarios_asesoria,id',
+            'fecha' => 'required|date', // <-- NUEVO: Exigimos la fecha del calendario
+        ]);
+
+        $estudiante = Estudiante::where('cedula', $request->cedula)->first();
 
         if (!$estudiante) {
             return back()->with('error', '⛔ Cédula no encontrada en el sistema.');
         }
 
-        // =========================================================
-        // 2. NUEVO CANDADO: Evitar doble reserva en la misma clase
-        // =========================================================
-        $reservaExistente = \App\Models\Seguimiento::where('estudiante_id', $estudiante->id)
+        // 2. Bloqueamos solo si ya tiene una reserva activa PARA ESA FECHA ESPECÍFICA
+        $reservaExistente = Seguimiento::where('estudiante_id', $estudiante->id)
                                 ->where('horario_id', $request->horario_id)
+                                ->where('fecha', $request->fecha) // <-- Validamos que no repita el mismo día
+                                ->where('estado', 'Programada') 
                                 ->exists();
 
         if ($reservaExistente) {
-            return back()->with('error', '⚠️ Ya tienes un cupo reservado para esta clase. No puedes inscribirte dos veces.');
+            return back()->with('error', '⚠️ Ya tienes un cupo activo reservado para esta clase en esa fecha específica.');
         }
-        // =========================================================
 
-        // 3. Si pasa el candado, creamos la reserva normalmente
-        \App\Models\Seguimiento::create([
+        // 3. Guardamos la reserva con la fecha real del calendario
+        Seguimiento::create([
             'horario_id' => $request->horario_id,
             'estudiante_id' => $estudiante->id,
-            'fecha' => now()->toDateString(),
+            'fecha' => $request->fecha, // <-- EL CAMBIO MAESTRO: Usamos la fecha seleccionada, no el 'now()'
+            'hora_registro' => now()->toTimeString(),
             'estado' => 'Programada'
         ]);
 
         return back()->with('exito', '✅ ¡Cupo reservado con éxito!');
     }
 
+    public function generarReporteIndividual(Request $request, $id)
+    {
+        // 1. Buscamos la reserva exacta a la que le dimos clic
+        $reserva = Seguimiento::with(['estudiante', 'horario'])->findOrFail($id);
+        
+        // 2. Guardamos el comentario del profesor que viene de la ventanita
+        $reserva->update([
+            'evolucion' => $request->input('evolucion')
+        ]);
+
+        // 3. Buscamos TODO el historial de este estudiante en esta clase específica
+        $historial = Seguimiento::where('estudiante_id', $reserva->estudiante_id)
+                                ->where('horario_id', $reserva->horario_id)
+                                ->orderBy('fecha', 'asc')
+                                ->get();
+
+        // 4. Generamos el PDF con una vista nueva que crearemos
+        $pdf = Pdf::loadView('profesor.reporte_individual', compact('reserva', 'historial'));
+        
+        // 5. ¡PUM! Descarga con el nombre del estudiante limpio
+        $nombreArchivo = 'Reporte_' . \Illuminate\Support\Str::slug($reserva->estudiante->nombre_completo) . '.pdf';
+        return $pdf->download($nombreArchivo);
+    }
+    
+    // ==========================================
+    // MÓDULO DE SEGUIMIENTO EXCLUSIVO POR CÉDULA
+    // ==========================================
+    public function seguimientoIndex()
+    {
+        // Solo muestra la pantalla en blanco con el buscador
+        return view('profesor.seguimiento');
+    }
+
+    public function seguimientoBuscar(Request $request)
+    {
+        $request->validate(['cedula' => 'required|string']);
+        
+        $estudiante = Estudiante::where('cedula', $request->cedula)->first();
+        
+        if (!$estudiante) {
+            return redirect()->route('seguimiento.index')->with('error', 'No se encontró ningún estudiante con esa cédula.');
+        }
+
+        $user = auth()->user();
+        
+        // Buscamos todas las reservas de este estudiante
+        $query = Seguimiento::with(['horario'])->where('estudiante_id', $estudiante->id);
+        
+        // Si no es admin, filtramos para que el profe solo vea las asistencias de SUS propias clases
+        if ($user->rol !== 'admin') {
+            $query->whereHas('horario', function($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        }
+        
+        $historial = $query->orderBy('fecha', 'desc')->get();
+
+        return view('profesor.seguimiento', compact('estudiante', 'historial'));
+    }
 }

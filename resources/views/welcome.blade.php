@@ -70,7 +70,6 @@
                     @endauth
                 @endif
             </div>
-
         </div>
     </nav>
 
@@ -98,6 +97,19 @@
             @endif
         </div>
 
+        <div class="mb-8 flex flex-col md:flex-row justify-between items-center bg-blue-50 p-5 rounded-2xl border border-blue-100 shadow-sm">
+            <div class="mb-4 md:mb-0">
+                <h3 class="font-extrabold text-[#002845] text-lg flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    ¿Ya tienes una reserva o deseas cancelarla?
+                </h3>
+                <p class="text-sm text-gray-600 mt-1">Ingresa con tu cédula para ver tus clases programadas y gestionar tus cupos.</p>
+            </div>
+            <a href="/estudiante" class="bg-[#FFD700] hover:bg-yellow-400 text-[#002845] font-bold py-2 px-6 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+                Gestionar mis Clases
+            </a>
+        </div>
+
         <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-gray-100 relative overflow-hidden">
             <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-blue-50 rounded-full z-0"></div>
             
@@ -111,10 +123,10 @@
     </main>
 
     <div id="modalReserva" class="hidden fixed inset-0 bg-slate-900 bg-opacity-75 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md mx-4 overflow-hidden transform transition-all scale-100">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-xl mx-4 overflow-hidden transform transition-all scale-100">
             
             <div class="bg-gradient-to-r from-[#002845] to-[#004273] px-6 py-5 text-center relative">
-                <h3 class="text-xl font-extrabold text-white tracking-wide">Confirmar Asistencia</h3>
+                <h3 class="text-xl font-extrabold text-white tracking-wide uppercase">Confirmar Asistencia</h3>
                 <button onclick="cerrarModal()" class="absolute top-4 right-4 text-white hover:text-gray-300 transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -123,26 +135,23 @@
             <form action="{{ route('reservar.clase') }}" method="POST" class="p-8">
                 @csrf
                 <input type="hidden" name="horario_id" id="horario_id">
-                <input type="hidden" name="fecha_reserva" id="fecha_reserva">
+                
+                <input type="hidden" name="fecha" id="fecha_reserva_input">
 
-                <div class="mb-6 bg-blue-50 rounded-xl p-4 border border-blue-100 text-center">
-                    <p class="text-xs text-blue-600 font-bold uppercase tracking-wider mb-1">Has seleccionado:</p>
-                    <p id="curso_nombre_display" class="text-xl font-extrabold text-[#002845] leading-tight"></p>
-                    <div class="mt-2 flex items-center justify-center text-sm text-gray-600 space-x-4">
-                        <span class="flex items-center"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> <span id="fecha_display"></span></span>
+                <div class="mb-8 text-center">
+                    <p class="text-xs text-blue-600 font-bold uppercase tracking-wider mb-2">Estás reservando cupo en:</p>
+                    <p id="curso_nombre_display" class="text-2xl font-black text-[#002845] leading-tight mb-2"></p>
+                    
+                    <div class="flex items-center justify-center text-sm text-gray-600 mb-6">
+                        <span class="flex items-center"><svg class="w-4 h-4 mr-1 text-[#FFD700]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> <span id="fecha_display" class="font-bold"></span></span>
                     </div>
-                    <div class="mt-1 flex items-center justify-center text-sm text-gray-600">
-                         <span class="flex items-center"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> <span id="lugar_display"></span></span>
-                    </div>
+                    
+                    <div id="lugar_display" class="mt-4 relative z-20"></div>
                 </div>
 
-                <div class="mb-8">
+                <div class="mb-8 relative z-10">
                     <label class="block text-sm font-bold text-gray-700 text-center mb-2">Ingresa tu número de Cédula</label>
                     <input type="text" name="cedula" placeholder="Ej: 1001234567" required class="block w-full rounded-xl border-gray-300 bg-gray-50 shadow-inner focus:border-[#002845] focus:ring focus:ring-blue-200 border-2 p-4 text-2xl text-center font-black tracking-widest text-gray-800 transition">
-                    <p class="text-xs text-gray-500 mt-3 text-center flex items-center justify-center">
-                        <svg class="w-4 h-4 mr-1 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                        El sistema validará tu matrícula.
-                    </p>
                 </div>
 
                 <div class="flex space-x-3">
@@ -150,7 +159,7 @@
                         Cancelar
                     </button>
                     <button type="submit" class="flex-1 bg-[#002845] text-white px-4 py-3 rounded-xl font-bold hover:bg-[#001a2e] shadow-lg shadow-blue-900/20 transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#002845]">
-                        Reservar Cupo
+                        Confirmar Cupo
                     </button>
                 </div>
             </form>
@@ -184,14 +193,63 @@
                     week: 'Semana'
                 },
                 events: '{{ route("api.horarios") }}',
+                
+                // 🔥 EVENT CLICK DE ALTO IMPACTO VISUAL 🔥
                 eventClick: function(info) {
                     info.jsEvent.preventDefault();
+                    
+                    // Llenar inputs ocultos
                     document.getElementById('horario_id').value = info.event.id;
+                    
+                    // FIX: Extraer la fecha exacta en la que se hizo clic
                     let fechaClic = info.event.start.toISOString().split('T')[0];
-                    document.getElementById('fecha_reserva').value = fechaClic;
+                    document.getElementById('fecha_reserva_input').value = fechaClic; // Para el backend
+                    
+                    // Llenar display básico
                     document.getElementById('curso_nombre_display').innerText = info.event.title;
                     document.getElementById('fecha_display').innerText = fechaClic;
-                    document.getElementById('lugar_display').innerText = info.event.extendedProps.lugar;
+                    
+                    // LÓGICA DE UBICACIÓN (Virtual vs Presencial con diseño masivo)
+                    const props = info.event.extendedProps;
+                    let htmlUbicacion = '';
+                    let esVirtual = props.modalidad && props.modalidad.toString().trim().toLowerCase() === 'virtual';
+
+                    if (esVirtual) {
+                        htmlUbicacion = `
+                            <div class="relative overflow-hidden bg-gradient-to-br from-blue-500 to-sky-600 rounded-2xl shadow-lg p-6 border-4 border-white transform transition hover:scale-[1.02]">
+                                <div class="relative z-10 text-center">
+                                    <span class="text-6xl mb-3 block drop-shadow-md">💻</span>
+                                    <h4 class="text-4xl font-black text-white uppercase tracking-tighter mb-1">Clase <span class="text-sky-200">Virtual</span></h4>
+                                    <p class="text-sm text-blue-50 font-medium">Revisa tu correo para el enlace de conexión.</p>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        htmlUbicacion = `
+                            <div class="relative overflow-hidden bg-gradient-to-br from-[#FFD700] to-yellow-500 rounded-2xl shadow-lg p-6 border-4 border-white transform transition hover:scale-[1.02]">
+                                <div class="relative z-10 text-center text-[#002845]">
+                                    <span class="text-xl font-bold uppercase tracking-widest opacity-80 mb-1 block">🏢 Sede</span>
+                                    <h4 class="text-5xl font-black uppercase tracking-tighter mb-4">${props.sede || 'Pascual'}</h4>
+                                    
+                                    <div class="flex justify-center space-x-4 border-t-2 border-[#002845]/20 pt-4 mt-4">
+                                        <div class="border-r-2 border-[#002845]/20 pr-4">
+                                            <span class="text-xs font-bold uppercase tracking-widest opacity-80 block mb-1">Bloque</span>
+                                            <p class="text-4xl font-black leading-none">${props.bloque || 'N/A'}</p>
+                                        </div>
+                                        <div class="pl-2">
+                                            <span class="text-xs font-bold uppercase tracking-widest opacity-80 block mb-1">Aula</span>
+                                            <p class="text-4xl font-black leading-none">${props.aula || 'N/A'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    // Renderizamos el diseño masivo
+                    document.getElementById('lugar_display').innerHTML = htmlUbicacion;
+                    
+                    // Abrimos el Modal
                     document.getElementById('modalReserva').classList.remove('hidden');
                 }
             });

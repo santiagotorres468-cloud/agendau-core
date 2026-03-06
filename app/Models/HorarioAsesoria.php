@@ -13,14 +13,18 @@ class HorarioAsesoria extends Model
     protected $table = 'horarios_asesoria';
 
     protected $fillable = [
+        'user_id',
         'curso_nombre',
-        'docente_nombre',
         'dia_semana',
         'hora_inicio',
         'hora_fin',
+        'docente_nombre', // <- ¡Esta era la que bloqueaba todo!
         'lugar',
-        'semestre', // <-- Asegúrate de que esta línea exista
-        'user_id',
+        'semestre',       // <- Aseguramos esta también
+        'modalidad',
+        'sede',
+        'bloque',
+        'aula'
     ];
 
     // Relación: Un horario tiene muchos seguimientos
