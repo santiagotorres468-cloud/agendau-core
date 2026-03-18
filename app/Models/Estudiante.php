@@ -14,6 +14,7 @@ class Estudiante extends Model
         'nombre_completo',
         'programa_academico',
         'esta_activo',
+        'correo',
     ];
 
     // Relación: Un estudiante tiene muchos seguimientos

@@ -7,36 +7,33 @@ use App\Models\User;
 
 class UsuarioController extends Controller
 {
-    // Mostrar la lista de usuarios
-    public function index()
-    {
-        // Doble seguridad: Si alguien adivina la URL y no es admin, lo expulsamos
-        if (auth()->user()->rol !== 'admin') {
-            abort(403, 'Acceso denegado. Solo administradores.');
-        }
-
-        $usuarios = User::all();
-        return view('admin.usuarios', compact('usuarios'));
-    }
-
-    // Guardar el nuevo rol en la base de datos
     public function actualizarRol(Request $request, $id)
     {
         if (auth()->user()->rol !== 'admin') {
-            abort(403, 'Acceso denegado.');
+            abort(403, '⛔ Solo los administradores pueden cambiar roles.');
         }
+
+        $request->validate(['rol' => 'required|in:admin,profesor']);
+        
+        $usuario = User::findOrFail($id);
+        $usuario->rol = $request->rol;
+        $usuario->save(); 
+
+        return back()->with('exito', '✅ Rol de ' . $usuario->name . ' actualizado a ' . strtoupper($request->rol));
+    }
+
+    public function eliminarUsuario($id)
+    {
+        if (auth()->user()->rol !== 'admin') { abort(403); }
 
         $usuario = User::findOrFail($id);
-        
-        // Protección: Evitar que el Super Admin (ID 1) se quite sus propios poderes por error
-        if ($usuario->id === 1 && $request->rol !== 'admin') {
-            return back()->with('error', 'No puedes quitarle los privilegios al administrador principal del sistema.');
+
+        // 🛡️ Seguridad: No dejar que te borres a ti mismo
+        if ($usuario->id === auth()->id()) {
+            return back()->with('error', '⛔ No puedes desactivar tu propia cuenta.');
         }
 
-        $usuario->update([
-            'rol' => $request->rol
-        ]);
-
-        return back()->with('exito', 'El rol del usuario ha sido actualizado correctamente.');
+        $usuario->delete();
+        return back()->with('exito', '🗑️ El usuario ha sido eliminado correctamente.');
     }
 }
