@@ -15,16 +15,34 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
             @if(session('exito'))
-                <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-800 p-4 rounded-lg shadow-sm flex items-center">
+                <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 15000)" x-show="show" x-transition.duration.500ms class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-800 p-4 rounded-lg shadow-sm flex items-center">
                     <span class="text-2xl mr-3">✅</span>
                     <p class="font-bold">{{ session('exito') }}</p>
                 </div>
             @endif
 
             @if(session('error'))
-                <div class="mb-6 bg-red-100 border-l-4 border-red-500 text-red-800 p-4 rounded-lg shadow-sm flex items-center">
-                    <span class="text-2xl mr-3">⚠️</span>
-                    <p class="font-bold">{{ session('error') }}</p>
+                <div x-data="{ show: true }" 
+                     x-show="show" 
+                     x-transition.duration.500ms
+                     class="mb-6 bg-red-50 text-red-800 px-6 py-4 rounded-lg font-bold border border-red-300 shadow-sm flex flex-col relative">
+                    
+                    <button @click="show = false" class="absolute top-2 right-2 text-red-500 hover:text-red-900">
+                        ✖️
+                    </button>
+
+                    <div class="flex items-center mb-2">
+                        <span class="mr-2 text-xl">⚠️</span> 
+                        <span>{{ session('error') }}</span>
+                    </div>
+                    
+                    @if(session('lista_errores'))
+                        <ul class="list-disc pl-8 text-sm font-medium text-red-700 space-y-1 mt-2">
+                            @foreach(session('lista_errores') as $detalle)
+                                <li>{{ $detalle }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
             @endif
 
@@ -95,6 +113,21 @@
                             </div>
                             <form action="{{ route('horarios.importar') }}" method="POST" enctype="multipart/form-data" class="p-8">
                                 @csrf
+                                
+                                <div class="mb-6 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-xl shadow-sm">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0">
+                                            <span class="text-xl">⚠️</span>
+                                        </div>
+                                        <div class="ml-3">
+                                            <h3 class="text-sm font-black text-yellow-800 uppercase tracking-wide">Aviso de Responsabilidad</h3>
+                                            <div class="mt-1 text-xs text-yellow-700 font-medium">
+                                                La importación masiva afecta directamente la base de datos de <strong>Agenda U</strong>. Cualquier cambio, alteración o reemplazo de datos se realiza bajo la absoluta responsabilidad del administrador en turno.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="mb-8">
                                     <label class="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-xl appearance-none cursor-pointer hover:bg-emerald-50">
                                         <span class="flex items-center space-x-2">
@@ -121,6 +154,9 @@
                             <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200">
                                     <tbody class="bg-white divide-y divide-gray-100">
+                                        
+                                        @php $totalAdmins = $usuarios->where('rol', 'admin')->count(); @endphp
+
                                         @foreach ($usuarios->where('rol', 'admin') as $admin)
                                             <tr class="hover:bg-gray-50 transition">
                                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -139,9 +175,10 @@
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-right">
                                                     <div class="flex items-center justify-end space-x-3 pr-4">
-                                                        @if(auth()->id() === $admin->id)
-                                                            <button disabled class="bg-gray-100 text-gray-500 font-black py-2 px-5 rounded-lg border border-gray-300 text-xs flex items-center cursor-not-allowed shadow-inner opacity-80">
-                                                                🔒 CUENTA PROTEGIDA
+                                                        
+                                                        @if($totalAdmins <= 1)
+                                                            <button disabled class="bg-red-50 text-red-500 font-black py-2 px-5 rounded-lg border border-red-200 text-xs flex items-center cursor-not-allowed shadow-inner opacity-90">
+                                                                🛡️ ÚNICO ADMIN (INBORRABLE)
                                                             </button>
                                                         @else
                                                             <form action="{{ route('usuarios.actualizarRol', $admin->id) }}" method="POST" class="flex items-center space-x-2">
@@ -153,13 +190,14 @@
                                                                 <button type="submit" class="bg-[#FFD700] hover:bg-yellow-500 text-[#002845] font-bold py-2 px-4 rounded-lg transition text-xs shadow-sm">Actualizar</button>
                                                             </form>
                                                             
-                                                            <form action="{{ route('usuarios.eliminar', $admin->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas desactivar a este administrador?')">
+                                                            <form action="{{ route('usuarios.eliminar', $admin->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas desactivar a este administrador? @if(auth()->id() === $admin->id) ¡CUIDADO, ERES TÚ MISMO! @endif')">
                                                                 @csrf @method('DELETE')
                                                                 <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-black py-2 px-4 rounded-lg transition text-xs shadow-md">
                                                                     ❌ DESACTIVAR
                                                                 </button>
                                                             </form>
                                                         @endif
+
                                                     </div>
                                                 </td>
                                             </tr>

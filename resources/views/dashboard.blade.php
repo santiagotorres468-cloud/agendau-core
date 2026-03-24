@@ -63,7 +63,7 @@
             </div>
             
             @if(session('exito'))
-                <div class="bg-green-100 text-green-800 px-4 py-2 rounded-lg font-bold border border-green-300 shadow-sm animate-bounce flex items-center">
+                <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 10000)" x-show="show" x-transition.duration.500ms class="bg-green-100 text-green-800 px-4 py-2 rounded-lg font-bold border border-green-300 shadow-sm flex items-center">
                     <span class="mr-2">✅</span> {{ session('exito') }}
                 </div>
             @endif
@@ -71,34 +71,83 @@
 
         <div class="p-6 md:p-8 flex-1 bg-slate-50">
             <div class="max-w-7xl mx-auto">
-                
-                <div x-data="{ tab: 'clases' }" class="w-full">
-                    
-                    <div class="flex space-x-2 border-b-2 border-gray-200 mb-8 overflow-x-auto pb-2">
-                        <button @click="tab = 'clases'" :class="tab === 'clases' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-6 py-3 rounded-xl font-extrabold text-sm transition-all whitespace-nowrap flex items-center cursor-pointer border border-transparent">
-                            📚 Gestión de Clases
-                        </button>
+
+                @if(session('error') || session('lista_errores') || $errors->any())
+                    <div x-data="{ show: true }" x-show="show" x-transition class="mb-8 bg-white border border-red-200 rounded-2xl shadow-lg overflow-hidden">
+                        <div class="bg-red-50 border-b border-red-100 px-6 py-4 flex justify-between items-center">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">⚠️</span>
+                                <h3 class="text-red-800 font-black text-lg">Reporte de Importación</h3>
+                            </div>
+                            <button @click="show = false" class="text-red-500 hover:text-red-800 bg-red-100 hover:bg-red-200 rounded-full w-8 h-8 flex items-center justify-center transition font-black">✖</button>
+                        </div>
                         
-                        @if(auth()->user()->rol === 'admin')
-                            <button @click="tab = 'importar'" :class="tab === 'importar' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-6 py-3 rounded-xl font-extrabold text-sm transition-all whitespace-nowrap flex items-center cursor-pointer border border-transparent">
-                                📤 Importar Excel
+                        <div class="px-6 py-5">
+                            @if(session('error'))
+                                <p class="text-red-700 font-bold text-sm mb-3">{{ session('error') }}</p>
+                            @endif
+
+                            @if(session('lista_errores') || $errors->any())
+                                <div class="bg-red-50/50 rounded-xl p-4 max-h-48 overflow-y-auto border border-red-100 shadow-inner">
+                                    <ul class="list-disc pl-5 text-xs text-red-600 font-semibold space-y-1.5">
+                                        @if(session('lista_errores'))
+                                            @foreach(session('lista_errores') as $detalle)
+                                                <li>{{ $detalle }}</li>
+                                            @endforeach
+                                        @endif
+                                        
+                                        @if($errors->any())
+                                            @foreach($errors->all() as $detalle)
+                                                <li>{{ $detalle }}</li>
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+                
+                <div x-data="{ tab: 'clases', search: '' }" class="w-full">
+    
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-2 border-gray-200 mb-8 pb-4 gap-4">
+        
+                        <div class="flex space-x-2 overflow-x-auto w-full md:w-auto">
+                            <button @click="tab = 'clases'" :class="tab === 'clases' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-6 py-3 rounded-xl font-extrabold text-sm transition-all whitespace-nowrap flex items-center cursor-pointer border border-transparent">
+                                📚 Gestión de Clases
                             </button>
-                            <button @click="tab = 'usuarios'" :class="tab === 'usuarios' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-6 py-3 rounded-xl font-extrabold text-sm transition-all whitespace-nowrap flex items-center cursor-pointer border border-transparent">
-                                👥 Control de Roles
-                            </button>
-                        @endif
+            
+                            @if(auth()->user()->rol === 'admin')
+                                <button @click="tab = 'importar'" :class="tab === 'importar' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-6 py-3 rounded-xl font-extrabold text-sm transition-all whitespace-nowrap flex items-center cursor-pointer border border-transparent">
+                                    📤 Importar Excel
+                                </button>
+                                <button @click="tab = 'usuarios'" :class="tab === 'usuarios' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-6 py-3 rounded-xl font-extrabold text-sm transition-all whitespace-nowrap flex items-center cursor-pointer border border-transparent">
+                                    👥 Control de Roles
+                                </button>
+                            @endif
+                        </div>
+
+                        <div class="relative w-full md:w-80" x-show="tab === 'clases'">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            </div>
+                            <input type="text" x-model="search" class="bg-white border-2 border-gray-200 text-gray-900 font-bold text-sm rounded-xl focus:ring-[#002845] focus:border-[#002845] block w-full pl-11 p-3 shadow-sm transition" placeholder="Buscar por profesor o materia...">
+                        </div>
                     </div>
 
                     <div x-show="tab === 'clases'" class="transition-all duration-300">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             @forelse ($horarios as $clase)
-                                <div class="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden transform transition duration-300 hover:scale-[1.02] hover:shadow-xl flex flex-col">
-                                    <div class="bg-gradient-to-r from-[#002845] to-blue-900 px-6 py-4 flex justify-between items-center relative">
+                                
+                                <div x-show="search === '' || '{{ mb_strtolower(addslashes($clase->curso_nombre), 'UTF-8') }}'.includes(search.toLowerCase()) || '{{ mb_strtolower(addslashes($clase->docente_nombre), 'UTF-8') }}'.includes(search.toLowerCase())" 
+                                     class="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden transform transition duration-300 hover:scale-[1.02] hover:shadow-xl flex flex-col">
+                                    
+                                    <div class="bg-gradient-to-r from-[#002845] to-blue-800 p-5 relative">
                                         <h3 class="text-lg font-black text-white truncate pr-4" title="{{ $clase->curso_nombre }}">{{ $clase->curso_nombre }}</h3>
                                         @if(strtolower(trim($clase->modalidad)) === 'virtual')
-                                            <span class="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl shadow-sm">VIRTUAL</span>
+                                            <span class="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-3xl shadow-sm">VIRTUAL</span>
                                         @else
-                                            <span class="absolute top-0 right-0 bg-[#FFD700] text-[#002845] text-[10px] font-bold px-3 py-1 rounded-bl-xl shadow-sm">PRESENCIAL</span>
+                                            <span class="absolute top-0 right-0 bg-[#FFD700] text-[#002845] text-[10px] font-bold px-3 py-1 rounded-bl-3xl shadow-sm">PRESENCIAL</span>
                                         @endif
                                     </div>
                                     
@@ -108,6 +157,10 @@
                                             <p class="flex items-center"><span class="font-bold text-gray-800 w-20">📅 Día:</span> <span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-bold border border-blue-100">{{ $clase->dia_semana }}</span></p>
                                             <p class="flex items-center"><span class="font-bold text-gray-800 w-20">⏰ Hora:</span> {{ \Carbon\Carbon::parse($clase->hora_inicio)->format('H:i') }} - {{ \Carbon\Carbon::parse($clase->hora_fin)->format('H:i') }}</p>
                                             
+                                            <p class="flex items-center mt-3 pt-2 border-t border-gray-100">
+                                                <span class="font-bold text-gray-800 w-20">👥 Inscritos:</span> 
+                                                <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-black border border-green-200">{{ $clase->seguimientos_count ?? 0 }} estudiantes</span>
+                                            </p>
                                             @if(strtolower(trim($clase->modalidad)) !== 'virtual')
                                                 <div class="mt-3 pt-3 border-t border-gray-100 bg-gray-50 rounded-lg p-3 text-xs">
                                                     <p><span class="font-bold text-gray-700">Sede:</span> {{ $clase->sede ?: 'N/A' }}</p>
@@ -152,40 +205,61 @@
                                     <h3 class="text-2xl font-black tracking-wide">Carga Masiva de Horarios</h3>
                                 </div>
                                 <form action="{{ route('horarios.importar') }}" method="POST" enctype="multipart/form-data" class="p-8">
-                                    @csrf
-                                    <div class="mb-8">
-                                        <label class="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-xl appearance-none cursor-pointer hover:bg-emerald-50">
-                                            <span class="flex items-center space-x-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
-                                                <span class="font-bold text-gray-600">Selecciona tu archivo Excel (.xlsx, .csv)</span>
-                                            </span>
-                                            <input type="file" name="archivo_excel" class="hidden" required accept=".xlsx,.xls,.csv" />
-                                        </label>
+                                @csrf
+                                
+                                <div class="mb-6 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-xl shadow-sm">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0">
+                                            <span class="text-xl">⚠️</span>
+                                        </div>
+                                        <div class="ml-3">
+                                            <h3 class="text-sm font-black text-yellow-800 uppercase tracking-wide">Aviso de Responsabilidad</h3>
+                                            <div class="mt-1 text-xs text-yellow-700 font-medium">
+                                                La importación masiva afecta directamente la base de datos de <strong>Agenda U</strong>. Cualquier cambio, alteración o reemplazo de datos se realiza bajo la absoluta responsabilidad del administrador en turno.
+                                            </div>
+                                        </div>
                                     </div>
-                                    <button type="submit" class="w-full bg-emerald-600 text-white font-black py-4 rounded-xl shadow-lg hover:bg-emerald-700 transition transform hover:-translate-y-1">
-                                        🚀 Subir e Importar Datos
-                                    </button>
-                                </form>
+                                </div>
+
+                                <div x-data="{ fileName: null }" class="mb-8">
+                                    <label :class="fileName ? 'bg-emerald-50 border-emerald-400' : 'bg-white border-gray-300 hover:bg-gray-50'" class="flex flex-col justify-center items-center w-full h-32 px-4 transition-all duration-300 border-2 border-dashed rounded-xl appearance-none cursor-pointer shadow-sm">
+                                        
+                                        <div x-show="!fileName" class="flex flex-col items-center space-y-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                                            <span class="font-bold text-gray-600">Haz clic para seleccionar tu Excel (.csv)</span>
+                                        </div>
+
+                                        <div x-show="fileName" style="display: none;" class="flex flex-col items-center space-y-1">
+                                            <span class="text-4xl drop-shadow-sm mb-1">📄</span>
+                                            <span class="font-black text-emerald-800 text-lg truncate max-w-xs" x-text="fileName"></span>
+                                            <span class="text-[10px] text-emerald-600 font-bold uppercase tracking-widest bg-emerald-100 px-3 py-1 rounded-full">¡Archivo listo para subir!</span>
+                                        </div>
+
+                                        <input type="file" name="archivo_excel" class="hidden" required accept=".csv" @change="fileName = $event.target.files[0].name" />
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="w-full bg-emerald-600 text-white font-black py-4 rounded-xl shadow-lg hover:bg-emerald-700 transition transform hover:-translate-y-1 flex justify-center items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                    Subir e Importar Datos
+                                </button>
+                            </form>
                             </div>
                         </div>
 
                         <div style="display: none;" x-show="tab === 'usuarios'" class="transition-all duration-300">
                             
-                            <div class="mb-8 bg-white rounded-3xl shadow-md border border-gray-200 overflow-hidden">
-                                <div class="bg-gray-100 px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                                    <h3 class="text-xl font-black text-[#002845]">👑 Administradores</h3>
-                                    <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Acceso Total</span>
+                            <div class="mb-10 bg-white rounded-3xl shadow-md border border-gray-200 overflow-hidden">
+                                <div class="bg-purple-50 px-6 py-4 border-b border-purple-100 flex justify-between items-center">
+                                    <h3 class="text-xl font-black text-purple-900 flex items-center">👑 Administradores</h3>
+                                    <span class="bg-purple-100 text-purple-800 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Seguridad Nivel 1</span>
                                 </div>
                                 <div class="overflow-x-auto">
                                     <table class="min-w-full divide-y divide-gray-200">
-                                        <thead class="bg-white">
-                                            <tr>
-                                                <th class="px-6 py-3 text-left text-xs font-black text-gray-500 uppercase">Usuario</th>
-                                                <th class="px-6 py-3 text-center text-xs font-black text-gray-500 uppercase">Rol Actual</th>
-                                                <th class="px-6 py-3 text-center text-xs font-black text-gray-500 uppercase">Acción</th>
-                                            </tr>
-                                        </thead>
                                         <tbody class="bg-white divide-y divide-gray-100">
+                                            
+                                            @php $totalAdmins = $usuarios->where('rol', 'admin')->count(); @endphp
+
                                             @foreach ($usuarios->where('rol', 'admin') as $admin)
                                                 <tr class="hover:bg-gray-50 transition">
                                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -196,30 +270,38 @@
                                                             <div class="ml-4">
                                                                 <div class="text-sm font-bold text-gray-900">
                                                                     {{ $admin->name }} 
-                                                                    @if(auth()->id() === $admin->id) 
-                                                                        <span class="text-blue-500 text-xs font-black ml-1">(TÚ)</span> 
-                                                                    @endif
+                                                                    @if(auth()->id() === $admin->id) <span class="text-blue-500 font-black text-xs ml-1">(TÚ)</span> @endif
                                                                 </div>
                                                                 <div class="text-xs text-gray-500">{{ $admin->email }}</div>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-purple-100 text-purple-800">Administrador</span>
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                        @if(auth()->id() === $admin->id)
-                                                            <span class="text-xs text-gray-400 font-bold uppercase tracking-wide bg-gray-100 px-3 py-2 rounded-lg">No Editable</span>
-                                                        @else
-                                                            <form action="{{ route('usuarios.actualizarRol', $admin->id) }}" method="POST" class="flex items-center justify-center space-x-2">
-                                                                @csrf @method('PUT')
-                                                                <select name="rol" class="block w-32 pl-3 pr-8 py-2 text-sm border-gray-300 rounded-lg bg-gray-50 font-bold cursor-pointer">
-                                                                    <option value="admin" selected>Admin</option>
-                                                                    <option value="profesor">Profesor</option>
-                                                                </select>
-                                                                <button type="submit" class="bg-[#FFD700] hover:bg-yellow-500 text-[#002845] font-bold py-2 px-4 rounded-lg transition shadow-sm">Guardar</button>
-                                                            </form>
-                                                        @endif
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                                                        <div class="flex items-center justify-end space-x-3 pr-4">
+                                                            
+                                                            @if($totalAdmins <= 1)
+                                                                <button disabled class="bg-red-50 text-red-500 font-black py-2 px-5 rounded-lg border border-red-200 text-xs flex items-center cursor-not-allowed shadow-inner opacity-90">
+                                                                    🛡️ ÚNICO ADMIN (INBORRABLE)
+                                                                </button>
+                                                            @else
+                                                                <form action="{{ route('usuarios.actualizarRol', $admin->id) }}" method="POST" class="flex items-center space-x-2">
+                                                                    @csrf @method('PUT')
+                                                                    <select name="rol" class="text-sm border-gray-300 rounded-lg bg-gray-50 font-bold focus:ring-[#002845] focus:border-[#002845]">
+                                                                        <option value="admin" selected>Admin</option>
+                                                                        <option value="profesor">Profesor</option>
+                                                                    </select>
+                                                                    <button type="submit" class="bg-[#FFD700] hover:bg-yellow-500 text-[#002845] font-bold py-2 px-4 rounded-lg transition text-xs shadow-sm">Actualizar</button>
+                                                                </form>
+                                                                
+                                                                <form action="{{ route('usuarios.eliminar', $admin->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas desactivar a este administrador? @if(auth()->id() === $admin->id) ¡CUIDADO, ERES TÚ MISMO! @endif')">
+                                                                    @csrf @method('DELETE')
+                                                                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-black py-2 px-4 rounded-lg transition text-xs shadow-md">
+                                                                        ❌ DESACTIVAR
+                                                                    </button>
+                                                                </form>
+                                                            @endif
+
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -229,19 +311,12 @@
                             </div>
 
                             <div class="bg-white rounded-3xl shadow-md border border-gray-200 overflow-hidden">
-                                <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                                    <h3 class="text-xl font-black text-[#002845]">👨‍🏫 Profesores</h3>
-                                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Cuerpo Docente</span>
+                                <div class="bg-blue-50 px-6 py-4 border-b border-blue-100 flex justify-between items-center">
+                                    <h3 class="text-xl font-black text-[#002845] flex items-center">👨‍🏫 Profesores</h3>
+                                    <span class="bg-blue-100 text-blue-800 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Docentes</span>
                                 </div>
                                 <div class="overflow-x-auto">
                                     <table class="min-w-full divide-y divide-gray-200">
-                                        <thead class="bg-white">
-                                            <tr>
-                                                <th class="px-6 py-3 text-left text-xs font-black text-gray-500 uppercase">Usuario</th>
-                                                <th class="px-6 py-3 text-center text-xs font-black text-gray-500 uppercase">Rol Actual</th>
-                                                <th class="px-6 py-3 text-center text-xs font-black text-gray-500 uppercase">Acción</th>
-                                            </tr>
-                                        </thead>
                                         <tbody class="bg-white divide-y divide-gray-100">
                                             @foreach ($usuarios->where('rol', 'profesor') as $docente)
                                                 <tr class="hover:bg-gray-50 transition">
@@ -256,23 +331,29 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-blue-100 text-blue-800">Docente</span>
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                        <form action="{{ route('usuarios.actualizarRol', $docente->id) }}" method="POST" class="flex items-center justify-center space-x-2">
-                                                            @csrf @method('PUT')
-                                                            <select name="rol" class="block w-32 pl-3 pr-8 py-2 text-sm border-gray-300 rounded-lg bg-gray-50 font-bold cursor-pointer">
-                                                                <option value="profesor" selected>Profesor</option>
-                                                                <option value="admin">Admin</option>
-                                                            </select>
-                                                            <button type="submit" class="bg-[#FFD700] hover:bg-yellow-500 text-[#002845] font-bold py-2 px-4 rounded-lg transition shadow-sm">Guardar</button>
-                                                        </form>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                                                        <div class="flex items-center justify-end space-x-3 pr-4">
+                                                            <form action="{{ route('usuarios.actualizarRol', $docente->id) }}" method="POST" class="flex items-center space-x-2">
+                                                                @csrf @method('PUT')
+                                                                <select name="rol" class="text-sm border-gray-300 rounded-lg bg-gray-50 font-bold focus:ring-[#002845] focus:border-[#002845]">
+                                                                    <option value="profesor" selected>Profesor</option>
+                                                                    <option value="admin">Admin</option>
+                                                                </select>
+                                                                <button type="submit" class="bg-[#FFD700] hover:bg-yellow-500 text-[#002845] font-bold py-2 px-4 rounded-lg transition text-xs shadow-sm">Actualizar</button>
+                                                            </form>
+
+                                                            <form action="{{ route('usuarios.eliminar', $docente->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas desactivar a este profesor?')">
+                                                                @csrf @method('DELETE')
+                                                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-black py-2 px-4 rounded-lg transition text-xs shadow-md">
+                                                                    ❌ DESACTIVAR
+                                                                </button>
+                                                            </form>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                             @if($usuarios->where('rol', 'profesor')->isEmpty())
-                                                <tr><td colspan="3" class="px-6 py-6 text-center text-sm font-bold text-gray-400">No hay profesores registrados en el sistema.</td></tr>
+                                                <tr><td colspan="2" class="px-6 py-8 text-center text-sm font-bold text-gray-400">No hay profesores registrados.</td></tr>
                                             @endif
                                         </tbody>
                                     </table>

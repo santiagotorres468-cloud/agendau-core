@@ -56,16 +56,22 @@ Route::middleware([
     Route::get('/dashboard', function () {
         $user = auth()->user();
         $usuarios = []; 
+        
         if ($user->rol === 'admin') {
-            $horarios = \App\Models\HorarioAsesoria::orderBy('dia_semana')->get();
-            $usuarios = \App\Models\User::all(); // 🔥 Traemos a TODOS
+            // 👇 FIX: Agregado withCount('seguimientos') para el Admin
+            $horarios = \App\Models\HorarioAsesoria::withCount('seguimientos')->orderBy('dia_semana')->get();
+            $usuarios = \App\Models\User::all(); 
         } else {
-            $horarios = \App\Models\HorarioAsesoria::where('user_id', $user->id)->orderBy('dia_semana')->get();
+            // 👇 FIX: Agregado withCount('seguimientos') para el Docente
+            $horarios = \App\Models\HorarioAsesoria::where('user_id', $user->id)
+                            ->withCount('seguimientos')
+                            ->orderBy('dia_semana')
+                            ->get();
         }
         
-        // 💡 NOTA: Si moviste tu archivo de vista a la carpeta 'admin', 
-        // deberías cambiar esto a view('admin.dashboard');
+        // 🔥 VOLVEMOS AL ARCHIVO SUELTO (EL HERMOSO) 🔥
         return view('dashboard', compact('horarios', 'usuarios'));
+        
     })->name('dashboard');
 
     // --- 2. GESTIÓN DE HORARIOS Y ASISTENCIA (Docentes y Admins) ---
