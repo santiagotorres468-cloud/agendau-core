@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class HorarioController extends Controller
 {
-public function importar(Request $request)
+    public function importar(Request $request)
     {
         if (auth()->user()->rol !== 'admin') { 
             abort(403, '⛔ Acción no permitida. Solo administradores.'); 
@@ -29,19 +29,66 @@ public function importar(Request $request)
         ]);
 
         try {
-            // ¡Aquí ocurre la magia! Llamamos a tu clase HorariosImport
+            // Llamamos a tu clase HorariosImport (que ahora tiene las validaciones estrictas)
             Excel::import(new HorariosImport, $request->file('archivo_excel'));
 
-            return back()->with('exito', "✅ El archivo de Excel se procesó exitosamente.");
+            return back()->with('exito', "✅ El archivo de Excel se procesó exitosamente y se validaron los duplicados.");
 
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
              $fallos = $e->failures();
              return back()->with('error', '⚠️ Hubo errores de validación en algunas filas del Excel.');
         } catch (\Exception $e) {
-            // Si el Excel tiene un formato corrupto o falta una columna clave, te avisará
+            // Si el Excel tiene un formato corrupto o falta una columna clave, el nuevo HorariosImport lanzará el error aquí
             return back()->with('error', '❌ Error al procesar el archivo: ' . $e->getMessage());
         }
     }
+
+    // ========================================================
+    // 🔥 NUEVOS MÓDULOS DE REPORTES (SOLO ADMIN) 🔥
+    // ========================================================
+
+    public function reportePorDocente(Request $request)
+    {
+        if (auth()->user()->rol !== 'admin') { abort(403, '⛔ ACCIÓN NO PERMITIDA.'); }
+        
+        $request->validate(['docente_id' => 'required|exists:users,id']);
+        $docente = User::findOrFail($request->docente_id);
+
+        // Buscar todas las clases de este profe y contar a los estudiantes que han asistido (estado Evaluada con asistencia true)
+        $horarios = HorarioAsesoria::where('user_id', $docente->id)->with(['seguimientos' => function($query) {
+            $query->where('asistencia', true);
+        }])->get();
+
+        $pdf = Pdf::loadView('admin.reporte_docente', compact('docente', 'horarios'));
+        return $pdf->download('Reporte_Docente_' . Str::slug($docente->name) . '.pdf');
+    }
+
+    public function reportePorCurso(Request $request)
+    {
+        if (auth()->user()->rol !== 'admin') { abort(403, '⛔ ACCIÓN NO PERMITIDA.'); }
+        
+        $request->validate(['curso_nombre' => 'required|string']);
+        $curso = $request->curso_nombre;
+
+        // 🔥 CORRECCIÓN AQUÍ: Se eliminó 'docente' del array with() porque la relación no existe.
+        // Trae todas las clases que se llamen igual, sin importar quién las dicte
+        $horarios = HorarioAsesoria::where('curso_nombre', $curso)->with(['seguimientos'])->get();
+        
+        $totalInscritos = 0;
+        $totalAsistencias = 0;
+
+        foreach($horarios as $h) {
+            $totalInscritos += $h->seguimientos->count();
+            $totalAsistencias += $h->seguimientos->where('asistencia', true)->count();
+        }
+
+        $pdf = Pdf::loadView('admin.reporte_curso', compact('curso', 'horarios', 'totalInscritos', 'totalAsistencias'));
+        return $pdf->download('Reporte_Curso_' . Str::slug($curso) . '.pdf');
+    }
+
+    // ========================================================
+    // MÓDULOS EXISTENTES DE HORARIOS Y ASISTENCIA
+    // ========================================================
 
     public function eliminar($id) {
         if (auth()->user()->rol !== 'admin') { abort(403, '⛔ Acción no permitida.'); }
@@ -69,6 +116,25 @@ public function importar(Request $request)
         return back()->with('exito', '¡Reserva cancelada correctamente!');
     }
 
+  public function editar($id) {
+        if (auth()->user()->rol !== 'admin') { abort(403, '⛔ ACCIÓN NO PERMITIDA.'); }
+        $horario = HorarioAsesoria::findOrFail($id);
+        
+        // 🔥 ESTO ES VITAL: Traer a los profesores para el <select> de la vista
+        $profesores = User::where('rol', 'profesor')->get(); 
+        
+        return view('horarios.editar', compact('horario', 'profesores'));
+    }
+
+    public function actualizar(Request $request, $id) {
+        if (auth()->user()->rol !== 'admin') { abort(403, '⛔ ACCIÓN NO PERMITIDA.'); }
+        $horario = HorarioAsesoria::findOrFail($id);
+        
+        $horario->update($request->all());
+        
+        return redirect()->route('dashboard')->with('exito', '✅ CLASE ACTUALIZADA CORRECTAMENTE.');
+    }
+
     public function marcarAsistencia(Request $request, $id) {
         Seguimiento::findOrFail($id)->update(['estado' => 'Evaluada', 'asistencia' => $request->asistencia]);
         return back()->with('exito', $request->asistencia ? '✅ Asistencia registrada.' : '❌ Inasistencia registrada.');
@@ -82,7 +148,18 @@ public function importar(Request $request)
     public function generarReporteIndividual(Request $request, $id) {
         $reserva = Seguimiento::with(['estudiante', 'horario'])->findOrFail($id);
         $reserva->update(['evolucion' => $request->input('evolucion')]);
-        $historial = Seguimiento::where('estudiante_id', $reserva->estudiante_id)->where('horario_id', $reserva->horario_id)->orderBy('fecha', 'asc')->get();
+
+        // 🔥 Si el profesor presionó "Solo Guardar", recargamos la página
+        if ($request->input('accion') === 'guardar') {
+            return back()->with('exito', '✅ Reporte guardado exitosamente.');
+        }
+
+        // 🔥 Si presionó "Descargar", generamos el PDF
+        $historial = Seguimiento::where('estudiante_id', $reserva->estudiante_id)
+                                ->where('horario_id', $reserva->horario_id)
+                                ->orderBy('fecha', 'asc')
+                                ->get();
+                                
         $pdf = Pdf::loadView('profesor.reporte_individual', compact('reserva', 'historial'));
         return $pdf->download('Reporte_' . Str::slug($reserva->estudiante->nombre_completo) . '.pdf');
     }
@@ -167,5 +244,13 @@ public function importar(Request $request)
         $reserva = Seguimiento::where('estudiante_id', session('estudiante_id'))->where('horario_id', $request->horario_id)->where('fecha', $request->fecha)->where('estado', 'Programada')->first();
         if ($reserva) { $reserva->delete(); return back()->with('exito', '🗑️ Reserva cancelada.'); }
         return back()->with('error', '⚠️ No tienes reserva activa para esta clase hoy.');
+    }
+    
+    public function vaciarClases() {
+        if (auth()->user()->rol !== 'admin') { abort(403); }
+        // Borra todas las reservas y luego todas las clases
+        \App\Models\Seguimiento::truncate();
+        \App\Models\HorarioAsesoria::truncate();
+        return back()->with('exito', '🗑️ BASE DE DATOS LIMPIA. Todas las clases y reservas fueron eliminadas.');
     }
 }

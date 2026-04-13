@@ -99,6 +99,22 @@
             <div class="relative z-10 mb-6 border-b border-gray-100 pb-4">
                 <h2 class="text-2xl md:text-3xl font-extrabold text-[#002845]">📅 Programa tu Asesoría</h2>
                 <p class="text-gray-500 mt-1">Navega por las semanas y haz clic sobre la clase a la que deseas asistir.</p>
+                
+                <div class="flex flex-col md:flex-row gap-4 mt-6">
+                    <div class="flex-1">
+                        <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">Buscar Clase</label>
+                        <input type="text" id="filtroClase" placeholder="Ej: Cálculo, Programación..." class="w-full bg-gray-50 border-2 border-gray-100 rounded-xl p-3 text-sm font-bold focus:border-[#002845] focus:bg-white outline-none transition-all shadow-sm">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">Modalidad</label>
+                        <select id="filtroModalidad" class="w-full bg-gray-50 border-2 border-gray-100 rounded-xl p-3 text-sm font-bold focus:border-[#002845] focus:bg-white outline-none transition-all shadow-sm cursor-pointer">
+                            <option value="todas">Todas las modalidades</option>
+                            <option value="virtual">💻 Virtual</option>
+                            <option value="presencial">🏢 Presencial</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
             <div id="calendar" class="relative z-10"></div>
         </div>
@@ -131,7 +147,7 @@
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-xl mx-4 overflow-hidden transform transition-all scale-100">
             
             <div class="bg-gradient-to-r from-[#002845] to-[#004273] px-6 py-5 text-center relative">
-                <h3 class="text-xl font-extrabold text-white tracking-wide uppercase">Gestión de Asistencia</h3>
+                <h3 class="text-xl font-extrabold text-white tracking-wide uppercase">Gestión de Cupo</h3>
                 <button onclick="cerrarModal()" class="absolute top-4 right-4 text-white hover:text-gray-300 transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -211,6 +227,20 @@
                 
                 events: '{{ route("api.horarios") }}',
                 
+                // ASIGNAR ATRIBUTOS PARA EL FILTRO
+                eventDidMount: function(info) {
+                    let mod = info.event.extendedProps.modalidad ? info.event.extendedProps.modalidad.toString().toLowerCase().trim() : '';
+                    let titulo = info.event.title ? info.event.title.toLowerCase().trim() : '';
+                    
+                    info.el.setAttribute('data-modalidad', mod);
+                    info.el.setAttribute('data-curso', titulo);
+                },
+
+                // RE-APLICAR FILTRO AL CAMBIAR DE SEMANA
+                datesSet: function() {
+                    setTimeout(aplicarFiltros, 50);
+                },
+                
                 eventClick: function(info) {
                     info.jsEvent.preventDefault();
                     document.getElementById('horario_id').value = info.event.id;
@@ -229,6 +259,34 @@
                 }
             });
             calendar.render();
+
+            // 🔥 LA FUNCIÓN MÁGICA DEL FILTRO 🔥
+            function aplicarFiltros() {
+                let buscarTexto = document.getElementById('filtroClase').value.toLowerCase().trim();
+                let modalidadSeleccionada = document.getElementById('filtroModalidad').value.toLowerCase().trim();
+                
+                let eventos = document.querySelectorAll('.fc-event');
+
+                eventos.forEach(ev => {
+                    let modEvento = ev.getAttribute('data-modalidad') || '';
+                    let cursoEvento = ev.getAttribute('data-curso') || '';
+
+                    let cumpleTexto = buscarTexto === '' || cursoEvento.includes(buscarTexto);
+                    let cumpleModalidad = (modalidadSeleccionada === 'todas' || modEvento === modalidadSeleccionada);
+
+                    // Atrapamos la "caja invisible" de FullCalendar para ocultarla por completo
+                    let cajaContenedora = ev.closest('.fc-timegrid-event-harness') || ev.closest('.fc-daygrid-event-harness') || ev;
+
+                    if (cumpleTexto && cumpleModalidad) {
+                        cajaContenedora.style.setProperty('display', '', 'important');
+                    } else {
+                        cajaContenedora.style.setProperty('display', 'none', 'important');
+                    }
+                });
+            }
+
+            document.getElementById('filtroClase').addEventListener('input', aplicarFiltros);
+            document.getElementById('filtroModalidad').addEventListener('change', aplicarFiltros);
         });
 
         function cerrarModal() { document.getElementById('modalReserva').classList.add('hidden'); }

@@ -4,81 +4,72 @@ namespace App\Imports;
 
 use App\Models\HorarioAsesoria;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class HorariosImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        // =======================================================
-        // 1. PURIFICACIÓN DE DATOS (El Exorcismo de Excel)
-        // =======================================================
-        
-        // Función rápida para traducir la hora, ya sea decimal o texto
-        $parseTime = function($value) {
-            if (empty($value)) return '00:00:00';
-            
-            // Si Excel nos manda su número decimal (ej. 0.333333)
-            if (is_numeric($value)) {
-                return Date::excelToDateTimeObject($value)->format('H:i:s');
-            }
-            
-            // Si viene como texto normal (ej. "08:00")
-            $timeRaw = preg_replace('/[^\d:]/', '', $value);
-            $partes = explode(':', $timeRaw);
-            return sprintf('%02d:%02d:%02d', (int)($partes[0] ?? 0), (int)($partes[1] ?? 0), (int)($partes[2] ?? 0));
-        };
-
-        $inicio = $parseTime($row['inicio'] ?? null);
-        $fin = $parseTime($row['fin'] ?? null);
-
-        // Si por alguna razón la fila no tiene hora, la ignoramos
-        if ($inicio === '00:00:00' && $fin === '00:00:00') {
-            return null;
+        // 1. VALIDACIÓN ESTRICTA DEL ARCHIVO
+        // Si el Excel no tiene estas columnas exactas, bloquea la subida por completo
+        if (!isset($row['curso']) || !isset($row['docente']) || !isset($row['inicio']) || !isset($row['dia'])) {
+            throw new \Exception("El archivo no tiene el formato correcto. Asegúrate de usar la plantilla oficial con las columnas: curso, docente, dia, inicio, fin.");
         }
 
-        // Limpiamos y aseguramos la fecha del Semestre
-        $semestreRaw = $row['semestre'] ?? '';
-        $semestreLimpio = preg_replace('/[^\d\/\-]/', '', $semestreRaw);
-        $semestreLimpio = str_replace('/', '-', $semestreLimpio);
+        $getString = function($value) {
+            if (is_object($value)) { return method_exists($value, '__toString') ? (string) $value : ''; }
+            return trim((string) $value);
+        };
+
+        // Purificamos las horas
+        $inicioCrudo = preg_replace('/[^0-9:]/', '', $getString($row['inicio']));
+        $finCrudo = preg_replace('/[^0-9:]/', '', $getString($row['fin'] ?? ''));
+
+        $iPartes = explode(':', $inicioCrudo);
+        $fPartes = explode(':', $finCrudo);
         
-        $sTime = strtotime($semestreLimpio);
+        $inicio = sprintf('%02d:%02d:%02d', (int)($iPartes[0] ?? 0), (int)($iPartes[1] ?? 0), (int)($iPartes[2] ?? 0));
+        $fin = sprintf('%02d:%02d:%02d', (int)($fPartes[0] ?? 0), (int)($fPartes[1] ?? 0), (int)($fPartes[2] ?? 0));
+
+        if ($inicio === '00:00:00' && $fin === '00:00:00') { return null; }
+
+        // Fecha y Textos
+        $semestreRaw = $getString($row['semestre'] ?? '');
+        $sTime = strtotime(str_replace('/', '-', preg_replace('/[^\d\/\-]/', '', $semestreRaw)));
         $semestre = ($sTime !== false && $sTime > 0) ? date('Y-m-d', $sTime) : date('Y-m-d');
 
-        // Limpiamos los textos básicos que se habían quedado por fuera en el mensaje anterior
-        $dia = ucfirst(strtolower(trim($row['dia'] ?? '')));
-        $sede = trim($row['sede'] ?? '');
-        $bloque = trim($row['bloque'] ?? '');
-        $aula = trim($row['aula'] ?? '');
-        $modalidad = strtolower(trim($row['modalidad'] ?? 'presencial'));
-        $curso = trim($row['curso'] ?? '');
-        $docenteNombre = trim($row['docente'] ?? 'Sin Asignar');
+        $dia = ucfirst(strtolower($getString($row['dia'])));
+        $sede = $getString($row['sede'] ?? '');
+        $bloque = $getString($row['bloque'] ?? '');
+        $aula = $getString($row['aula'] ?? '');
+        $modalidad = ucfirst(strtolower($getString($row['modalidad'] ?? 'Presencial')));
+        $curso = $getString($row['curso']);
+        $docenteNombre = $getString($row['docente']);
 
         // =======================================================
-        // 2. VALIDACIÓN ANTI-CHOQUES
+        // 2. REGLA ESTRICTA DE PROFESORES Y HORARIOS
         // =======================================================
-        $choqueDeHorario = HorarioAsesoria::where('dia_semana', $dia)
-            ->where('sede', $sede)
-            ->where('bloque', $bloque)
-            ->where('aula', $aula)
+        // Valida si el DOCENTE ya tiene una clase asignada ESE DÍA a ESA MISMA HORA.
+        // Las horas (< y >) comprueban si los tiempos se cruzan en algún punto.
+        $profesorOcupado = DB::table('horarios_asesoria')
+            ->where('docente_nombre', $docenteNombre)
+            ->where('dia_semana', $dia)
             ->where(function ($query) use ($inicio, $fin) {
-                $query->whereBetween('hora_inicio', [$inicio, $fin])
-                      ->orWhereBetween('hora_fin', [$inicio, $fin]);
+                $query->where('hora_inicio', '<', $fin)
+                      ->where('hora_fin', '>', $inicio);
             })->exists();
 
-        // Si hay choque y la clase no es virtual, ignoramos esta fila del Excel
-        if ($choqueDeHorario && $modalidad !== 'virtual') {
+        if ($profesorOcupado) {
+            // Si el profesor ya da clase a esa hora (virtual o presencial), IGNORA esta fila
             return null; 
         }
 
         // =======================================================
-        // 3. ASIGNACIÓN DE DOCENTE
+        // 3. ASIGNAR O CREAR PROFESOR Y GUARDAR
         // =======================================================
         $profesor = User::where('name', 'LIKE', '%' . $docenteNombre . '%')->first();
-        
-        // Si el profesor no existe en el sistema, se lo creamos automáticamente
         if (!$profesor) {
             $profesor = User::create([
                 'name' => $docenteNombre,
@@ -87,24 +78,20 @@ class HorariosImport implements ToModel, WithHeadingRow
                 'rol' => 'profesor'
             ]);
         }
-        $userId = $profesor->id;
 
-        // =======================================================
-        // 4. GUARDAR EN BD
-        // =======================================================
         return new HorarioAsesoria([
             'curso_nombre'   => $curso,
             'docente_nombre' => $docenteNombre,
             'dia_semana'     => $dia,
             'hora_inicio'    => $inicio,
             'hora_fin'       => $fin,
-            'lugar'          => trim($row['lugar'] ?? ''),
-            'modalidad'      => ucfirst($modalidad),
+            'lugar'          => $getString($row['lugar'] ?? ''),
+            'modalidad'      => $modalidad,
             'sede'           => $sede,
             'bloque'         => $bloque,
             'aula'           => $aula,
             'semestre'       => $semestre,
-            'user_id'        => $userId,
+            'user_id'        => $profesor->id,
         ]);
     }
 }

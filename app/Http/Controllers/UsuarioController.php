@@ -7,33 +7,42 @@ use App\Models\User;
 
 class UsuarioController extends Controller
 {
-    public function actualizarRol(Request $request, $id)
-    {
-        if (auth()->user()->rol !== 'admin') {
-            abort(403, '⛔ Solo los administradores pueden cambiar roles.');
-        }
-
-        $request->validate(['rol' => 'required|in:admin,profesor']);
-        
-        $usuario = User::findOrFail($id);
-        $usuario->rol = $request->rol;
-        $usuario->save(); 
-
-        return back()->with('exito', '✅ Rol de ' . $usuario->name . ' actualizado a ' . strtoupper($request->rol));
+    public function index() {
+        $usuarios = User::all();
+        return view('usuarios.index', compact('usuarios'));
     }
 
-    public function eliminarUsuario($id)
-    {
+    public function actualizarRol(Request $request, $id) {
         if (auth()->user()->rol !== 'admin') { abort(403); }
-
         $usuario = User::findOrFail($id);
+        $usuario->update(['rol' => $request->rol]);
+        return back()->with('exito', '✅ Rol actualizado correctamente.');
+    }
 
-        // 🛡️ Seguridad: No dejar que te borres a ti mismo
-        if ($usuario->id === auth()->id()) {
-            return back()->with('error', '⛔ No puedes desactivar tu propia cuenta.');
-        }
+    
+    public function eliminarUsuario($id) {
+        if (auth()->user()->rol !== 'admin') { abort(403); }
+        
+        // 🔥 FORZAMOS LA ACTUALIZACIÓN DIRECTA PARA EVITAR BLOQUEOS DE LARAVEL
+        User::where('id', $id)->update(['rol' => 'inactivo']);
 
+        return back()->with('exito', '✅ Usuario DESACTIVADO (enviado a inactivos).');
+    }
+
+    public function reactivar(Request $request, $id) {
+        if (auth()->user()->rol !== 'admin') { abort(403); }
+        
+        $usuario = User::findOrFail($id);
+        $usuario->rol = $request->rol ?? 'profesor';
+        $usuario->save();
+
+        return back()->with('exito', '✅ Usuario REACTIVADO.');
+    }
+
+    public function destruir($id) {
+        if (auth()->user()->rol !== 'admin') { abort(403); }
+        $usuario = User::findOrFail($id);
         $usuario->delete();
-        return back()->with('exito', '🗑️ El usuario ha sido eliminado correctamente.');
+        return back()->with('exito', '✅ Usuario borrado definitivamente.');
     }
 }

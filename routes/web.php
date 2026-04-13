@@ -58,24 +58,24 @@ Route::middleware([
         $usuarios = []; 
         
         if ($user->rol === 'admin') {
-            // 👇 FIX: Agregado withCount('seguimientos') para el Admin
             $horarios = \App\Models\HorarioAsesoria::withCount('seguimientos')->orderBy('dia_semana')->get();
-            $usuarios = \App\Models\User::all(); 
+            $usuarios = \App\Models\User::all(); // Trae activos e inactivos
         } else {
-            // 👇 FIX: Agregado withCount('seguimientos') para el Docente
             $horarios = \App\Models\HorarioAsesoria::where('user_id', $user->id)
                             ->withCount('seguimientos')
                             ->orderBy('dia_semana')
                             ->get();
         }
         
-        // 🔥 VOLVEMOS AL ARCHIVO SUELTO (EL HERMOSO) 🔥
         return view('dashboard', compact('horarios', 'usuarios'));
-        
     })->name('dashboard');
 
     // --- 2. GESTIÓN DE HORARIOS Y ASISTENCIA (Docentes y Admins) ---
     Route::controller(HorarioController::class)->group(function () {
+        
+        // 🔥 VACIAR CLASES (Debe ir ANTES de las rutas con {id}) 🔥
+        Route::delete('/horarios/vaciar/base-de-datos', 'vaciarClases')->name('horarios.vaciar');
+        
         // Asistencia
         Route::get('/horarios/{id}/estudiantes', 'verEstudiantes')->name('horarios.estudiantes');
         Route::put('/reservas/{id}/asistencia', 'marcarAsistencia')->name('reservas.asistencia');
@@ -88,18 +88,24 @@ Route::middleware([
         Route::get('/seguimiento', 'seguimientoIndex')->name('seguimiento.index');
         Route::get('/seguimiento/buscar', 'seguimientoBuscar')->name('seguimiento.buscar');
 
-        // CRUD de Horarios (Solo Admin)
+        // CRUD de Horarios
         Route::post('/horarios/importar', 'importar')->name('horarios.importar');
         Route::get('/horarios/{id}/editar', 'editar')->name('horarios.editar');
         Route::put('/horarios/{id}', 'actualizar')->name('horarios.actualizar');
         Route::delete('/horarios/{id}', 'eliminar')->name('horarios.eliminar');
+
+        // Reportes Globales
+        Route::get('/reportes/docente', 'reportePorDocente')->name('reportes.docente');
+        Route::get('/reportes/curso', 'reportePorCurso')->name('reportes.curso');
     });
 
     // --- 3. CONTROL DE ROLES Y USUARIOS (Solo Admin) ---
     Route::controller(UsuarioController::class)->group(function () {
         Route::get('/usuarios', 'index')->name('usuarios.index');
         Route::put('/usuarios/{id}/rol', 'actualizarRol')->name('usuarios.actualizarRol');
-        Route::delete('/usuarios/{id}', 'eliminarUsuario')->name('usuarios.eliminar'); // 🔥 Dejamos solo uno
+        Route::delete('/usuarios/{id}', 'eliminarUsuario')->name('usuarios.eliminar'); 
+        Route::put('/usuarios/{id}/reactivar', 'reactivar')->name('usuarios.reactivar');
+        Route::delete('/usuarios/{id}/destruir', 'destruir')->name('usuarios.destruir');
     });
 
 });

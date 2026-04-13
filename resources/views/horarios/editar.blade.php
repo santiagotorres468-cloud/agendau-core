@@ -1,93 +1,107 @@
 <x-admin-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-[#002845] leading-tight">
-            ✏️ Editar Clase y Asignar Profesor
+        <h2 class="font-black text-2xl text-[#002845] flex items-center tracking-wide" style="font-family: 'Inter', sans-serif;">
+            <span class="mr-3 text-3xl">✏️</span> Editar Curso y Asignar Docente
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-2xl p-6 md:p-10 border-t-4 border-[#002845]">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style> .font-inter { font-family: 'Inter', sans-serif; } </style>
 
-                <form action="{{ route('horarios.actualizar', $horario->id) }}" method="POST">
+    <div class="py-10 font-inter bg-slate-50 min-h-screen">
+        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
+            
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border-t-8 border-[#002845]">
+                
+                <form action="{{ route('horarios.actualizar', $horario->id) }}" method="POST" class="p-8 md:p-10">
                     @csrf
                     @method('PUT')
 
-                    <div class="mb-8 bg-blue-50 p-5 rounded-xl border border-blue-200 shadow-sm">
-                        <label for="user_id" class="block text-sm font-extrabold text-[#002845] mb-2 uppercase tracking-wide">
-                            👨‍🏫 Asignar a una Cuenta de Profesor:
+                    <div class="mb-10 bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-inner">
+                        <label for="user_id" class="block text-sm font-black text-[#002845] mb-3 uppercase tracking-wider flex items-center">
+                            <span class="text-xl mr-2">👨‍🏫</span> Asignar a una Cuenta de Profesor en el Sistema:
                         </label>
-                        <select name="user_id" id="user_id" class="shadow-sm border-gray-300 focus:border-[#002845] focus:ring focus:ring-blue-200 rounded-lg w-full font-medium text-gray-700">
-                            <option value="">-- Dejar sin asignar (NULL) --</option>
+                        <select name="user_id" id="user_id" class="w-full bg-white border-2 border-blue-200 focus:border-[#002845] focus:ring focus:ring-blue-100 rounded-xl p-3 font-bold text-gray-700 shadow-sm transition">
+                            <option value="">-- Dejar sin asignar (El profesor no podrá ver la clase en su panel) --</option>
                             @foreach($profesores as $profe)
                                 <option value="{{ $profe->id }}" {{ $horario->user_id == $profe->id ? 'selected' : '' }}>
                                     {{ $profe->name }} ({{ $profe->email }})
                                 </option>
                             @endforeach
                         </select>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Selecciona qué usuario podrá ver y gestionar esta clase en su panel.</p>
+                        <p class="text-xs text-blue-600 mt-3 font-bold bg-blue-100/50 p-2 rounded-lg inline-block">
+                            💡 Selecciona el usuario que podrá tomar asistencia y gestionar esta clase.
+                        </p>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Nombre del Curso</label>
-                            <input type="text" name="curso_nombre" value="{{ $horario->curso_nombre }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-blue-200" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Nombre del Docente (Etiqueta)</label>
-                            <input type="text" name="docente_nombre" value="{{ $horario->docente_nombre }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-blue-200" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Día de la Semana</label>
-                            <input type="text" name="dia_semana" value="{{ $horario->dia_semana }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-blue-200" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Lugar (Etiqueta antigua)</label>
-                            <input type="text" name="lugar" value="{{ $horario->lugar }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-blue-200">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Hora Inicio</label>
-                            <input type="time" name="hora_inicio" value="{{ $horario->hora_inicio }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-blue-200" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Hora Fin</label>
-                            <input type="time" name="hora_fin" value="{{ $horario->hora_fin }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-blue-200" required>
-                        </div>
-                    </div>
-
-                    <h3 class="font-extrabold text-[#002845] border-b-2 border-gray-200 pb-2 mb-4 mt-8">📍 Ubicación Específica</h3>
+                    <h3 class="font-black text-xl text-gray-800 border-b-2 border-gray-100 pb-3 mb-6">Detalles del Curso</h3>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-gray-50 p-5 rounded-xl border border-gray-200">
-                        <div class="md:col-span-4 lg:col-span-1">
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Modalidad</label>
-                            <select name="modalidad" id="modalidad_select" class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-blue-200 font-bold" onchange="toggleUbicacion()">
-                                <option value="Presencial" {{ strtolower(trim($horario->modalidad)) !== 'virtual' ? 'selected' : '' }}>🏛️ Presencial</option>
-                                <option value="Virtual" {{ strtolower(trim($horario->modalidad)) === 'virtual' ? 'selected' : '' }}>💻 Virtual</option>
-                            </select>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Nombre del Curso</label>
+                            <input type="text" name="curso_nombre" value="{{ $horario->curso_nombre }}" class="w-full bg-gray-50 rounded-xl border-gray-200 shadow-sm focus:border-[#002845] focus:ring focus:ring-gray-200 font-bold p-3" required>
                         </div>
-                        
-                        <div id="ubicacion_fisica" class="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4 transition-all duration-300">
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Sede</label>
-                                <input type="text" name="sede" value="{{ $horario->sede }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-blue-200 placeholder-gray-400" placeholder="Ej: Robledo">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Nombre del Docente (Etiqueta)</label>
+                            <input type="text" name="docente_nombre" value="{{ $horario->docente_nombre }}" class="w-full bg-gray-50 rounded-xl border-gray-200 shadow-sm focus:border-[#002845] focus:ring focus:ring-gray-200 font-bold p-3" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Día de la Semana</label>
+                            <input type="text" name="dia_semana" value="{{ $horario->dia_semana }}" class="w-full bg-gray-50 rounded-xl border-gray-200 shadow-sm focus:border-[#002845] focus:ring focus:ring-gray-200 font-bold p-3" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Lugar (Etiqueta general)</label>
+                            <input type="text" name="lugar" value="{{ $horario->lugar }}" class="w-full bg-gray-50 rounded-xl border-gray-200 shadow-sm focus:border-[#002845] focus:ring focus:ring-gray-200 font-bold p-3 placeholder-gray-300" placeholder="Ej: Sede Robledo">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Hora Inicio</label>
+                            <input type="time" name="hora_inicio" value="{{ \Carbon\Carbon::parse($horario->hora_inicio)->format('H:i') }}" class="w-full bg-gray-50 rounded-xl border-gray-200 shadow-sm focus:border-[#002845] focus:ring focus:ring-gray-200 font-black text-[#002845] p-3" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Hora Fin</label>
+                            <input type="time" name="hora_fin" value="{{ \Carbon\Carbon::parse($horario->hora_fin)->format('H:i') }}" class="w-full bg-gray-50 rounded-xl border-gray-200 shadow-sm focus:border-[#002845] focus:ring focus:ring-gray-200 font-black text-[#002845] p-3" required>
+                        </div>
+                    </div>
+
+                    <h3 class="font-black text-xl text-[#002845] border-b-2 border-gray-100 pb-3 mb-6 flex items-center">
+                        <span class="mr-2">📍</span> Ubicación Específica
+                    </h3>
+                    
+                    <div class="bg-gray-100 p-6 rounded-2xl border border-gray-200 shadow-inner">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div class="md:col-span-4 lg:col-span-1">
+                                <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Modalidad</label>
+                                <select name="modalidad" id="modalidad_select" class="w-full bg-white rounded-xl border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-gray-200 font-black text-[#002845] p-3 transition" onchange="toggleUbicacion()">
+                                    <option value="Presencial" {{ strtolower(trim($horario->modalidad)) !== 'virtual' ? 'selected' : '' }}>🏛️ Presencial</option>
+                                    <option value="Virtual" {{ strtolower(trim($horario->modalidad)) === 'virtual' ? 'selected' : '' }}>💻 Virtual</option>
+                                </select>
                             </div>
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Bloque</label>
-                                <input type="text" name="bloque" value="{{ $horario->bloque }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-blue-200 placeholder-gray-400" placeholder="Ej: 4">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Aula</label>
-                                <input type="text" name="aula" value="{{ $horario->aula }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-blue-200 placeholder-gray-400" placeholder="Ej: 205">
+                            
+                            <div id="ubicacion_fisica" class="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4 transition-all duration-300">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Sede</label>
+                                    <input type="text" name="sede" value="{{ $horario->sede }}" class="w-full bg-white rounded-xl border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-gray-200 font-bold p-3 placeholder-gray-300" placeholder="Ej: Robledo">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Bloque</label>
+                                    <input type="text" name="bloque" value="{{ $horario->bloque }}" class="w-full bg-white rounded-xl border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-gray-200 font-bold p-3 placeholder-gray-300" placeholder="Ej: 4">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Aula</label>
+                                    <input type="text" name="aula" value="{{ $horario->aula }}" class="w-full bg-white rounded-xl border-gray-300 shadow-sm focus:border-[#002845] focus:ring focus:ring-gray-200 font-bold p-3 placeholder-gray-300" placeholder="Ej: 205">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="mt-8 flex justify-end space-x-3">
-                        <a href="{{ route('dashboard') }}" class="bg-gray-100 text-gray-700 px-5 py-2 rounded-lg font-bold hover:bg-gray-200 transition-colors border border-gray-300">
+                    <div class="mt-10 flex justify-end space-x-4 border-t border-gray-100 pt-6">
+                        <a href="{{ route('dashboard') }}" class="bg-white text-gray-600 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 hover:text-gray-900 transition-colors border-2 border-gray-200 shadow-sm">
                             Cancelar
                         </a>
-                        <button type="submit" class="bg-[#002845] text-white px-5 py-2 rounded-lg font-bold hover:bg-[#001a2e] transition-colors shadow-md">
-                            💾 Guardar y Asignar
+                        <button type="submit" class="bg-[#002845] text-white px-8 py-3 rounded-xl font-black hover:bg-[#001a2e] transition-all transform hover:-translate-y-1 shadow-lg flex items-center">
+                            <span class="mr-2">💾</span> Guardar Cambios
                         </button>
                     </div>
                 </form>
@@ -100,17 +114,22 @@
         function toggleUbicacion() {
             var modalidad = document.getElementById('modalidad_select').value;
             var contenedorFisico = document.getElementById('ubicacion_fisica');
+            var inputs = contenedorFisico.querySelectorAll('input');
             
             if (modalidad === 'Virtual') {
-                contenedorFisico.style.opacity = '0.3';
+                contenedorFisico.style.opacity = '0.4';
                 contenedorFisico.style.pointerEvents = 'none'; // Deshabilita los clics
+                contenedorFisico.classList.add('grayscale');
+                // Opcional: Limpiar los campos si se pasa a virtual
+                // inputs.forEach(input => input.value = ''); 
             } else {
                 contenedorFisico.style.opacity = '1';
                 contenedorFisico.style.pointerEvents = 'auto'; // Habilita los clics
+                contenedorFisico.classList.remove('grayscale');
             }
         }
         
-        // Ejecutar al cargar la página por si ya estaba en "Virtual"
+        // Ejecutar al cargar la página por si ya estaba guardada en "Virtual"
         document.addEventListener('DOMContentLoaded', toggleUbicacion);
     </script>
 </x-admin-layout>
