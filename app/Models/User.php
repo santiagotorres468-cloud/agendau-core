@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -25,12 +26,13 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
+protected $fillable = [
+    'name',
+    'email',
+    'password',
+    'rol',      // ✅ Permite actualizar el rol (profesor/admin)
+    'activo',   // ✅ Permite desactivar/activar usuarios
+];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -63,5 +65,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function horarios(): HasMany
+    {
+        return $this->hasMany(\App\Models\HorarioAsesoria::class, 'user_id');
     }
 }

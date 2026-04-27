@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\EncuestaController;
 use Illuminate\Support\Facades\RateLimiter; 
 use Illuminate\Cache\RateLimiting\Limit;     
 use Illuminate\Http\Request;                 
@@ -23,6 +24,17 @@ Route::get('/', function () {
 })->name('inicio');
 
 Route::get('/estudiante', function () {
+    if (session('estudiante_id')) {
+        $pendiente = \App\Models\Seguimiento::where('estudiante_id', session('estudiante_id'))
+            ->where('estado', 'Evaluada')
+            ->where('asistencia', true)
+            ->where('encuesta_respondida', false)
+            ->first();
+
+        if ($pendiente) {
+            return redirect()->route('encuesta.mostrar', $pendiente->id);
+        }
+    }
     return view('estudiante');
 })->name('estudiante.panel');
 
@@ -43,6 +55,10 @@ Route::controller(HorarioController::class)->group(function () {
     Route::post('/estudiante/reservas/cancelar-publico', 'cancelarDesdePublico')->name('estudiante.cancelar.publico');
 });
 
+// --- ENCUESTA POST-TUTORÍA (acceso por sesión de estudiante, no por Sanctum) ---
+Route::get('/encuesta/{id}', [EncuestaController::class, 'mostrar'])->name('encuesta.mostrar');
+Route::post('/encuesta/{id}', [EncuestaController::class, 'guardar'])->name('encuesta.guardar');
+
 // ========================================================
 // 🔐 ZONA PRIVADA: Requiere inicio de sesión (Docentes y Admin)
 // ========================================================
@@ -55,19 +71,19 @@ Route::middleware([
     // --- 1. DASHBOARD DINÁMICO ---
     Route::get('/dashboard', function () {
         $user = auth()->user();
-        $usuarios = []; 
-        
+
         if ($user->rol === 'admin') {
             $horarios = \App\Models\HorarioAsesoria::withCount('seguimientos')->orderBy('dia_semana')->get();
-            $usuarios = \App\Models\User::all(); // Trae activos e inactivos
-        } else {
-            $horarios = \App\Models\HorarioAsesoria::where('user_id', $user->id)
-                            ->withCount('seguimientos')
-                            ->orderBy('dia_semana')
-                            ->get();
+            $usuarios = \App\Models\User::all();
+            return view('dashboard', compact('horarios', 'usuarios'));
         }
-        
-        return view('dashboard', compact('horarios', 'usuarios'));
+
+        $horarios = \App\Models\HorarioAsesoria::where('user_id', $user->id)
+                        ->withCount('seguimientos')
+                        ->orderBy('dia_semana')
+                        ->get();
+        $usuarios = collect();
+        return view('admin.dashboard', compact('horarios', 'usuarios'));
     })->name('dashboard');
 
     // --- 2. GESTIÓN DE HORARIOS Y ASISTENCIA (Docentes y Admins) ---
@@ -94,10 +110,13 @@ Route::middleware([
         Route::put('/horarios/{id}', 'actualizar')->name('horarios.actualizar');
         Route::delete('/horarios/{id}', 'eliminar')->name('horarios.eliminar');
 
-        // Reportes Globales
-        Route::get('/reportes/docente', 'reportePorDocente')->name('reportes.docente');
-        Route::get('/reportes/curso', 'reportePorCurso')->name('reportes.curso');
+        // Reportes Globales PDF
+        Route::get('/reportes/docente', [EncuestaController::class, 'reporteDocente'])->name('reportes.docente');
+        Route::get('/reportes/curso', [EncuestaController::class, 'reporteCurso'])->name('reportes.curso');
     });
+
+    // --- Encuestas (EncuestaController) ---
+    Route::get('/admin/encuestas', [EncuestaController::class, 'dashboard'])->name('admin.encuestas');
 
     // --- 3. CONTROL DE ROLES Y USUARIOS (Solo Admin) ---
     Route::controller(UsuarioController::class)->group(function () {

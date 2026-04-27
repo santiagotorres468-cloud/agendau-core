@@ -11,14 +11,23 @@ class Seguimiento extends Model
 
     // Aquí le damos permiso a TODOS los campos, incluyendo hora_registro
     protected $fillable = [
-    'horario_id',
-    'estudiante_id',
-    'fecha',
-    'hora_registro',
-    'estado',
-    'asistencia',
-    'evolucion', // <-- ¡AQUÍ ESTÁ EL PERMISO NUEVO!
-   ];
+        'horario_id',
+        'estudiante_id',
+        'fecha',
+        'hora_registro',
+        'estado',
+        'asistencia',
+        'evolucion',
+        'encuesta_respondida',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'asistencia'          => 'boolean',
+            'encuesta_respondida' => 'boolean',
+        ];
+    }
 
     public function estudiante()
     {
@@ -28,5 +37,17 @@ class Seguimiento extends Model
     public function horario()
     {
         return $this->belongsTo(HorarioAsesoria::class, 'horario_id');
+    }
+
+    public function encuesta()
+    {
+        return $this->hasOne(\App\Models\Encuesta::class, 'seguimiento_id');
+    }
+
+    public function puedeResponderEncuesta(): bool
+    {
+        return $this->estado === 'Evaluada'
+            && $this->asistencia === true
+            && !$this->encuesta_respondida;
     }
 }

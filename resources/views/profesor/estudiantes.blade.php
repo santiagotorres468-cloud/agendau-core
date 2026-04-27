@@ -11,15 +11,18 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style> body { font-family: 'Inter', sans-serif; } </style>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style> body { font-family: 'Manrope', sans-serif; } </style>
 </head>
 <body class="bg-gray-50 text-gray-800 flex h-screen overflow-hidden">
 
     <aside class="w-64 bg-[#002845] text-white flex flex-col hidden md:flex shadow-2xl z-20 flex-shrink-0">
         <div class="p-6 flex items-center space-x-3 border-b border-blue-900/50">
-            <span class="text-3xl">🎓</span>
-            <h1 class="text-2xl font-black tracking-wide">Agenda U</h1>
+            <div class="w-9 h-9 rounded-lg bg-[#C9A227] text-[#002845] font-extrabold text-sm flex items-center justify-center flex-shrink-0 tracking-tight">AU</div>
+            <div>
+                <p class="text-base font-bold text-white tracking-tight leading-tight">Agenda U</p>
+                <p class="text-xs text-white/50 font-medium">Sistema de Asesorías</p>
+            </div>
         </div>
         
         <div class="p-6">
@@ -95,7 +98,7 @@
                     $diaEnIngles = $diasIngles[$horario->dia_semana] ?? 'Monday';
                 @endphp
 
-                <div class="bg-white rounded-3xl shadow-sm p-6 border-t-8 border-[#FFD700] mb-8 border border-gray-200">
+                <div class="bg-white rounded-3xl shadow-sm p-6 border-t-8 border-[#C9A227] mb-8 border border-gray-200">
                     <h2 class="text-2xl font-black text-[#002845] uppercase tracking-wide">{{ $horario->curso_nombre }}</h2>
                     <div class="mt-3 text-sm text-gray-600 flex flex-col md:flex-row gap-4 md:gap-8">
                         <p class="flex items-center">

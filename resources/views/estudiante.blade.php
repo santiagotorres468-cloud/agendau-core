@@ -31,20 +31,6 @@
         .fc-v-event .fc-event-title { font-size: clamp(0.85rem, 1.2vw, 1.15rem) !important; font-weight: 800 !important; line-height: 1.3 !important; white-space: normal !important; width: 100%; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
     </style>
 
-    @php
-        $mostrarEncuesta = false;
-        if(session('estudiante_id')) {
-            $claseEvaluada = \App\Models\Seguimiento::where('estudiante_id', session('estudiante_id'))
-                            ->where('estado', 'Evaluada')
-                            ->where('asistencia', true)
-                            ->first();
-                            
-            if ($claseEvaluada && !session('encuesta_mostrada')) {
-                $mostrarEncuesta = true;
-                session(['encuesta_mostrada' => true]); 
-            }
-        }
-    @endphp
 </head>
 <body class="bg-gray-50 flex h-screen overflow-hidden">
 
@@ -210,23 +196,5 @@
         }
     </script>
     
-    @if($mostrarEncuesta)
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                Swal.fire({
-                    title: '¡Felicidades por tu primera asesoría!', text: '¿Cómo calificarías la ayuda de tu docente?', icon: 'success', input: 'select',
-                    inputOptions: { '5': '⭐⭐⭐⭐⭐ - ¡Excelente!', '4': '⭐⭐⭐⭐ - Muy buena', '3': '⭐⭐⭐ - Normal', '2': '⭐⭐ - Podría mejorar', '1': '⭐ - No me ayudó' },
-                    inputPlaceholder: 'Selecciona una calificación', showCancelButton: true, confirmButtonText: 'Enviar Respuesta', cancelButtonText: 'En otro momento', confirmButtonColor: '#10b981',
-                    customClass: { title: 'font-black text-[#002845]', popup: 'rounded-3xl shadow-2xl border-t-8 border-green-500', confirmButton: 'font-bold px-6 py-2.5 rounded-xl', cancelButton: 'font-bold px-6 py-2.5 rounded-xl text-gray-700 bg-gray-200 hover:bg-gray-300' }
-                }).then((result) => {
-                    if (result.isConfirmed && result.value) { 
-                        Swal.fire({ title: '¡Gracias!', text: 'Tu opinión nos ayuda a mejorar Agenda U.', icon: 'success', confirmButtonColor: '#002845', customClass: { popup: 'rounded-3xl', title: 'font-black', confirmButton: 'font-bold px-6 py-2.5 rounded-xl' }}); 
-                    }
-                });
-            }, 1500); 
-        });
-    </script>
-    @endif
 </body>
 </html>

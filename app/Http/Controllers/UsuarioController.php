@@ -7,42 +7,82 @@ use App\Models\User;
 
 class UsuarioController extends Controller
 {
-    public function index() {
-        $usuarios = User::all();
-        return view('usuarios.index', compact('usuarios'));
+    public function index()
+    {
+        if (auth()->user()->rol !== 'admin') abort(403);
+
+        return redirect()->route('dashboard');
     }
 
-    public function actualizarRol(Request $request, $id) {
-        if (auth()->user()->rol !== 'admin') { abort(403); }
+    public function actualizarRol(Request $request, $id)
+    {
+        if (auth()->user()->rol !== 'admin') abort(403);
+
+        $request->validate([
+            'rol' => 'required|in:admin,profesor,inactivo',
+        ]);
+
         $usuario = User::findOrFail($id);
+
+        if ($usuario->id === auth()->id() && $request->rol !== 'admin') {
+            return redirect()->to(route('dashboard').'?tab=usuarios')
+                ->with('error', 'No puedes cambiar tu propio rol de administrador.');
+        }
+
         $usuario->update(['rol' => $request->rol]);
-        return back()->with('exito', '✅ Rol actualizado correctamente.');
+
+        return redirect()->to(route('dashboard').'?tab=usuarios')
+            ->with('exito', 'Rol actualizado correctamente.');
     }
 
-    
-    public function eliminarUsuario($id) {
-        if (auth()->user()->rol !== 'admin') { abort(403); }
-        
-        // 🔥 FORZAMOS LA ACTUALIZACIÓN DIRECTA PARA EVITAR BLOQUEOS DE LARAVEL
+    public function eliminarUsuario($id)
+    {
+        if (auth()->user()->rol !== 'admin') abort(403);
+
+        if ((int)$id === auth()->id()) {
+            return redirect()->to(route('dashboard').'?tab=usuarios')
+                ->with('error', 'No puedes desactivarte a ti mismo.');
+        }
+
         User::where('id', $id)->update(['rol' => 'inactivo']);
 
-        return back()->with('exito', '✅ Usuario DESACTIVADO (enviado a inactivos).');
+        return redirect()->to(route('dashboard').'?tab=usuarios')
+            ->with('exito', 'Usuario desactivado y movido a inactivos.');
     }
 
-    public function reactivar(Request $request, $id) {
-        if (auth()->user()->rol !== 'admin') { abort(403); }
-        
-        $usuario = User::findOrFail($id);
-        $usuario->rol = $request->rol ?? 'profesor';
-        $usuario->save();
+    /**
+     * Reactivar usuario inactivo con un rol específico.
+     */
+    public function reactivar(Request $request, $id)
+    {
+        if (auth()->user()->rol !== 'admin') abort(403);
 
-        return back()->with('exito', '✅ Usuario REACTIVADO.');
+        $request->validate([
+            'rol' => 'required|in:admin,profesor',
+        ]);
+
+        $usuario = User::findOrFail($id);
+        $usuario->update(['rol' => $request->rol]);
+
+        return redirect()->to(route('dashboard').'?tab=usuarios')
+            ->with('exito', 'Usuario reactivado como "' . ucfirst($request->rol) . '".');
     }
 
-    public function destruir($id) {
-        if (auth()->user()->rol !== 'admin') { abort(403); }
-        $usuario = User::findOrFail($id);
-        $usuario->delete();
-        return back()->with('exito', '✅ Usuario borrado definitivamente.');
+    /**
+     * Eliminar definitivamente de la base de datos.
+     */
+    public function destruir($id)
+    {
+        if (auth()->user()->rol !== 'admin') abort(403);
+
+        if ((int)$id === auth()->id()) {
+            return redirect()->to(route('dashboard').'?tab=usuarios')
+                ->with('error', 'No puedes eliminarte a ti mismo.');
+        }
+
+        User::findOrFail($id)->delete();
+
+        return redirect()->to(route('dashboard').'?tab=usuarios')
+            ->with('exito', 'Usuario eliminado definitivamente.');
     }
 }

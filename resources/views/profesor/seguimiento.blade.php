@@ -10,21 +10,24 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style> body { font-family: 'Inter', sans-serif; } </style>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style> body { font-family: 'Manrope', sans-serif; } </style>
 </head>
 <body class="bg-gray-50 text-gray-800 flex h-screen overflow-hidden">
 
     <aside class="w-64 bg-[#002845] text-white flex flex-col shadow-2xl z-20 flex-shrink-0">
         <div class="p-6 flex items-center space-x-3 border-b border-blue-900/50">
-            <span class="text-3xl">🎓</span>
-            <h1 class="text-2xl font-black tracking-wide">Agenda U</h1>
+            <div class="w-9 h-9 rounded-lg bg-[#C9A227] text-[#002845] font-extrabold text-sm flex items-center justify-center flex-shrink-0 tracking-tight">AU</div>
+            <div>
+                <p class="text-base font-bold text-white tracking-tight leading-tight">Agenda U</p>
+                <p class="text-xs text-white/50 font-medium">Sistema de Asesorías</p>
+            </div>
         </div>
         
         <div class="p-6">
             <p class="text-xs text-blue-300 font-bold uppercase tracking-wider mb-2">Mi Cuenta</p>
             <div class="flex items-center space-x-3 mb-6">
-                <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-xl font-bold shadow-inner uppercase">
+                <div class="w-10 h-10 rounded-full bg-[#C9A227] flex items-center justify-center text-[#002845] text-sm font-bold shadow-inner uppercase">
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                 </div>
                 <div class="overflow-hidden">
@@ -39,8 +42,8 @@
                     <span>Centro de Control</span>
                 </a>
                 
-                <a href="{{ route('seguimiento.index') }}" class="flex items-center space-x-3 bg-blue-600 text-white px-4 py-3 rounded-xl font-bold shadow-md transition">
-                    <span class="text-lg">🔎</span>
+                <a href="{{ route('seguimiento.index') }}" class="flex items-center space-x-3 bg-blue-800 text-white px-4 py-3 rounded-xl font-bold shadow-md transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     <span>Seguimiento</span>
                 </a>
 
@@ -66,10 +69,11 @@
         
         <header class="bg-white p-6 shadow-sm border-b border-gray-200 flex justify-between items-center z-10 sticky top-0 flex-wrap gap-4">
             <div>
-                <h2 class="text-2xl font-black text-[#002845] flex items-center">
-                    <span class="text-3xl mr-3">🔎</span> Seguimiento y Evolución Estudiantil
+                <h2 class="text-2xl font-black text-[#002845] flex items-center gap-3">
+                    <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    Seguimiento estudiantil
                 </h2>
-                <p class="text-gray-500 text-sm mt-1 font-medium">Revisa el progreso histórico de las asesorías.</p>
+                <p class="text-gray-500 text-sm mt-1 font-medium">Busca un estudiante o navega por materia.</p>
             </div>
             
             <a href="{{ route('dashboard') }}" class="bg-gray-100 hover:bg-gray-200 text-[#002845] px-5 py-2.5 rounded-xl font-bold transition flex items-center border border-gray-300 shadow-sm text-sm">
@@ -81,23 +85,50 @@
         <div class="p-6 md:p-8 flex-1">
             <div class="max-w-6xl mx-auto">
                 
-                @if(session('error'))
-                    <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-xl shadow-sm flex items-center">
-                        <span class="text-red-800 font-bold text-lg mr-2">⚠️</span>
-                        <span class="text-red-700 font-medium">{{ session('error') }}</span>
+                @php $errorMsg = $error ?? session('error'); @endphp
+                @if($errorMsg)
+                    <div class="mb-6 bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 font-medium text-sm">
+                        {{ $errorMsg }}
                     </div>
                 @endif
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden mb-8">
-                    <div class="bg-[#002845] px-6 py-4 text-white font-bold tracking-wide">
-                        Ingresa el documento del estudiante
+                {{-- Mis materias --}}
+                @if(isset($horarios) && $horarios->count() > 0)
+                <div class="mb-8">
+                    <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Navegar por materia</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        @foreach($horarios as $clase)
+                        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col gap-3">
+                            <div>
+                                <div class="font-black text-[#002845] text-sm leading-snug">{{ ucwords(strtolower($clase->curso_nombre)) }}</div>
+                                <div class="text-xs text-gray-400 mt-0.5">{{ $clase->dia_semana }} · {{ \Carbon\Carbon::parse($clase->hora_inicio)->format('H:i') }}</div>
+                            </div>
+                            <a href="{{ route('horarios.estudiantes', $clase->id) }}"
+                               class="mt-auto inline-flex items-center justify-center gap-1.5 w-full bg-[#002845] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-blue-900 transition">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                Ver inscritos
+                                @if(isset($clase->seguimientos_count))
+                                <span class="bg-white/20 text-[10px] font-bold px-1.5 py-0.5 rounded-full">{{ $clase->seguimientos_count }}</span>
+                                @endif
+                            </a>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                {{-- Búsqueda por cédula --}}
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-8">
+                    <div class="bg-[#002845] px-6 py-4 text-white font-bold tracking-wide text-sm">
+                        Buscar estudiante por cédula
                     </div>
                     <form action="{{ route('seguimiento.buscar') }}" method="GET" class="p-6 md:p-8">
                         <div class="flex flex-col md:flex-row gap-4">
-                            <input type="text" name="cedula" placeholder="Ej: 1001234567" value="{{ request('cedula') }}" required class="flex-1 bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-lg font-black focus:border-[#002845] outline-none transition-all shadow-sm">
-                            <button type="submit" class="bg-[#FFD700] text-[#002845] px-8 py-4 rounded-xl font-black hover:bg-yellow-500 transition shadow-md md:w-auto w-full flex items-center justify-center">
-                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                Buscar Historial
+                            <input type="text" name="cedula" placeholder="Ej: 1001234567" value="{{ request('cedula') }}" required
+                                   class="flex-1 bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-lg font-black focus:border-[#002845] outline-none transition-all shadow-sm">
+                            <button type="submit" class="bg-[#C9A227] text-[#002845] px-8 py-4 rounded-xl font-black hover:bg-yellow-500 transition shadow-md md:w-auto w-full flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                Buscar
                             </button>
                         </div>
                     </form>
@@ -137,7 +168,7 @@
                                         <tr class="hover:bg-gray-50/80 transition-colors duration-200">
                                             
                                             <td class="px-6 py-5">
-                                                <div class="font-black text-[#002845] text-base mb-1">{{ $reserva->horario->curso_nombre ?? 'Clase eliminada' }}</div>
+                                                <div class="font-black text-[#002845] text-base mb-1">{{ ucwords(strtolower($reserva->horario->curso_nombre ?? 'Clase eliminada')) }}</div>
                                                 <div class="text-xs font-semibold text-gray-500 flex flex-col gap-1">
                                                     <span class="flex items-center"><span class="mr-1">📅</span>{{ \Carbon\Carbon::parse($reserva->fecha)->format('d/m/Y') }}</span>
                                                     <span class="flex items-center"><span class="mr-1">👨‍🏫</span>{{ $reserva->horario->docente_nombre ?? 'N/A' }}</span>

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"C:\\\\xampp\\\\php\\\\php.exe\" artisan *)",
+      "Bash(\"C:\\\\xampp\\\\php\\\\php.exe\" -l resources/views/horarios/editar.blade.php)",
+      "Bash(\"C:\\\\xampp\\\\php\\\\php.exe\" -l resources/views/admin/dashboard.blade.php)"
+    ]
+  }
+}

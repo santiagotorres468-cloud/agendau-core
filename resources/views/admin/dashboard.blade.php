@@ -11,8 +11,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style> body { font-family: 'Inter', sans-serif; } </style>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style> body { font-family: 'Manrope', sans-serif; } </style>
 </head>
 <body class="bg-gray-50 text-gray-800 flex h-screen overflow-hidden">
 
@@ -41,14 +41,17 @@
 
     <aside class="w-64 bg-[#002845] text-white flex flex-col hidden md:flex shadow-2xl z-20 flex-shrink-0">
         <div class="p-6 flex items-center space-x-3 border-b border-blue-900/50">
-            <span class="text-3xl">🎓</span>
-            <h1 class="text-2xl font-black tracking-wide">Agenda U</h1>
+            <div class="w-9 h-9 rounded-lg bg-[#C9A227] text-[#002845] font-extrabold text-sm flex items-center justify-center flex-shrink-0 tracking-tight">AU</div>
+            <div>
+                <p class="text-base font-bold text-white tracking-tight leading-tight">Agenda U</p>
+                <p class="text-xs text-white/50 font-medium">Sistema de Asesorías</p>
+            </div>
         </div>
         
         <div class="p-6">
             <p class="text-xs text-blue-300 font-bold uppercase tracking-wider mb-2">Mi Cuenta</p>
             <div class="flex items-center space-x-3 mb-6">
-                <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-xl font-bold shadow-inner uppercase">
+                <div class="w-10 h-10 rounded-full bg-[#C9A227] flex items-center justify-center text-[#002845] text-sm font-bold shadow-inner uppercase">
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                 </div>
                 <div class="overflow-hidden">
@@ -102,17 +105,42 @@
 
         <div class="p-6 md:p-8 flex-1 bg-slate-50">
             <div class="max-w-7xl mx-auto">
-                
+
+                @if(session('error') || session('lista_errores'))
+                    <div x-data="{ show: true }" x-show="show" class="mb-6 bg-white border border-red-200 rounded-2xl shadow overflow-hidden">
+                        <div class="bg-red-50 border-b border-red-100 px-6 py-4 flex justify-between items-center">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-xl">⚠️</span>
+                                <h3 class="text-red-800 font-black">Reporte del Sistema</h3>
+                            </div>
+                            <button @click="show = false" class="text-red-500 hover:text-red-800 bg-red-100 hover:bg-red-200 rounded-full w-8 h-8 flex items-center justify-center font-black">✖</button>
+                        </div>
+                        <div class="px-6 py-4">
+                            @if(session('error'))
+                                <p class="text-red-700 font-bold text-sm mb-3">{{ session('error') }}</p>
+                            @endif
+                            @if(session('lista_errores'))
+                                <ul class="list-disc pl-5 text-xs text-red-600 font-semibold space-y-1 max-h-48 overflow-y-auto">
+                                    @foreach(session('lista_errores') as $detalle)
+                                        <li>{{ $detalle }}</li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+
                 <div x-data="{ tab: '{{ request('cedula') ? 'seguimiento' : 'clases' }}', search: '', cargando: false }">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-2 border-gray-200 mb-8 pb-4 gap-4">
                         <div class="flex space-x-2 overflow-x-auto w-full md:w-auto">
-                            <button @click="tab = 'clases'" :class="tab === 'clases' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap border border-transparent">📚 Gestión de Cursos</button>
-                            <button @click="tab = 'seguimiento'" :class="tab === 'seguimiento' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap border border-transparent">🔎 Reporte y Evolución Estudiantil</button>
-                            @if(auth()->user()->rol === 'admin')
-                                <button @click="tab = 'importar'" :class="tab === 'importar' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap border border-transparent">📤 Importar Excel</button>
-                                <button @click="tab = 'reportes'" :class="tab === 'reportes' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap border border-transparent">📊 Informes</button>
-                                <button @click="tab = 'usuarios'" :class="tab === 'usuarios' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap border border-transparent">👥 Control de Roles</button>
-                            @endif
+                            <button @click="tab = 'clases'" :class="tab === 'clases' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-5 py-2.5 rounded-xl font-semibold text-sm transition-all whitespace-nowrap border border-transparent flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                                Mis cursos
+                            </button>
+                            <button @click="tab = 'seguimiento'" :class="tab === 'seguimiento' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-5 py-2.5 rounded-xl font-semibold text-sm transition-all whitespace-nowrap border border-transparent flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                Seguimiento estudiantil
+                            </button>
                         </div>
                     </div>
 
@@ -121,7 +149,7 @@
                             @forelse ($horarios as $clase)
                                 <div class="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden flex flex-col transform transition hover:scale-[1.02]">
                                     <div class="bg-gradient-to-r from-[#002845] to-blue-800 p-5 text-white relative">
-                                        <h3 class="text-lg font-black truncate">{{ $clase->curso_nombre }}</h3>
+                                        <h3 class="text-lg font-black truncate">{{ ucwords(strtolower($clase->curso_nombre)) }}</h3>
                                         <span class="text-[10px] bg-blue-500 px-2 py-1 rounded-full font-bold uppercase">{{ $clase->modalidad }}</span>
                                     </div>
                                     <div class="p-6 flex-1 flex flex-col">
@@ -140,20 +168,114 @@
                     </div>
 
                     <div x-show="tab === 'seguimiento'" style="display: none;">
-                        <div class="bg-white rounded-3xl shadow-lg border border-gray-100 max-w-3xl mx-auto p-8 text-center">
-                            <h3 class="text-xl font-black text-[#002845] mb-4">🔎 Buscador Estudiantil</h3>
-                            <form action="{{ route('dashboard') }}" method="GET" class="flex gap-4">
-                                <input type="text" name="cedula" value="{{ request('cedula') }}" placeholder="Cédula Estudiante..." class="flex-1 border-2 border-gray-200 rounded-xl p-3 outline-none focus:border-[#002845] font-bold">
-                                <button type="submit" class="bg-[#FFD700] text-[#002845] px-6 py-3 rounded-xl font-black hover:bg-yellow-500 transition">Buscar</button>
+
+                        {{-- Mis materias --}}
+                        @if($horarios->count() > 0)
+                        <div class="mb-8">
+                            <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Mis materias — ver inscritos por curso</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                @foreach($horarios as $clase)
+                                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col gap-3">
+                                    <div>
+                                        <div class="font-black text-[#002845] text-sm leading-snug">{{ ucwords(strtolower($clase->curso_nombre)) }}</div>
+                                        <div class="text-xs text-gray-400 mt-0.5">{{ $clase->dia_semana }} · {{ \Carbon\Carbon::parse($clase->hora_inicio)->format('H:i') }}</div>
+                                    </div>
+                                    <a href="{{ route('horarios.estudiantes', $clase->id) }}"
+                                       class="mt-auto inline-flex items-center justify-center gap-1.5 w-full bg-[#002845] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-blue-900 transition">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                        Ver inscritos
+                                        <span class="bg-white/20 text-[10px] font-bold px-1.5 py-0.5 rounded-full">{{ $clase->seguimientos_count }}</span>
+                                    </a>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+
+                        {{-- Búsqueda por cédula --}}
+                        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                            <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Buscar estudiante por cédula</p>
+                            <form action="{{ route('dashboard') }}" method="GET" class="flex gap-3">
+                                <input type="text" name="cedula" value="{{ request('cedula') }}" placeholder="Ej: 1001234567" required
+                                       class="flex-1 border-2 border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-[#002845] font-bold text-sm transition">
+                                <button type="submit" class="bg-[#C9A227] text-[#002845] px-6 py-3 rounded-xl font-black hover:bg-yellow-500 transition text-sm">
+                                    Buscar
+                                </button>
                             </form>
+
+                            @if($errorBusqueda)
+                            <div class="mt-4 bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm font-medium">
+                                {{ $errorBusqueda }}
+                            </div>
+                            @endif
                         </div>
+
+                        {{-- Resultados --}}
+                        @if(isset($estudianteBuscado))
+                        <div class="mt-6 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                            <div class="bg-[#002845] p-5 text-white flex items-center gap-4">
+                                <div class="w-12 h-12 bg-[#C9A227] text-[#002845] rounded-xl flex items-center justify-center text-xl font-black flex-shrink-0">
+                                    {{ strtoupper(substr($estudianteBuscado->nombre_completo, 0, 1)) }}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-black text-lg truncate">{{ $estudianteBuscado->nombre_completo }}</div>
+                                    <div class="text-blue-300 text-sm">C.C. {{ $estudianteBuscado->cedula }}</div>
+                                </div>
+                                <div class="text-center flex-shrink-0">
+                                    <div class="text-3xl font-black text-[#C9A227]">{{ $historialBuscado->count() }}</div>
+                                    <div class="text-xs text-blue-300 uppercase tracking-wide">asesorías</div>
+                                </div>
+                            </div>
+
+                            @if($historialBuscado->isEmpty())
+                                <div class="p-8 text-center text-gray-400 text-sm font-medium">
+                                    Este estudiante no tiene asesorías registradas en ninguno de tus cursos.
+                                </div>
+                            @else
+                                <table class="min-w-full divide-y divide-gray-100">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wide">Materia / Fecha</th>
+                                            <th class="px-6 py-3 text-center text-xs font-bold text-gray-400 uppercase tracking-wide">Estado</th>
+                                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wide">Reporte de evolución</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-50">
+                                        @foreach($historialBuscado as $registro)
+                                        <tr class="hover:bg-gray-50/80 transition">
+                                            <td class="px-6 py-4">
+                                                <div class="font-bold text-[#002845] text-sm">{{ ucwords(strtolower($registro->horario->curso_nombre ?? 'Clase eliminada')) }}</div>
+                                                <div class="text-xs text-gray-400 mt-0.5">{{ \Carbon\Carbon::parse($registro->fecha)->format('d/m/Y') }}</div>
+                                            </td>
+                                            <td class="px-6 py-4 text-center whitespace-nowrap">
+                                                @if($registro->estado === 'Evaluada')
+                                                    @if($registro->asistencia)
+                                                        <span class="bg-green-50 text-green-700 text-xs px-3 py-1 rounded-full font-bold border border-green-200">Asistió</span>
+                                                    @else
+                                                        <span class="bg-red-50 text-red-700 text-xs px-3 py-1 rounded-full font-bold border border-red-200">Faltó</span>
+                                                    @endif
+                                                @else
+                                                    <span class="bg-yellow-50 text-yellow-700 text-xs px-3 py-1 rounded-full font-bold border border-yellow-200">Pendiente</span>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-600 italic max-w-xs">
+                                                {{ $registro->evolucion ?? '—' }}
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @endif
                         </div>
+                        @endif
+
+                    </div>
 
                     @if(auth()->user()->rol === 'admin')
                     <div x-show="tab === 'usuarios'" style="display: none;">
                         <div class="bg-white rounded-3xl shadow-md border border-gray-200 overflow-hidden mb-8">
                             <div class="bg-purple-50 px-6 py-4 border-b border-purple-100 flex justify-between items-center">
-                                <h3 class="text-lg font-black text-purple-900">👑 Administradores</h3>
+                                <h3 class="text-lg font-black text-purple-900">Administradores</h3>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200">
@@ -184,7 +306,7 @@
 
                         <div class="bg-white rounded-3xl shadow-md border border-gray-200 overflow-hidden mb-8">
                             <div class="bg-blue-50 px-6 py-4 border-b border-blue-100">
-                                <h3 class="text-lg font-black text-blue-900">👨‍🏫 Docentes</h3>
+                                <h3 class="text-lg font-black text-blue-900">Docentes</h3>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200">
@@ -192,7 +314,7 @@
                                         @foreach ($usuarios->where('rol', 'profesor') as $docente)
                                             <tr class="hover:bg-gray-50 transition">
                                                 <td class="px-6 py-4 flex items-center">
-                                                    <div class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold mr-4">{{ strtoupper(substr($docente->name, 0, 1)) }}</div>
+                                                    <div class="w-10 h-10 rounded-full bg-[#002845] flex items-center justify-center font-bold mr-4 text-sm" style="color:#C9A227">{{ strtoupper(substr($docente->name, 0, 1)) }}</div>
                                                     <div>
                                                         <p class="text-sm font-bold text-gray-900">{{ $docente->name }}</p>
                                                         <p class="text-xs text-gray-500">{{ $docente->email }}</p>
@@ -217,7 +339,7 @@
 
                         <div class="bg-gray-100 rounded-3xl shadow-inner border border-gray-300 overflow-hidden opacity-75">
                             <div class="bg-gray-200 px-6 py-4 border-b border-gray-300">
-                                <h3 class="text-lg font-black text-gray-600">💤 Usuarios Inactivos</h3>
+                                <h3 class="text-lg font-black text-gray-600">Usuarios inactivos</h3>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200">
