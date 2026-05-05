@@ -87,6 +87,57 @@ class HorarioController extends Controller
         return count(array_intersect($headers, $dias)) > 0;
     }
 
+    public function descargarPlantilla()
+    {
+        if (auth()->user()->rol !== 'admin') abort(403);
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Horarios');
+
+        // Columnas: CORREO en posición 2 (índice 1), INICIO/FIN en índices 4 y 5
+        $headers = ['CURSO', 'DOCENTE', 'CORREO', 'DIA', 'INICIO', 'FIN', 'MODALIDAD', 'SEDE', 'BLOQUE', 'AULA', 'SEMESTRE'];
+        foreach ($headers as $col => $header) {
+            $coord = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col + 1) . '1';
+            $sheet->setCellValue($coord, $header);
+            $sheet->getStyle($coord)->getFont()->setBold(true);
+            $sheet->getStyle($coord)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setRGB('002845');
+            $sheet->getStyle($coord)->getFont()->getColor()->setRGB('FFFFFF');
+        }
+
+        // Índices 4 y 5 = INICIO y FIN (se guardan como texto para evitar conversión numérica de Excel)
+        $colTexto = [4, 5];
+        $ejemplos = [
+            ['Cálculo Diferencial', 'Carlos Ruiz',  'carlos.ruiz@pascualbravo.edu.co',  'Lunes',     '08:00', '10:00', 'Presencial', 'Robledo', '4', 'C401', '2026-01-01'],
+            ['Álgebra Lineal',      'María García', 'maria.garcia@pascualbravo.edu.co', 'Miércoles', '14:00', '16:00', 'Virtual',    '',        '',  '',     '2026-01-01'],
+            ['Física I',            'Luis Pérez',   'luis.perez@pascualbravo.edu.co',   'Viernes',   '10:00', '12:00', 'Presencial', 'Robledo', '2', 'B201', '2026-01-01'],
+        ];
+
+        foreach ($ejemplos as $rowIdx => $fila) {
+            foreach ($fila as $col => $valor) {
+                $coord = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col + 1) . ($rowIdx + 2);
+                if (in_array($col, $colTexto)) {
+                    $sheet->setCellValueExplicit($coord, $valor, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                } else {
+                    $sheet->setCellValue($coord, $valor);
+                }
+            }
+        }
+
+        foreach (range(1, count($headers)) as $col) {
+            $sheet->getColumnDimensionByColumn($col)->setAutoSize(true);
+        }
+
+        $tmp = tempnam(sys_get_temp_dir(), 'plantilla_');
+        (new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet))->save($tmp);
+
+        return response()->download($tmp, 'plantilla_horarios.xlsx', [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ])->deleteFileAfterSend(true);
+    }
+
     public function importar(Request $request)
     {
         if (auth()->user()->rol !== 'admin') abort(403);
@@ -100,29 +151,58 @@ class HorarioController extends Controller
 
         $ruta = $request->file('archivo_excel')->getPathname();
 
-        $formatoError = $this->validarFormatoExcel($ruta);
-        if ($formatoError !== null) {
-            return back()->with('error', $formatoError);
+        if ($this->validarFormatoExcel($ruta) !== null) {
+            $headers = $this->leerEncabezados($ruta);
+            return back()
+                ->with('error', 'El archivo Excel no tiene el formato esperado para importar horarios.')
+                ->with('lista_errores', array_values(array_filter([
+                    'Formato amplio esperado — columnas: CURSOS, PROFESOR, LUNES, MARTES, MIÉRCOLES, JUEVES, VIERNES',
+                    'Formato largo esperado — columnas: CURSO, DOCENTE, DÍA, INICIO, FIN',
+                    !empty($headers) ? 'Columnas detectadas en tu archivo: ' . implode(', ', $headers) : null,
+                ])));
         }
 
         try {
             $import = $this->esFormatoAncho($ruta) ? new HorariosImportWide : new HorariosImport;
             Excel::import($import, $request->file('archivo_excel'));
 
-            $omitidas = $import->getOmitidas();
+            $omitidas   = $import->getOmitidas();
+            $insertados = $import->getInsertados();
 
-            if (!empty($omitidas)) {
-                return back()
-                    ->with('exito', 'Importación completada. ' . count($omitidas) . ' fila(s) omitida(s) por conflicto de horario.')
-                    ->with('lista_errores', $omitidas);
-            }
+            // Clasificar omitidas por tipo para el popup
+            $fueraDeRango = array_values(array_filter($omitidas, fn($m) => str_contains($m, 'fuera de rango')));
+            $conflictos   = array_values(array_filter($omitidas, fn($m) => str_contains($m, 'Conflicto')));
+            $otros        = array_values(array_filter($omitidas, fn($m) => !str_contains($m, 'fuera de rango') && !str_contains($m, 'Conflicto')));
 
-            return back()->with('exito', 'El archivo se procesó exitosamente sin conflictos.');
+            return back()
+                ->with('import_popup', true)
+                ->with('import_insertados', $insertados)
+                ->with('import_fuera_rango', $fueraDeRango)
+                ->with('import_conflictos', $conflictos)
+                ->with('import_otros', $otros)
+                ->with('exito', "Importación completada: $insertados registros guardados" . (!empty($omitidas) ? ', ' . count($omitidas) . ' omitido(s).' : ' sin conflictos.'));
 
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-            return back()->with('error', 'Hubo errores de validación en algunas filas del Excel.');
+            return back()
+                ->with('error', 'Algunas filas del archivo no pasaron la validación.')
+                ->with('lista_errores', ['Revisa que todos los campos obligatorios estén completos y con el formato correcto.']);
+
         } catch (\Exception $e) {
-            return back()->with('error', 'Error al procesar el archivo: ' . $e->getMessage());
+            $msg = $e->getMessage();
+
+            if (str_contains($msg, '22007') || str_contains($msg, 'time value') || str_contains($msg, 'datetime')) {
+                return back()
+                    ->with('error', 'El archivo contiene valores de hora con formato incorrecto.')
+                    ->with('lista_errores', [
+                        'Las celdas de hora (INICIO y FIN) deben estar en formato HH:MM — por ejemplo: 08:00 o 14:30.',
+                        'En Excel: selecciona las celdas de hora → clic derecho → "Formato de celdas" → categoría "Hora".',
+                        'Evita que Excel interprete las horas como números decimales o fracciones.',
+                    ]);
+            }
+
+            return back()
+                ->with('error', 'No se pudo procesar el archivo. Verifica que el formato sea correcto e inténtalo de nuevo.')
+                ->with('lista_errores', ['Si el problema persiste, contacta al administrador del sistema.']);
         }
     }
 
@@ -355,19 +435,22 @@ class HorarioController extends Controller
             ->where('estudiante_id', $estudiante_id)
             ->get()
             ->filter(fn($r) => $r->horario)
-            ->map(fn($r) => [
-                'id'            => $r->id,
-                'title'         => $r->horario->curso_nombre,
-                'start'         => $r->fecha . 'T' . $r->horario->hora_inicio,
-                'end'           => $r->fecha . 'T' . $r->horario->hora_fin,
-                'color'         => '#10b981',
-                'extendedProps' => [
-                    'sede'      => $r->horario->sede,
-                    'bloque'    => $r->horario->bloque,
-                    'aula'      => $r->horario->aula,
-                    'modalidad' => $r->horario->modalidad,
-                ],
-            ]);
+            ->map(function ($r) {
+                $esVirtual = strtolower(trim($r->horario->modalidad ?? '')) === 'virtual';
+                return [
+                    'id'            => $r->id,
+                    'title'         => $r->horario->curso_nombre,
+                    'start'         => $r->fecha . 'T' . $r->horario->hora_inicio,
+                    'end'           => $r->fecha . 'T' . $r->horario->hora_fin,
+                    'color'         => $esVirtual ? '#3b82f6' : '#10b981',
+                    'extendedProps' => [
+                        'sede'      => $r->horario->sede,
+                        'bloque'    => $r->horario->bloque,
+                        'aula'      => $r->horario->aula,
+                        'modalidad' => $r->horario->modalidad,
+                    ],
+                ];
+            });
 
         return response()->json($eventos->values());
     }

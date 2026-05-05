@@ -11,11 +11,17 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class HorariosImportWide implements ToCollection, WithHeadingRow
 {
-    private array $omitidas = [];
+    private array $omitidas  = [];
+    private int   $insertados = 0;
 
     public function getOmitidas(): array
     {
         return $this->omitidas;
+    }
+
+    public function getInsertados(): int
+    {
+        return $this->insertados;
     }
 
     // ─── Helpers ─────────────────────────────────────────────────────────────
@@ -28,6 +34,11 @@ class HorariosImportWide implements ToCollection, WithHeadingRow
 
     private function getString(mixed $value): string
     {
+        // Fracción decimal de Excel para horas (ej: 0.75 = 18:00)
+        if (is_float($value) && $value >= 0 && $value < 1) {
+            $mins = (int) round($value * 1440);
+            return sprintf('%02d:%02d', intdiv($mins, 60), $mins % 60);
+        }
         if (is_object($value)) {
             return method_exists($value, '__toString') ? trim((string) $value) : '';
         }
@@ -113,11 +124,12 @@ class HorariosImportWide implements ToCollection, WithHeadingRow
     public function collection(Collection $rows): void
     {
         $diasMap = [
-            'lunes'     => 'Lunes',
-            'martes'    => 'Martes',
+            'lunes'   => 'Lunes',
+            'martes'  => 'Martes',
             'miercoles' => 'Miércoles',
-            'jueves'    => 'Jueves',
-            'viernes'   => 'Viernes',
+            'jueves'  => 'Jueves',
+            'viernes' => 'Viernes',
+            'sabado'  => 'Sábado',
         ];
 
         foreach ($rows as $row) {
@@ -140,10 +152,13 @@ class HorariosImportWide implements ToCollection, WithHeadingRow
             $sede      = $sedeKey      ? $this->getString($rowArr[$sedeKey])      : '';
             $modalidad = $modalidadKey ? ucfirst(strtolower($this->getString($rowArr[$modalidadKey]))) : 'Presencial';
 
-            // Buscar o crear profesor
-            $profesor = User::where('name', 'LIKE', '%' . $docenteNombre . '%')->first();
-            if (!$profesor && !empty($correo)) {
+            // Buscar o crear profesor — prioridad: correo del Excel
+            $profesor = null;
+            if (!empty($correo)) {
                 $profesor = User::where('email', $correo)->first();
+            }
+            if (!$profesor) {
+                $profesor = User::where('name', 'LIKE', '%' . $docenteNombre . '%')->first();
             }
             if (!$profesor) {
                 $emailFinal = !empty($correo)
@@ -157,11 +172,12 @@ class HorariosImportWide implements ToCollection, WithHeadingRow
                 }
 
                 $profesor = User::create([
-                    'name'     => $docenteNombre,
-                    'email'    => $emailFinal,
-                    'password' => bcrypt('profesor123'),
-                    'rol'      => 'profesor',
-                    'activo'   => true,
+                    'name'             => $docenteNombre,
+                    'email'            => $emailFinal,
+                    'password'         => bcrypt('Pascual2026'),
+                    'rol'              => 'profesor',
+                    'activo'           => true,
+                    'cambiar_password' => true,
                 ]);
             }
 
@@ -183,6 +199,15 @@ class HorariosImportWide implements ToCollection, WithHeadingRow
                 if (!$rango) continue;
 
                 [$inicio, $fin] = $rango;
+
+                // Límite de horario institucional
+                $esSabado     = $diaNorm === 'sabado';
+                $limiteMaximo = $esSabado ? '17:00:00' : '22:00:00';
+                if ($fin > $limiteMaximo) {
+                    $limite = $esSabado ? '5:00 PM' : '10:00 PM';
+                    $this->omitidas[] = "Horario fuera de rango: \"$curso\" con $docenteNombre el $diaNombre de $inicio a $fin — el límite los " . ($esSabado ? 'sábados' : 'días de semana') . " es hasta las $limite.";
+                    continue;
+                }
 
                 // Validar cruce de horarios
                 $conflicto = DB::table('horarios_asesoria')
@@ -212,6 +237,7 @@ class HorariosImportWide implements ToCollection, WithHeadingRow
                     'semestre'       => date('Y-m-d'),
                     'user_id'        => $profesor->id,
                 ]);
+                $this->insertados++;
             }
         }
     }

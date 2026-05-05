@@ -74,7 +74,7 @@
                             <div id="campos_fisicos" class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6" style="{{ strtolower(trim($horario->modalidad)) === 'virtual' ? 'display: none;' : '' }}">
                                 <div class="col-span-1">
                                     <label class="block text-sm font-bold text-gray-700 mb-2">Sede</label>
-                                    <input type="text" name="sede" value="{{ $horario->sede }}" placeholder="Ej: Pascual" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-[#002845] font-medium">
+                                    <input type="text" name="sede" value="{{ $horario->sede }}" placeholder="Ej: Robledo" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-[#002845] font-medium">
                                 </div>
                                 <div class="col-span-1">
                                     <label class="block text-sm font-bold text-gray-700 mb-2">Bloque</label>

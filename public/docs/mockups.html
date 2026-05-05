@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockups – AgendaU</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #eef2f7;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    padding: 44px 36px;
+  }
+  .page-title {
+    text-align: center;
+    margin-bottom: 8px;
+    color: #1e3a5f;
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+  }
+  .page-subtitle {
+    text-align: center;
+    color: #64748b;
+    font-size: 12.5px;
+    margin-bottom: 38px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    max-width: 1160px;
+    margin: 0 auto;
+  }
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 22px rgba(0,0,0,0.11);
+    overflow: hidden;
+    border: 1px solid #dde4ef;
+  }
+  .card-label {
+    background: #002845;
+    color: #fff;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    padding: 7px 0;
+    text-transform: uppercase;
+  }
+  .screen {
+    position: relative;
+    height: 390px;
+    overflow: hidden;
+  }
+  .caption {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    color: #475569;
+    font-size: 11.5px;
+    padding: 9px 14px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     PANTALLA 1: LOGIN (Docentes y Administradores)
+  ═══════════════════════════════════════════════════ */
+  .login-screen {
+    background: linear-gradient(135deg, #e8eaf6 0%, #f3f0ff 50%, #e8f0fe 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .login-card {
+    width: 260px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+  }
+  .login-card-header {
+    background: linear-gradient(135deg, #002060 0%, #1a3a8f 100%);
+    padding: 20px 16px 18px;
+    text-align: center;
+  }
+  .login-icon {
+    font-size: 28px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .login-brand {
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .login-sub {
+    color: rgba(255,255,255,0.65);
+    font-size: 9.5px;
+  }
+  .login-card-body {
+    background: #fff;
+    padding: 16px 18px 18px;
+  }
+  .login-label {
+    color: #374151;
+    font-size: 9.5px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .login-input {
+    width: 100%;
+    background: #fff;
+    border: 1.5px solid #d1d5db;
+    border-radius: 7px;
+    height: 30px;
+    padding: 0 10px;
+    font-size: 10px;
+    color: #6b7280;
+    margin-bottom: 10px;
+    display: flex; align-items: center;
+  }
+  .login-input.active { border-color: #1a3a8f; color: #111; }
+  .login-check {
+    display: flex; align-items: center; gap: 5px;
+    color: #6b7280; font-size: 9px; margin-bottom: 12px;
+  }
+  .login-check-box {
+    width: 11px; height: 11px;
+    border: 1px solid #d1d5db; border-radius: 2px;
+  }
+  .login-btn {
+    width: 100%;
+    background: #002060;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    height: 33px;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 5px;
+    box-shadow: 0 2px 8px rgba(0,32,96,0.3);
+  }
+  .login-footer {
+    text-align: center;
+    color: #9ca3af;
+    font-size: 8px;
+    margin-top: 10px;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     PANTALLA 2: ESTUDIANTE – Mis Reservas (calendario)
+  ═══════════════════════════════════════════════════ */
+  .student-screen {
+    background: #f1f5f9;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Topbar */
+  .st-topbar {
+    background: #0d1b2e;
+    height: 0px; /* no topbar en el sistema real */
+  }
+  .st-layout { display: flex; flex: 1; height: 390px; }
+  /* Sidebar */
+  .st-sidebar {
+    width: 130px;
+    background: #0d1b2e;
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .st-logo-row {
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 12px;
+  }
+  .st-logo-badge {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #e67e22, #f39c12);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: #fff;
+  }
+  .st-logo-text { color: #fff; font-size: 10px; font-weight: 700; line-height: 1.2; }
+  .st-logo-sub { color: #64748b; font-size: 7.5px; }
+  .st-section-label {
+    color: #475569; font-size: 7.5px; font-weight: 700;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    padding: 6px 0 3px 6px;
+  }
+  .st-user-row {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 7px; padding: 5px 7px;
+    margin-bottom: 8px;
+  }
+  .st-avatar {
+    width: 20px; height: 20px;
+    background: #3b82f6;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+  }
+  .st-user-name { color: #e2e8f0; font-size: 8.5px; font-weight: 600; }
+  .st-user-role { color: #10b981; font-size: 7px; }
+  .st-nav {
+    padding: 5px 6px; border-radius: 6px;
+    color: #94a3b8; font-size: 8.5px;
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 1px;
+  }
+  .st-nav.active {
+    background: rgba(255,255,255,0.1);
+    color: #fff; font-weight: 600;
+  }
+  .st-nav-icon { font-size: 10px; }
+  .st-logout {
+    margin-top: auto;
+    display: flex; align-items: center; gap: 5px;
+    color: #ef4444; font-size: 8px; padding: 5px 6px;
+  }
+  /* Content */
+  .st-content { flex: 1; padding: 12px; overflow: hidden; background: #f8fafc; }
+  .st-page-title { color: #1e293b; font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .st-page-sub { color: #64748b; font-size: 8.5px; margin-bottom: 10px; }
+  .st-top-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+  .st-new-btn {
+    background: #002060;
+    color: #fff; font-size: 8px; font-weight: 600;
+    border-radius: 6px; padding: 4px 9px;
+  }
+  /* Mini calendar */
+  .st-cal-nav {
+    display: flex; align-items: center; gap: 4px;
+    margin-bottom: 7px;
+  }
+  .st-cal-arrow {
+    background: rgba(0,0,0,0.07); border-radius: 5px;
+    width: 18px; height: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #475569;
+  }
+  .st-cal-today {
+    background: rgba(0,0,0,0.07); border-radius: 5px;
+    padding: 2px 7px; font-size: 8px; color: #475569;
+  }
+  .st-cal-week { color: #1e293b; font-size: 10px; font-weight: 700; margin: 0 auto; }
+  .st-cal-views {
+    background: #002060; color: #fff; font-size: 8px;
+    border-radius: 5px; padding: 2px 8px;
+  }
+  .st-grid {
+    display: grid;
+    grid-template-columns: 24px repeat(6, 1fr);
+    gap: 1px;
+    font-size: 7px;
+  }
+  .st-col-header {
+    text-align: center; color: #64748b; font-weight: 700;
+    padding: 3px 0; font-size: 7.5px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .st-time { color: #94a3b8; padding-top: 2px; text-align: right; padding-right: 3px; }
+  .st-slot { height: 26px; border-bottom: 1px solid #f1f5f9; background: #fff; }
+  .st-event {
+    border-radius: 5px; padding: 3px 4px;
+    color: #fff; font-size: 7px; font-weight: 600;
+    height: 52px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+  .st-event.green { background: linear-gradient(135deg, #059669, #10b981); }
+  .st-event.blue { background: linear-gradient(135deg, #1d4ed8, #3b82f6); }
+  .st-event-time { color: rgba(255,255,255,0.8); font-size: 6.5px; }
+  .st-event-loc { color: rgba(255,255,255,0.7); font-size: 6px; margin-top: 1px; }
+
+  /* ═══════════════════════════════════════════════════
+     PANTALLA 3: DOCENTE – Centro de Control
+  ═══════════════════════════════════════════════════ */
+  .docente-screen {
+    background: #f1f5f9;
+    display: flex;
+  }
+  .doc-sidebar {
+    width: 130px;
+    background: #0d1b2e;
+    padding: 14px 10px;
+    flex-shrink: 0;
+    display: flex; flex-direction: column;
+  }
+  .doc-content { flex: 1; padding: 12px; overflow: hidden; }
+  .doc-header { margin-bottom: 8px; }
+  .doc-page-title { color: #1e293b; font-size: 13px; font-weight: 700; margin-bottom: 1px; }
+  .doc-page-sub { color: #64748b; font-size: 8px; }
+  .doc-tabs {
+    display: flex; gap: 4px; margin-bottom: 10px;
+  }
+  .doc-tab {
+    padding: 4px 9px; border-radius: 6px;
+    font-size: 8px; font-weight: 600;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .doc-tab.active { background: #002060; color: #fff; }
+  .doc-tab.inactive { color: #64748b; background: transparent; }
+  .doc-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px;
+  }
+  .doc-course-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  }
+  .doc-card-header {
+    background: linear-gradient(135deg, #002060 0%, #1a3a8f 100%);
+    padding: 7px 8px 6px;
+    position: relative;
+  }
+  .doc-card-title { color: #fff; font-size: 8.5px; font-weight: 700; margin-bottom: 3px; }
+  .doc-card-badge {
+    font-size: 6.5px; font-weight: 700; border-radius: 8px;
+    padding: 1px 5px; display: inline-block;
+  }
+  .doc-card-badge.virt { background: #3b82f6; color: #fff; }
+  .doc-card-badge.pres { background: #f59e0b; color: #fff; }
+  .doc-card-body { padding: 6px 8px; }
+  .doc-info-row {
+    color: #475569; font-size: 7.5px; margin-bottom: 2px;
+    display: flex; gap: 3px;
+  }
+  .doc-info-label { font-weight: 600; }
+  .doc-see-btn {
+    background: #0d1b2e;
+    color: #fff; font-size: 7px; font-weight: 600;
+    width: 100%; height: 22px;
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 5px;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     PANTALLA 4: ADMINISTRADOR – Centro de Control
+  ═══════════════════════════════════════════════════ */
+  .admin-screen {
+    background: #f1f5f9;
+    display: flex;
+  }
+  .adm-sidebar {
+    width: 130px;
+    background: #0d1b2e;
+    padding: 14px 10px;
+    flex-shrink: 0;
+    display: flex; flex-direction: column;
+  }
+  .adm-content { flex: 1; padding: 12px; overflow: hidden; }
+  .adm-page-title { color: #1e293b; font-size: 13px; font-weight: 700; margin-bottom: 1px; }
+  .adm-page-sub { color: #64748b; font-size: 8px; margin-bottom: 8px; }
+  .adm-tabs-row {
+    display: flex; gap: 3px; align-items: center;
+    margin-bottom: 9px; flex-wrap: wrap;
+  }
+  .adm-tab {
+    padding: 4px 8px; border-radius: 6px;
+    font-size: 7.5px; font-weight: 600;
+    display: flex; align-items: center; gap: 3px;
+  }
+  .adm-tab.active { background: #002060; color: #fff; }
+  .adm-tab.inactive { color: #475569; background: rgba(0,0,0,0.05); }
+  .adm-search {
+    margin-left: auto;
+    background: #fff; border: 1px solid #e2e8f0;
+    border-radius: 6px; padding: 3px 8px;
+    color: #94a3b8; font-size: 7.5px;
+    display: flex; align-items: center; gap: 3px;
+    min-width: 80px;
+  }
+  .adm-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px;
+  }
+  .adm-course-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  }
+  .adm-card-header {
+    background: linear-gradient(135deg, #002060 0%, #1a3a8f 100%);
+    padding: 7px 8px 6px;
+    position: relative;
+  }
+  .adm-modal-badge {
+    position: absolute; top: 6px; right: 6px;
+    font-size: 6px; font-weight: 700; border-radius: 3px;
+    padding: 1px 4px; text-transform: uppercase;
+  }
+  .adm-modal-badge.virt { background: #3b82f6; color: #fff; }
+  .adm-modal-badge.pres { background: #f59e0b; color: #fff; }
+  .adm-card-title { color: #fff; font-size: 8.5px; font-weight: 700; }
+  .adm-card-body { padding: 6px 8px; }
+  .adm-info-row {
+    color: #475569; font-size: 7.5px; margin-bottom: 2px;
+    display: flex; gap: 3px; align-items: center;
+  }
+  .adm-info-label { font-weight: 600; }
+  .adm-day-chip {
+    background: #e0f2fe; color: #0369a1;
+    font-size: 7px; font-weight: 600; border-radius: 4px;
+    padding: 1px 5px;
+  }
+  .adm-inscritos-chip {
+    background: #dcfce7; color: #166534;
+    font-size: 7px; font-weight: 600; border-radius: 10px;
+    padding: 1px 6px;
+  }
+  .adm-see-btn {
+    background: #0d1b2e;
+    color: #fff; font-size: 7px; font-weight: 600;
+    width: 100%; height: 22px;
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 5px; margin-bottom: 3px;
+  }
+  .adm-action-row {
+    display: flex; gap: 4px;
+  }
+  .adm-edit-btn {
+    flex: 1; height: 18px; border-radius: 4px;
+    background: #fef9c3; color: #854d0e;
+    font-size: 7px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; gap: 2px;
+  }
+  .adm-del-btn {
+    flex: 1; height: 18px; border-radius: 4px;
+    background: #fee2e2; color: #991b1b;
+    font-size: 7px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; gap: 2px;
+  }
+
+  /* Sidebar compartida reutilizable */
+  .sidebar-logo-row {
+    display: flex; align-items: center; gap: 6px; margin-bottom: 12px;
+  }
+  .sidebar-logo-badge {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #e67e22, #f39c12);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: #fff;
+  }
+  .sidebar-logo-text { color: #fff; font-size: 10px; font-weight: 700; line-height: 1.2; }
+  .sidebar-logo-sub { color: #64748b; font-size: 7px; }
+  .sidebar-section { color: #475569; font-size: 7px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; padding: 6px 0 2px 5px; }
+  .sidebar-user-box {
+    background: rgba(255,255,255,0.06); border-radius: 7px; padding: 5px 7px;
+    margin-bottom: 8px;
+  }
+  .sidebar-avatar {
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: #fff;
+    margin-bottom: 3px;
+  }
+  .sidebar-user-name { color: #e2e8f0; font-size: 8.5px; font-weight: 600; }
+  .sidebar-user-role { font-size: 7px; display: flex; align-items: center; gap: 3px; }
+  .sidebar-role-dot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; }
+  .sidebar-nav {
+    padding: 5px 6px 5px 8px; border-radius: 6px;
+    font-size: 8.5px; color: #94a3b8;
+    display: flex; align-items: center; gap: 6px; margin-bottom: 1px;
+  }
+  .sidebar-nav.active { background: rgba(255,255,255,0.1); color: #fff; font-weight: 600; }
+  .sidebar-nav-icon { font-size: 10px; }
+  .sidebar-logout {
+    margin-top: auto; display: flex; align-items: center; gap: 5px;
+    color: #ef4444; font-size: 8px; padding: 5px 6px; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-title">Figura 1. Mockups de Interfaz – AgendaU</div>
+<div class="page-subtitle">Sistema de Gestión de Horarios de Asesorías · Institución Universitaria Pascual Bravo</div>
+
+<div class="grid">
+
+  <!-- ══════════════════════════════════════════
+       1. PORTAL DE INICIO DE SESIÓN
+          (Exclusivo: Docentes y Administradores)
+  ══════════════════════════════════════════ -->
+  <div class="card">
+    <div class="card-label">Portal de Inicio de Sesión</div>
+    <div class="screen login-screen">
+      <div class="login-card">
+        <div class="login-card-header">
+          <span class="login-icon">🎓</span>
+          <div class="login-brand">Agenda U</div>
+          <div class="login-sub">Portal de Acceso al Sistema</div>
+        </div>
+        <div class="login-card-body">
+          <span class="login-label">Correo Electrónico</span>
+          <div class="login-input active">tu@correo.com</div>
+          <span class="login-label">Contraseña</span>
+          <div class="login-input">••••••••</div>
+          <div class="login-check">
+            <div class="login-check-box"></div>
+            Recordarme
+          </div>
+          <div class="login-btn">Ingresar &nbsp;→</div>
+          <div class="login-footer">© 2026 Agenda U. Todos los derechos reservados.</div>
+        </div>
+      </div>
+    </div>
+    <div class="caption">
+      Acceso exclusivo para <strong>docentes y administradores</strong> mediante correo y contraseña institucional
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       2. VISTA DEL ESTUDIANTE – Mis Reservas
+          (Acceso via Google OAuth)
+  ══════════════════════════════════════════ -->
+  <div class="card">
+    <div class="card-label">Vista del Estudiante</div>
+    <div class="screen student-screen">
+      <div class="st-layout">
+        <!-- Sidebar -->
+        <div class="st-sidebar">
+          <div class="sidebar-logo-row">
+            <div class="sidebar-logo-badge">AU</div>
+            <div>
+              <div class="sidebar-logo-text">Agenda U</div>
+              <div class="sidebar-logo-sub">Asesorías</div>
+            </div>
+          </div>
+          <div class="sidebar-section">Mi Cuenta</div>
+          <div class="sidebar-user-box">
+            <div style="display:flex;align-items:center;gap:5px">
+              <div class="sidebar-avatar" style="background:#3b82f6">S</div>
+              <div>
+                <div class="sidebar-user-name">Santiago T.</div>
+                <div class="sidebar-user-role">
+                  <span class="sidebar-role-dot" style="background:#10b981"></span>
+                  <span style="color:#10b981">Conectado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sidebar-nav active"><span class="sidebar-nav-icon">📅</span> Mis Reservas</div>
+          <div class="sidebar-nav"><span class="sidebar-nav-icon">🔍</span> Explorar Clases</div>
+          <div class="sidebar-logout">↩ Cerrar Sesión</div>
+        </div>
+        <!-- Content -->
+        <div class="st-content">
+          <div class="st-top-row">
+            <div>
+              <div class="st-page-title">📅 Mis Clases Programadas</div>
+              <div class="st-page-sub">Haz clic sobre una clase para ver detalles o cancelar tu cupo.</div>
+            </div>
+            <div class="st-new-btn">+ Nueva Reserva</div>
+          </div>
+          <div class="st-cal-nav">
+            <div class="st-cal-arrow">‹</div>
+            <div class="st-cal-arrow">›</div>
+            <div class="st-cal-today">Hoy</div>
+            <div class="st-cal-week">4 – 9 may 2026</div>
+            <div class="st-cal-views">Semana</div>
+          </div>
+          <div class="st-grid">
+            <div></div>
+            <div class="st-col-header">lun 4/5</div>
+            <div class="st-col-header">mar 5/5</div>
+            <div class="st-col-header">mié 6/5</div>
+            <div class="st-col-header">jue 7/5</div>
+            <div class="st-col-header">vie 8/5</div>
+            <div class="st-col-header">sáb 9/5</div>
+
+            <div class="st-time">8:00</div>
+            <div class="st-slot"></div><div class="st-slot"></div><div class="st-slot"></div><div class="st-slot"></div><div class="st-slot"></div><div class="st-slot"></div>
+
+            <div class="st-time">10:00</div>
+            <div class="st-slot"></div><div class="st-slot"></div><div class="st-slot"></div>
+            <div>
+              <div class="st-event green">
+                <div style="font-size:6.5px;color:rgba(255,255,255,0.8)">10:00 - 12:00</div>
+                <div>Estructura de Datos</div>
+                <div class="st-event-loc">C4TA · Aula 105</div>
+              </div>
+            </div>
+            <div class="st-slot"></div><div class="st-slot"></div>
+
+            <div class="st-time">14:00</div>
+            <div class="st-slot"></div>
+            <div>
+              <div class="st-event blue">
+                <div style="font-size:6.5px;color:rgba(255,255,255,0.8)">14:00 - 16:00</div>
+                <div>Hacking Ético</div>
+                <div class="st-event-loc">🌐 Virtual</div>
+              </div>
+            </div>
+            <div class="st-slot"></div><div class="st-slot"></div><div class="st-slot"></div><div class="st-slot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="caption">
+      Estudiantes acceden vía <strong>Google OAuth institucional</strong>. Vista personal de reservas: presenciales en verde, virtuales en azul
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       3. VISTA DEL DOCENTE – Centro de Control
+  ══════════════════════════════════════════ -->
+  <div class="card">
+    <div class="card-label">Vista del Docente</div>
+    <div class="screen docente-screen">
+      <!-- Sidebar -->
+      <div class="doc-sidebar">
+        <div class="sidebar-logo-row">
+          <div class="sidebar-logo-badge">AU</div>
+          <div>
+            <div class="sidebar-logo-text">Agenda U</div>
+            <div class="sidebar-logo-sub">Asesorías</div>
+          </div>
+        </div>
+        <div class="sidebar-section">Mi Cuenta</div>
+        <div class="sidebar-user-box">
+          <div style="display:flex;align-items:center;gap:5px">
+            <div class="sidebar-avatar" style="background:#f59e0b">E</div>
+            <div>
+              <div class="sidebar-user-name">Emilio</div>
+              <div class="sidebar-user-role">
+                <span class="sidebar-role-dot" style="background:#f59e0b"></span>
+                <span style="color:#f59e0b">Docente</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-nav active"><span class="sidebar-nav-icon">🖥️</span> Centro de Control</div>
+        <div class="sidebar-nav"><span class="sidebar-nav-icon">👥</span> Seguimiento</div>
+        <div class="sidebar-nav"><span class="sidebar-nav-icon">🔍</span> Calendario Público</div>
+        <div class="sidebar-logout">↩ Cerrar Sesión</div>
+      </div>
+      <!-- Content -->
+      <div class="doc-content">
+        <div class="doc-header">
+          <div class="doc-page-title">🖥️ Centro de Control</div>
+          <div class="doc-page-sub">Gestión de tus cursos y seguimiento estudiantil.</div>
+        </div>
+        <div class="doc-tabs">
+          <div class="doc-tab active">🎓 Mis cursos</div>
+          <div class="doc-tab inactive">🔍 Seguimiento estudiantil</div>
+        </div>
+        <div class="doc-cards">
+          <div class="doc-course-card">
+            <div class="doc-card-header">
+              <div class="doc-card-title">Base De Datos 3</div>
+              <span class="doc-card-badge virt">VIRTUAL</span>
+            </div>
+            <div class="doc-card-body">
+              <div class="doc-info-row"><span class="doc-info-label">Docente:</span> Jaison Mateo</div>
+              <div class="doc-info-row"><span class="doc-info-label">Día:</span> Jueves</div>
+              <div class="doc-info-row"><span class="doc-info-label">Hora:</span> 18:00</div>
+              <div class="doc-see-btn">👥 Ver Estudiantes</div>
+            </div>
+          </div>
+          <div class="doc-course-card">
+            <div class="doc-card-header">
+              <div class="doc-card-title">Estadística Analítica</div>
+              <span class="doc-card-badge pres">PRESENCIAL</span>
+            </div>
+            <div class="doc-card-body">
+              <div class="doc-info-row"><span class="doc-info-label">Docente:</span> Emilio</div>
+              <div class="doc-info-row"><span class="doc-info-label">Día:</span> Miércoles</div>
+              <div class="doc-info-row"><span class="doc-info-label">Hora:</span> 16:00</div>
+              <div class="doc-see-btn">👥 Ver Estudiantes</div>
+            </div>
+          </div>
+          <div class="doc-course-card">
+            <div class="doc-card-header">
+              <div class="doc-card-title">Matemáticas</div>
+              <span class="doc-card-badge virt">VIRTUAL</span>
+            </div>
+            <div class="doc-card-body">
+              <div class="doc-info-row"><span class="doc-info-label">Docente:</span> Emilio</div>
+              <div class="doc-info-row"><span class="doc-info-label">Día:</span> Jueves</div>
+              <div class="doc-info-row"><span class="doc-info-label">Hora:</span> 18:00</div>
+              <div class="doc-see-btn">👥 Ver Estudiantes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="caption">
+      El <strong>docente</strong> visualiza sus cursos asignados y gestiona el seguimiento de cada estudiante por curso
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       4. VISTA DEL ADMINISTRADOR – Centro de Control
+  ══════════════════════════════════════════ -->
+  <div class="card">
+    <div class="card-label">Vista del Administrador</div>
+    <div class="screen admin-screen">
+      <!-- Sidebar -->
+      <div class="adm-sidebar">
+        <div class="sidebar-logo-row">
+          <div class="sidebar-logo-badge">AU</div>
+          <div>
+            <div class="sidebar-logo-text">Agenda U</div>
+            <div class="sidebar-logo-sub">Asesorías</div>
+          </div>
+        </div>
+        <div class="sidebar-section">Mi Cuenta</div>
+        <div class="sidebar-user-box">
+          <div style="display:flex;align-items:center;gap:5px">
+            <div class="sidebar-avatar" style="background:#6366f1">S</div>
+            <div>
+              <div class="sidebar-user-name">Santiago</div>
+              <div class="sidebar-user-role">
+                <span class="sidebar-role-dot" style="background:#6366f1"></span>
+                <span style="color:#a5b4fc">Administrador</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-nav active"><span class="sidebar-nav-icon">🖥️</span> Centro de Control</div>
+        <div class="sidebar-nav"><span class="sidebar-nav-icon">⭐</span> Satisfacción</div>
+        <div class="sidebar-nav"><span class="sidebar-nav-icon">🔍</span> Calendario Público</div>
+        <div class="sidebar-logout">↩ Cerrar Sesión</div>
+      </div>
+      <!-- Content -->
+      <div class="adm-content">
+        <div class="adm-page-title">🖥️ Centro de Control</div>
+        <div class="adm-page-sub">Gestión de cursos y opciones de administración.</div>
+        <div class="adm-tabs-row">
+          <div class="adm-tab active">🎓 Gestión de cursos</div>
+          <div class="adm-tab inactive">⬆ Carga masiva</div>
+          <div class="adm-tab inactive">📊 Informes</div>
+          <div class="adm-tab inactive">👤 Control de roles</div>
+          <div class="adm-search">🔍 Buscar docente o curso...</div>
+        </div>
+        <div class="adm-cards">
+          <div class="adm-course-card">
+            <div class="adm-card-header">
+              <div class="adm-card-title">Álgebra Lineal</div>
+              <span class="adm-modal-badge virt">VIRTUAL</span>
+            </div>
+            <div class="adm-card-body">
+              <div class="adm-info-row"><span class="adm-info-label">Docente:</span> María García</div>
+              <div class="adm-info-row"><span class="adm-info-label">Día:</span> <span class="adm-day-chip">Miércoles</span></div>
+              <div class="adm-info-row"><span class="adm-info-label">Inscritos:</span> <span class="adm-inscritos-chip">0 estudiantes</span></div>
+              <div class="adm-see-btn">👥 Ver estudiantes</div>
+              <div class="adm-action-row">
+                <div class="adm-edit-btn">✏ Editar</div>
+                <div class="adm-del-btn">🗑 Borrar</div>
+              </div>
+            </div>
+          </div>
+          <div class="adm-course-card">
+            <div class="adm-card-header">
+              <div class="adm-card-title">Arquitectura De Software</div>
+              <span class="adm-modal-badge pres">PRESENCIAL</span>
+            </div>
+            <div class="adm-card-body">
+              <div class="adm-info-row"><span class="adm-info-label">Docente:</span> Carlos Ruiz</div>
+              <div class="adm-info-row"><span class="adm-info-label">Día:</span> <span class="adm-day-chip">Lunes</span></div>
+              <div class="adm-info-row"><span class="adm-info-label">Inscritos:</span> <span class="adm-inscritos-chip">1 estudiante</span></div>
+              <div class="adm-see-btn">👥 Ver estudiantes</div>
+              <div class="adm-action-row">
+                <div class="adm-edit-btn">✏ Editar</div>
+                <div class="adm-del-btn">🗑 Borrar</div>
+              </div>
+            </div>
+          </div>
+          <div class="adm-course-card">
+            <div class="adm-card-header">
+              <div class="adm-card-title">Base De Datos 3</div>
+              <span class="adm-modal-badge virt">VIRTUAL</span>
+            </div>
+            <div class="adm-card-body">
+              <div class="adm-info-row"><span class="adm-info-label">Docente:</span> Jaison Mateo</div>
+              <div class="adm-info-row"><span class="adm-info-label">Día:</span> <span class="adm-day-chip">Jueves</span></div>
+              <div class="adm-info-row"><span class="adm-info-label">Inscritos:</span> <span class="adm-inscritos-chip">2 estudiantes</span></div>
+              <div class="adm-see-btn">👥 Ver estudiantes</div>
+              <div class="adm-action-row">
+                <div class="adm-edit-btn">✏ Editar</div>
+                <div class="adm-del-btn">🗑 Borrar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="caption">
+      El <strong>administrador</strong> gestiona todos los cursos, realiza carga masiva por Excel, consulta informes y controla roles de usuarios
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -11,10 +11,16 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class HorariosImport implements ToModel, WithHeadingRow
 {
     private array $omitidas = [];
+    private int   $insertados = 0;
 
     public function getOmitidas(): array
     {
         return $this->omitidas;
+    }
+
+    public function getInsertados(): int
+    {
+        return $this->insertados;
     }
 
     /**
@@ -33,6 +39,7 @@ class HorariosImport implements ToModel, WithHeadingRow
         'sede'      => ['sede', 'campus'],
         'bloque'    => ['bloque', 'block', 'edificio'],
         'aula'      => ['aula', 'salon_numero', 'room', 'numero_aula', 'num_aula'],
+        'correo'    => ['correo', 'email', 'correo_electronico', 'correo electronico', 'mail'],
         'semestre'  => ['semestre', 'periodo', 'semester', 'fecha_inicio', 'vigencia'],
     ];
 
@@ -66,6 +73,16 @@ class HorariosImport implements ToModel, WithHeadingRow
             return method_exists($value, '__toString') ? trim((string) $value) : '';
         }
         return trim((string) $value);
+    }
+
+    private function getTimeString(mixed $value): string
+    {
+        // Excel almacena horas como fracción del día (0.75 = 18:00, 0.333... = 08:00)
+        if (is_float($value) && $value >= 0 && $value < 1) {
+            $mins = (int) round($value * 1440);
+            return sprintf('%02d:%02d', intdiv($mins, 60), $mins % 60);
+        }
+        return $this->getString($value);
     }
 
     public function model(array $row)
@@ -106,13 +123,13 @@ class HorariosImport implements ToModel, WithHeadingRow
         $dia = str_replace(['miercoles','sabado'], ['Miércoles','Sábado'], strtolower($dia));
         $dia = ucfirst($dia);
 
-        // Hora inicio
-        $inicioCrudo = preg_replace('/[^0-9:]/', '', $this->getString($row[$inicioKey]));
+        // Hora inicio — soporta texto "08:00" y fracción decimal de Excel (0.333...)
+        $inicioCrudo = preg_replace('/[^0-9:]/', '', $this->getTimeString($row[$inicioKey]));
         $iPartes = explode(':', $inicioCrudo);
         $inicio = sprintf('%02d:%02d:%02d', (int)($iPartes[0] ?? 0), (int)($iPartes[1] ?? 0), 0);
 
         // Hora fin
-        $finCrudo = $finKey ? preg_replace('/[^0-9:]/', '', $this->getString($row[$finKey])) : '';
+        $finCrudo = $finKey ? preg_replace('/[^0-9:]/', '', $this->getTimeString($row[$finKey])) : '';
         $fPartes = explode(':', $finCrudo);
         $fin = sprintf('%02d:%02d:%02d', (int)($fPartes[0] ?? 0), (int)($fPartes[1] ?? 0), 0);
 
@@ -120,7 +137,17 @@ class HorariosImport implements ToModel, WithHeadingRow
         if ($inicio === '00:00:00' && $fin === '00:00:00') return null;
         if (empty($curso) || empty($docenteNombre)) return null;
 
+        // Límite de horario institucional
+        $esSabado   = strtolower($dia) === 'sábado' || strtolower($dia) === 'sabado';
+        $limiteMaximo = $esSabado ? '17:00:00' : '22:00:00';
+        if ($fin > $limiteMaximo) {
+            $limite = $esSabado ? '5:00 PM' : '10:00 PM';
+            $this->omitidas[] = "Horario fuera de rango: \"$curso\" con $docenteNombre el $dia de $inicio a $fin — el límite los " . ($esSabado ? 'sábados' : 'días de semana') . " es hasta las $limite.";
+            return null;
+        }
+
         // Columnas opcionales
+        $correoKey   = $this->resolve($row, 'correo');
         $lugarKey    = $this->resolve($row, 'lugar');
         $modalidadKey = $this->resolve($row, 'modalidad');
         $sedeKey     = $this->resolve($row, 'sede');
@@ -155,21 +182,34 @@ class HorariosImport implements ToModel, WithHeadingRow
         }
 
         // ──────────────────────────────────────────────────────────────
-        // 4. BUSCAR O CREAR PROFESOR
-        //    ✅ Ahora funciona porque 'rol' está en User::$fillable
+        // 4. BUSCAR O CREAR PROFESOR — prioridad: correo del Excel
         // ──────────────────────────────────────────────────────────────
-        $profesor = User::where('name', 'LIKE', '%' . $docenteNombre . '%')->first();
+        $correo   = $correoKey ? $this->getString($row[$correoKey]) : '';
+        $profesor = null;
+
+        if (!empty($correo)) {
+            $profesor = User::where('email', $correo)->first();
+        }
+        if (!$profesor) {
+            $profesor = User::where('name', 'LIKE', '%' . $docenteNombre . '%')->first();
+        }
 
         if (!$profesor) {
-            $emailBase = strtolower(str_replace([' ', '.', ','], ['.', '', ''], $docenteNombre));
+            $emailFinal = !empty($correo)
+                ? $correo
+                : strtolower(str_replace([' ', '.', ','], ['.', '', ''], $docenteNombre)) . '@agendau.com';
+
             $profesor = User::create([
-                'name'     => $docenteNombre,
-                'email'    => $emailBase . '@agendau.com',
-                'password' => bcrypt('profesor123'),
-                'rol'      => 'profesor',  // ✅ Funciona ahora con fillable corregido
-                'activo'   => true,
+                'name'             => $docenteNombre,
+                'email'            => $emailFinal,
+                'password'         => bcrypt('Pascual2026'),
+                'rol'              => 'profesor',
+                'activo'           => true,
+                'cambiar_password' => true,
             ]);
         }
+
+        $this->insertados++;
 
         return new HorarioAsesoria([
             'curso_nombre'   => $curso,

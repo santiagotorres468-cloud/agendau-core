@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Reporte por Materia - {{ $curso }}</title>
+    <title>Reporte por Curso - {{ $curso }}</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: DejaVu Sans, sans-serif; font-size: 11px; color: #1e293b; }
@@ -22,8 +22,9 @@
             margin: 18px 0 10px;
         }
 
-        .stat-row { display: flex; gap: 12px; margin-bottom: 14px; }
-        .stat-box { flex: 1; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 12px; text-align: center; }
+        .stat-row { display: table; width: 100%; margin-bottom: 14px; border-spacing: 0; }
+        .stat-box { display: table-cell; width: 25%; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 8px; text-align: center; vertical-align: middle; }
+        .stat-box + .stat-box { border-left: none; }
         .stat-box .value { font-size: 20px; font-weight: bold; color: #002845; }
         .stat-box .label { font-size: 9px; color: #64748b; margin-top: 2px; }
 
@@ -71,7 +72,7 @@
 <body>
 
 <div class="header">
-    <h1>Reporte por Materia</h1>
+    <h1>Reporte por Curso</h1>
     <div class="curso">{{ $curso }}</div>
     <p>Generado: {{ \Carbon\Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [de] YYYY') }}</p>
 </div>
@@ -80,10 +81,6 @@
 
     <div class="section-title">RESUMEN GENERAL</div>
     <div class="stat-row">
-        <div class="stat-box">
-            <div class="value">{{ $horarios->count() }}</div>
-            <div class="label">Grupos / secciones</div>
-        </div>
         <div class="stat-box">
             <div class="value">{{ $totalInscritos }}</div>
             <div class="label">Total inscritos</div>
@@ -153,7 +150,7 @@
         @endif
     @else
         <p style="color:#94a3b8; font-style:italic; margin:10px 0;">
-            No hay encuestas respondidas para esta materia todavía.
+            No hay encuestas respondidas para este curso todavía.
         </p>
     @endif
 

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Manual Técnico — AgendaU</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --navy:#002845;--gold:#C9A227;--emerald:#059669;
+      --code-bg:#0f1923;--code-text:#c9d1d9;
+      --gray:#64748b;--border:#e2e8f0;--light:#f8fafc;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Manrope',sans-serif;background:var(--light);color:#1e293b;line-height:1.7}
+
+    /* ── Layout ── */
+    .page-wrap{display:flex;min-height:100vh}
+    aside{width:270px;background:var(--navy);color:#fff;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+    main{flex:1;max-width:920px;padding:48px 52px 80px;margin:0 auto}
+
+    /* ── Sidebar ── */
+    .sb-brand{padding:28px 24px 20px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:12px}
+    .sb-badge{width:38px;height:38px;background:var(--gold);border-radius:10px;color:var(--navy);font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .sb-title{font-size:15px;font-weight:800;line-height:1.3}
+    .sb-sub{font-size:11px;color:rgba(255,255,255,.5);font-weight:500}
+    .sb-section{padding:20px 16px 4px;font-size:10px;font-weight:800;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase}
+    .sb-link{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,.7);text-decoration:none;border-radius:8px;margin:2px 8px;transition:.15s}
+    .sb-link:hover{background:rgba(255,255,255,.1);color:#fff}
+    .sb-link .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
+
+    /* ── Cover ── */
+    .cover{background:linear-gradient(135deg,#0f1923 0%,#002845 60%,#004080 100%);border-radius:24px;padding:52px 48px;color:#fff;margin-bottom:48px;position:relative;overflow:hidden}
+    .cover::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;background:rgba(201,162,39,.1);border-radius:50%}
+    .cover-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(201,162,39,.2);color:var(--gold);border:1px solid rgba(201,162,39,.4);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.06em;margin-bottom:16px}
+    .cover h1{font-size:30px;font-weight:900;line-height:1.2;margin-bottom:8px}
+    .cover p{font-size:14px;color:rgba(255,255,255,.7);max-width:520px}
+    .cover-meta{margin-top:28px;display:flex;gap:24px;flex-wrap:wrap}
+    .meta-item{font-size:12px;color:rgba(255,255,255,.5)}
+    .meta-item strong{display:block;color:#fff;font-size:13px;font-weight:700}
+
+    /* ── Sections ── */
+    section{margin-bottom:56px;scroll-margin-top:24px}
+    h2{font-size:20px;font-weight:900;color:var(--navy);display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:2px solid var(--border);margin-bottom:24px}
+    h2 .sec-num{width:28px;height:28px;background:var(--navy);color:#fff;border-radius:8px;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    h3{font-size:15px;font-weight:800;color:var(--navy);margin:28px 0 10px}
+    h4{font-size:13px;font-weight:700;color:#475569;margin:16px 0 6px}
+    p{font-size:14px;margin-bottom:12px;color:#334155}
+
+    /* ── Code ── */
+    pre{background:var(--code-bg);border-radius:12px;padding:18px 20px;overflow-x:auto;font-family:'JetBrains Mono','Fira Mono',monospace;font-size:12.5px;color:var(--code-text);margin:12px 0 20px;line-height:1.65;border:1px solid rgba(255,255,255,.06)}
+    code{font-family:'JetBrains Mono','Fira Mono',monospace;font-size:12px;background:#f1f5f9;color:#0f172a;padding:1px 6px;border-radius:5px;border:1px solid #e2e8f0}
+    pre code{background:transparent;border:none;padding:0;font-size:inherit;color:inherit}
+
+    /* ── Table ── */
+    table{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0}
+    th{background:var(--navy);color:#fff;padding:10px 14px;text-align:left;font-weight:700}
+    td{padding:10px 14px;border-bottom:1px solid var(--border);color:#334155;vertical-align:top}
+    tr:last-child td{border-bottom:none}
+    tr:nth-child(even) td{background:#f8fafc}
+
+    /* ── Callouts ── */
+    .callout{border-radius:14px;padding:16px 18px;margin:16px 0;display:flex;gap:12px;align-items:flex-start;font-size:13px}
+    .callout.tip{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+    .callout.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+    .callout.info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}
+    .callout.danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+    .callout-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+    .callout strong{display:block;font-size:13px;font-weight:800;margin-bottom:3px}
+
+    /* ── Cards ── */
+    .tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:8px}
+    .tech-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+    .tech-card .layer{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:4px}
+    .tech-card h4{font-size:13px;font-weight:800;color:var(--navy);margin:0 0 4px}
+    .tech-card p{font-size:12px;color:var(--gray);margin:0}
+
+    /* ── File tree ── */
+    .tree{background:var(--code-bg);border-radius:12px;padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#8b949e;line-height:1.8;margin:12px 0 20px;border:1px solid rgba(255,255,255,.06)}
+    .tree .hi{color:#c9d1d9}
+    .tree .dir{color:var(--gold)}
+    .tree .comment{color:#484f58}
+
+    /* ── Badge ── */
+    .badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700}
+    .badge.green{background:#d1fae5;color:#065f46}
+    .badge.blue{background:#dbeafe;color:#1e40af}
+    .badge.gold{background:#fef3c7;color:#92400e}
+    .badge.red{background:#fee2e2;color:#991b1b}
+
+    /* ── Flow diagram (CSS) ── */
+    .flow{display:flex;flex-direction:column;gap:4px;margin:16px 0 24px}
+    .flow-step{display:flex;align-items:center;gap:10px;font-size:13px}
+    .flow-box{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:8px 14px;font-weight:700;color:var(--navy);flex-shrink:0}
+    .flow-arrow{color:var(--gray);font-size:18px;line-height:1}
+    .flow-note{font-size:12px;color:var(--gray);font-style:italic}
+
+    @media print{aside{display:none}.page-wrap{display:block}main{padding:24px}}
+    @media(max-width:700px){aside{display:none}main{padding:24px}}
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ─── Sidebar ────────────────────────────────────────── -->
+  <aside>
+    <div class="sb-brand">
+      <div class="sb-badge">AU</div>
+      <div>
+        <div class="sb-title">Agenda U</div>
+        <div class="sb-sub">Manual Técnico</div>
+      </div>
+    </div>
+    <div class="sb-section">Contenido</div>
+    <a href="#stack"         class="sb-link"><span class="dot"></span>Stack tecnológico</a>
+    <a href="#arquitectura"  class="sb-link"><span class="dot"></span>Arquitectura</a>
+    <a href="#estructura"    class="sb-link"><span class="dot"></span>Estructura del proyecto</a>
+    <a href="#base-datos"    class="sb-link"><span class="dot"></span>Modelo de datos</a>
+    <a href="#modelos"       class="sb-link"><span class="dot"></span>Modelos Eloquent</a>
+    <a href="#controladores" class="sb-link"><span class="dot"></span>Controladores</a>
+    <a href="#rutas"         class="sb-link"><span class="dot"></span>Rutas y middleware</a>
+    <a href="#importacion"   class="sb-link"><span class="dot"></span>Módulo de importación</a>
+    <a href="#autenticacion" class="sb-link"><span class="dot"></span>Autenticación</a>
+    <a href="#vistas"        class="sb-link"><span class="dot"></span>Vistas y frontend</a>
+    <a href="#instalacion"   class="sb-link"><span class="dot"></span>Instalación y despliegue</a>
+    <a href="#seguridad"     class="sb-link"><span class="dot"></span>Consideraciones de seguridad</a>
+    <a href="#mantenimiento" class="sb-link"><span class="dot"></span>Mantenimiento</a>
+  </aside>
+
+  <!-- ─── Main ─────────────────────────────────────────────── -->
+  <main>
+
+    <!-- Portada -->
+    <div class="cover">
+      <div class="cover-tag">⚙️ Manual Técnico</div>
+      <h1>AgendaU — Documentación Técnica<br>del Desarrollador</h1>
+      <p>Referencia completa de arquitectura, modelo de datos, módulos de código y procedimientos de instalación y mantenimiento del sistema de gestión de asesorías.</p>
+      <div class="cover-meta">
+        <div class="meta-item"><strong>Institución</strong>I.U. Pascual Bravo</div>
+        <div class="meta-item"><strong>Framework</strong>Laravel 10 + PHP 8.2</div>
+        <div class="meta-item"><strong>Versión</strong>1.0.0 — 2026</div>
+        <div class="meta-item"><strong>Audiencia</strong>Desarrolladores / Sysadmins</div>
+      </div>
+    </div>
+
+    <!-- 1. Stack -->
+    <section id="stack">
+      <h2><span class="sec-num">1</span>Stack tecnológico</h2>
+      <div class="tech-grid">
+        <div class="tech-card"><div class="layer">Backend</div><h4>Laravel 10</h4><p>Framework PHP MVC con Eloquent ORM, Jetstream y Sanctum.</p></div>
+        <div class="tech-card"><div class="layer">Lenguaje</div><h4>PHP 8.2</h4><p>Tipado estricto, match expressions, named arguments.</p></div>
+        <div class="tech-card"><div class="layer">Base de datos</div><h4>MySQL 8 (MariaDB)</h4><p>Relacional con soporte InnoDB y FK constraints.</p></div>
+        <div class="tech-card"><div class="layer">Frontend</div><h4>Blade + Tailwind CSS</h4><p>Renderizado server-side con utilidades CSS inline vía CDN.</p></div>
+        <div class="tech-card"><div class="layer">Auth social</div><h4>Laravel Socialite</h4><p>OAuth 2.0 con Google para autenticación de estudiantes.</p></div>
+        <div class="tech-card"><div class="layer">Excel</div><h4>Maatwebsite Excel 3</h4><p>Importación de horarios desde archivos .xlsx / .xls.</p></div>
+        <div class="tech-card"><div class="layer">PDF</div><h4>barryvdh/laravel-dompdf</h4><p>Generación de informes y listas de asistencia en PDF.</p></div>
+        <div class="tech-card"><div class="layer">JS</div><h4>Alpine.js + Vanilla JS</h4><p>Interactividad ligera sin bundler (carga por CDN).</p></div>
+      </div>
+
+      <h3>Dependencias clave (composer.json)</h3>
+      <pre><code>{
+  "require": {
+    "php":                          "^8.1",
+    "laravel/framework":            "^10.0",
+    "laravel/jetstream":            "^3.0",
+    "laravel/sanctum":              "^3.0",
+    "laravel/socialite":            "^5.0",
+    "maatwebsite/excel":            "^3.1",
+    "barryvdh/laravel-dompdf":      "^2.0",
+    "phpoffice/phpspreadsheet":     "^1.29"
+  }
+}</code></pre>
+    </section>
+
+    <!-- 2. Arquitectura -->
+    <section id="arquitectura">
+      <h2><span class="sec-num">2</span>Arquitectura</h2>
+      <p>AgendaU sigue el patrón <strong>MVC (Model-View-Controller)</strong> de Laravel con una capa adicional de <em>Importers</em> para la carga de archivos Excel.</p>
+
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-box">Cliente (Blade + Alpine.js)</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-note">HTTP Request / form submit / fetch API</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box">routes/web.php</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-note">Middleware: auth:sanctum, ForzarCambioPassword, verified</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box">Controller</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-note">Lógica de negocio, validación de requests</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box">Eloquent Model</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-note">ORM &rarr; MySQL</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box">View (Blade)</div>
+          <div class="flow-note">Renderizado HTML con datos del controller</div>
+        </div>
+      </div>
+
+      <h3>Separación de portales</h3>
+      <table>
+        <thead><tr><th>Portal</th><th>URL base</th><th>Auth</th><th>Vistas principales</th></tr></thead>
+        <tbody>
+          <tr><td>Público / Estudiante</td><td><code>/estudiante</code>, <code>/</code></td><td>Google OAuth (sesión PHP)</td><td>estudiante.blade.php, welcome.blade.php</td></tr>
+          <tr><td>Docente / Admin</td><td><code>/dashboard</code></td><td>Sanctum + Jetstream</td><td>dashboard.blade.php, admin/*</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 3. Estructura -->
+    <section id="estructura">
+      <h2><span class="sec-num">3</span>Estructura del proyecto</h2>
+      <div class="tree">
+<span class="dir">agendaU/</span>
+├── <span class="dir">app/</span>
+│   ├── <span class="dir">Http/</span>
+│   │   ├── <span class="dir">Controllers/</span>
+│   │   │   ├── <span class="hi">HorarioController.php</span>       <span class="comment">── CRUD horarios + asistencia + API JSON</span>
+│   │   │   ├── <span class="hi">EncuestaController.php</span>      <span class="comment">── Encuestas + reportes PDF</span>
+│   │   │   ├── <span class="hi">UsuarioController.php</span>       <span class="comment">── Gestión de roles de usuario</span>
+│   │   │   ├── <span class="hi">GoogleAuthController.php</span>    <span class="comment">── OAuth Google (estudiantes)</span>
+│   │   │   └── <span class="hi">CambiarPasswordController.php</span> <span class="comment">── Forzar cambio de contraseña</span>
+│   │   └── <span class="dir">Middleware/</span>
+│   │       └── <span class="hi">ForzarCambioPassword.php</span>    <span class="comment">── Intercepta si cambiar_password=true</span>
+│   ├── <span class="dir">Imports/</span>
+│   │   ├── <span class="hi">HorariosImport.php</span>            <span class="comment">── Formato largo (fila por horario)</span>
+│   │   └── <span class="hi">HorariosImportWide.php</span>        <span class="comment">── Formato ancho (columnas por día)</span>
+│   └── <span class="dir">Models/</span>
+│       ├── <span class="hi">User.php</span>                      <span class="comment">── Docentes y administradores</span>
+│       ├── <span class="hi">HorarioAsesoria.php</span>           <span class="comment">── Sesión de asesoría programada</span>
+│       ├── <span class="hi">Seguimiento.php</span>               <span class="comment">── Reserva/asistencia de estudiante</span>
+│       ├── <span class="hi">Estudiante.php</span>                <span class="comment">── Perfil del estudiante</span>
+│       └── <span class="hi">Encuesta.php</span>                  <span class="comment">── Respuestas de encuesta</span>
+├── <span class="dir">database/migrations/</span>            <span class="comment">── Todas las migraciones</span>
+├── <span class="dir">resources/views/</span>
+│   ├── <span class="hi">dashboard.blade.php</span>           <span class="comment">── Panel Admin (multi-tab Alpine.js)</span>
+│   ├── <span class="hi">estudiante.blade.php</span>          <span class="comment">── Portal estudiante (FullCalendar)</span>
+│   ├── <span class="dir">admin/</span>
+│   │   ├── <span class="hi">encuestas_dashboard.blade.php</span> <span class="comment">── Satisfacción: docentes + cursos</span>
+│   │   ├── <span class="hi">reporte_docente.blade.php</span>     <span class="comment">── PDF por docente</span>
+│   │   └── <span class="hi">reporte_curso.blade.php</span>       <span class="comment">── PDF por curso</span>
+│   └── <span class="dir">profesor/</span>
+│       ├── <span class="hi">editar.blade.php</span>              <span class="comment">── Edición de horario individual</span>
+│       ├── <span class="hi">estudiantes.blade.php</span>         <span class="comment">── Lista de asistencia</span>
+│       └── <span class="hi">seguimiento.blade.php</span>         <span class="comment">── Historial por cédula</span>
+├── <span class="dir">public/docs/</span>                    <span class="comment">── Documentación estática (HTML)</span>
+└── <span class="dir">routes/</span>
+    └── <span class="hi">web.php</span>                       <span class="comment">── Todas las rutas del sistema</span>
+      </div>
+    </section>
+
+    <!-- 4. Base de datos -->
+    <section id="base-datos">
+      <h2><span class="sec-num">4</span>Modelo de datos</h2>
+
+      <h3>Tablas principales</h3>
+      <table>
+        <thead><tr><th>Tabla</th><th>Descripción</th><th>Relaciones</th></tr></thead>
+        <tbody>
+          <tr><td><code>users</code></td><td>Docentes y administradores del sistema.</td><td>1:N con <code>horarios_asesoria</code></td></tr>
+          <tr><td><code>horarios_asesoria</code></td><td>Cada sesión de asesoría programada (curso, docente, día, horario, modalidad).</td><td>FK: <code>user_id</code> → <code>users.id</code>; 1:N con <code>seguimientos</code></td></tr>
+          <tr><td><code>seguimientos</code></td><td>Reserva de un estudiante a una sesión. También registra asistencia y estado de encuesta.</td><td>FK: <code>horario_id</code>, <code>estudiante_id</code>; 1:1 con <code>encuestas</code></td></tr>
+          <tr><td><code>estudiantes</code></td><td>Perfil del estudiante (cédula, nombre, correo Google).</td><td>1:N con <code>seguimientos</code></td></tr>
+          <tr><td><code>encuestas</code></td><td>Respuestas de satisfacción post-sesión (P1–P5 + comentario + promedio).</td><td>FK: <code>seguimiento_id</code>, <code>horario_id</code>, <code>estudiante_id</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Campos clave — tabla <code>users</code></h3>
+      <table>
+        <thead><tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>rol</code></td><td>ENUM</td><td><code>admin</code> | <code>profesor</code></td></tr>
+          <tr><td><code>activo</code></td><td>BOOLEAN</td><td>false = cuenta desactivada, no puede iniciar sesión</td></tr>
+          <tr><td><code>cambiar_password</code></td><td>BOOLEAN</td><td>true = el middleware fuerza cambio de contraseña al entrar</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Campos clave — tabla <code>seguimientos</code></h3>
+      <table>
+        <thead><tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>estado</code></td><td>ENUM</td><td><code>Programada</code> | <code>Evaluada</code></td></tr>
+          <tr><td><code>asistencia</code></td><td>BOOLEAN nullable</td><td>null = pendiente, true = asistió, false = no asistió</td></tr>
+          <tr><td><code>encuesta_respondida</code></td><td>BOOLEAN</td><td>Previene múltiples encuestas por reserva</td></tr>
+          <tr><td><code>evolucion</code></td><td>TEXT nullable</td><td>Notas del docente sobre el progreso del estudiante</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 5. Modelos -->
+    <section id="modelos">
+      <h2><span class="sec-num">5</span>Modelos Eloquent</h2>
+
+      <h3>User</h3>
+      <pre><code>// Relaciones
+public function horarios(): HasMany       // horarios_asesoria vinculados al docente
+
+// Campos en $fillable: name, email, password, rol, activo, cambiar_password
+// Usa HasApiTokens (Sanctum), HasTeams (Jetstream), MustVerifyEmail</code></pre>
+
+      <h3>HorarioAsesoria</h3>
+      <pre><code>// Relaciones
+public function user(): BelongsTo         // docente propietario
+public function seguimientos(): HasMany   // reservas de estudiantes
+
+// withCount('seguimientos') para mostrar inscritos en las tarjetas
+</code></pre>
+
+      <h3>Seguimiento</h3>
+      <pre><code>// Relaciones
+public function horario(): BelongsTo
+public function estudiante(): BelongsTo
+public function encuesta(): HasOne
+
+// Método de negocio
+public function puedeResponderEncuesta(): bool
+{
+    return $this->estado === 'Evaluada'
+        && $this->asistencia === true
+        && !$this->encuesta_respondida;
+}
+</code></pre>
+
+      <h3>Encuesta</h3>
+      <pre><code>// Método estático de utilidad
+public static function calcularPromedio(array $data): float
+{
+    $campos = ['p1_claridad','p2_puntualidad','p3_dominio_tema','p4_utilidad','p5_ambiente'];
+    $sum = array_sum(array_map(fn($c) => (float)($data[$c] ?? 0), $campos));
+    return round($sum / count($campos), 2);
+}
+</code></pre>
+    </section>
+
+    <!-- 6. Controladores -->
+    <section id="controladores">
+      <h2><span class="sec-num">6</span>Controladores</h2>
+
+      <table>
+        <thead><tr><th>Controlador</th><th>Responsabilidad principal</th></tr></thead>
+        <tbody>
+          <tr><td><code>HorarioController</code></td><td>CRUD de horarios, importación Excel, asistencia, API JSON para calendarios, PDFs de lista, seguimiento.</td></tr>
+          <tr><td><code>EncuestaController</code></td><td>Mostrar y guardar encuesta (lado estudiante). Dashboard de satisfacción, reportes PDF por docente y por curso (lado admin).</td></tr>
+          <tr><td><code>UsuarioController</code></td><td>Listar usuarios, actualizar rol, desactivar, reactivar.</td></tr>
+          <tr><td><code>GoogleAuthController</code></td><td>Redirección OAuth, callback de Google, vinculación cédula–correo, logout de sesión de estudiante.</td></tr>
+          <tr><td><code>CambiarPasswordController</code></td><td>Mostrar y procesar el formulario de cambio de contraseña obligatorio.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Flujo de importación (<code>HorarioController::importar</code>)</h3>
+      <pre><code>1. Validar extensión del archivo (xlsx, xls, csv).
+2. Leer encabezados con PhpSpreadsheet → detectar formato (ancho vs. largo).
+3. Instanciar HorariosImportWide o HorariosImport según el formato.
+4. Excel::import($import, $archivo)
+   → Cada fila pasa por model() / collection():
+       a. Detectar columnas con alias normalizados.
+       b. Parsear horas (fracción decimal Excel → HH:MM:SS).
+       c. Validar límite horario institucional (22:00 semana / 17:00 sábado).
+       d. Validar cruce de horarios (query DB).
+       e. Buscar o crear User (profesor) por correo → nombre.
+       f. Insertar HorarioAsesoria → $insertados++.
+5. Retornar sesión: import_popup, import_insertados,
+   import_fuera_rango, import_conflictos, import_otros.
+6. Vista: modal popup muestra contadores y listas de fallos.</code></pre>
+    </section>
+
+    <!-- 7. Rutas -->
+    <section id="rutas">
+      <h2><span class="sec-num">7</span>Rutas y middleware</h2>
+
+      <h3>Grupos de middleware</h3>
+      <table>
+        <thead><tr><th>Grupo</th><th>Middleware</th><th>Alcance</th></tr></thead>
+        <tbody>
+          <tr><td>Público</td><td>(ninguno)</td><td><code>/</code>, <code>/estudiante</code>, <code>/api/horarios</code>, <code>/reservar</code>, <code>/encuesta/{id}</code></td></tr>
+          <tr><td>Contraseña forzada</td><td><code>auth:sanctum</code>, <code>auth_session</code></td><td><code>/cambiar-contrasena</code> — disponible aunque <code>cambiar_password=true</code></td></tr>
+          <tr><td>Privado completo</td><td><code>auth:sanctum</code>, <code>auth_session</code>, <code>verified</code>, <code>ForzarCambioPassword</code></td><td>Todas las rutas de dashboard, horarios, usuarios, reportes</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Middleware ForzarCambioPassword</h3>
+      <pre><code>// app/Http/Middleware/ForzarCambioPassword.php
+public function handle(Request $request, Closure $next): Response
+{
+    if (auth()->check() && auth()->user()->cambiar_password) {
+        return redirect()->route('password.forzar.mostrar');
+    }
+    return $next($request);
+}
+</code></pre>
+
+      <h3>Rate limiting de login</h3>
+      <pre><code>// routes/web.php
+RateLimiter::for('login', function (Request $request) {
+    return Limit::perMinute(5)->by($request->email . $request->ip());
+});
+</code></pre>
+
+      <h3>Ruta de documentación estática</h3>
+      <pre><code>Route::get('/docs/{archivo}', function (string $archivo) {
+    $permitidos = ['mockups','diagrama_er','casos_uso','manual_usuario','manual_tecnico'];
+    if (!in_array($archivo, $permitidos)) abort(404);
+    return response()->file(public_path("docs/{$archivo}.html"));
+})->where('archivo', '[a-z_]+');
+</code></pre>
+    </section>
+
+    <!-- 8. Importación -->
+    <section id="importacion">
+      <h2><span class="sec-num">8</span>Módulo de importación Excel</h2>
+
+      <h3>Dos formatos soportados</h3>
+      <table>
+        <thead><tr><th>Clase</th><th>Formato</th><th>Columnas clave</th></tr></thead>
+        <tbody>
+          <tr><td><code>HorariosImport</code></td><td>Largo — una fila por horario</td><td>CURSO, DOCENTE, CORREO, DIA, INICIO, FIN, MODALIDAD…</td></tr>
+          <tr><td><code>HorariosImportWide</code></td><td>Ancho — una fila por curso, columnas por día</td><td>CURSOS, PROFESOR, LUNES, MARTES, MIÉRCOLES, JUEVES, VIERNES (celda: "8am a 10am")</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Detección automática de columnas</h3>
+      <p><code>HorariosImport</code> usa un mapa de <em>aliases</em> normalizado. Cada columna canónica (ej: <code>curso</code>) puede reconocerse con variantes escritas diferente (ej: <code>materia</code>, <code>asignatura</code>, <code>NOMBRE CURSO</code>). La normalización elimina tildes y convierte a minúsculas antes de comparar.</p>
+
+      <h3>Conversión de hora Excel</h3>
+      <p>Excel puede guardar horas como fracciones decimales del día (e.g., <code>0.333…</code> = 08:00). Ambos importers detectan este caso:</p>
+      <pre><code>if (is_float($value) && $value >= 0 && $value < 1) {
+    $mins = (int) round($value * 1440); // 1440 = minutos en un día
+    return sprintf('%02d:%02d', intdiv($mins, 60), $mins % 60);
+}
+</code></pre>
+
+      <h3>Validaciones aplicadas (por fila)</h3>
+      <ol style="margin:0 0 12px 20px;font-size:14px;color:#334155">
+        <li>Columnas obligatorias presentes.</li>
+        <li>Curso y docente no vacíos.</li>
+        <li>Hora de inicio y fin parseables.</li>
+        <li>Hora fin ≤ límite institucional (22:00 L–V, 17:00 S).</li>
+        <li>Sin cruce de horario del mismo docente en el mismo día.</li>
+      </ol>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div><strong>Creación automática de docente</strong>Si el correo del Excel no coincide con ningún usuario existente, el sistema crea automáticamente la cuenta con contraseña temporal <code>Pascual2026</code> y <code>cambiar_password=true</code>.</div>
+      </div>
+    </section>
+
+    <!-- 9. Autenticación -->
+    <section id="autenticacion">
+      <h2><span class="sec-num">9</span>Autenticación</h2>
+
+      <h3>Docentes y administradores — Laravel Jetstream + Sanctum</h3>
+      <p>Jetstream provee las vistas de login, registro y recuperación de contraseña. Sanctum gestiona las sesiones con tokens de API. El guard activo es <code>auth:sanctum</code>.</p>
+
+      <h3>Estudiantes — Google OAuth (Socialite)</h3>
+      <pre><code>// GoogleAuthController
+// 1. redirect() → Laravel Socialite → Google OAuth 2.0
+// 2. callback() → recibe perfil Google → guarda en session:
+//    'correo_pendiente', 'google_nombre'
+// 3. Si el estudiante ya está vinculado (correo en DB):
+//    session(['estudiante_id', 'estudiante_nombre'])
+// 4. Si no está vinculado: mostrar formulario de cédula
+// 5. vincular() → valida cédula, asocia correo Google → session
+</code></pre>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>Sesión separada</strong>Los estudiantes no usan Sanctum ni la tabla <code>users</code>. Su sesión vive en la llave <code>estudiante_id</code> de la sesión PHP. No tienen acceso al panel administrativo.</div>
+      </div>
+
+      <h3>Variables de entorno necesarias (.env)</h3>
+      <pre><code>GOOGLE_CLIENT_ID=tu_client_id
+GOOGLE_CLIENT_SECRET=tu_client_secret
+GOOGLE_REDIRECT_URI=https://tudominio.com/auth/google/callback
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=agendau
+DB_USERNAME=root
+DB_PASSWORD=
+
+APP_KEY=base64:...   # php artisan key:generate
+APP_URL=https://tudominio.com
+</code></pre>
+    </section>
+
+    <!-- 10. Vistas -->
+    <section id="vistas">
+      <h2><span class="sec-num">10</span>Vistas y frontend</h2>
+
+      <h3>Tecnologías frontend</h3>
+      <table>
+        <thead><tr><th>Tecnología</th><th>Uso</th><th>Carga</th></tr></thead>
+        <tbody>
+          <tr><td>Tailwind CSS 3</td><td>Sistema de diseño completo via utilidades</td><td>CDN (play.tailwindcss.com)</td></tr>
+          <tr><td>Alpine.js</td><td>Tabs, dropdowns, x-data reactivo</td><td>CDN</td></tr>
+          <tr><td>FullCalendar 6</td><td>Calendario semanal de asesorías (estudiante)</td><td>CDN</td></tr>
+          <tr><td>SweetAlert2</td><td>Diálogos de confirmación de acciones destructivas</td><td>CDN (dashboard)</td></tr>
+          <tr><td>Google Fonts</td><td>Tipografía Manrope para todo el sistema</td><td>CDN</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Patrón de tabs en dashboard.blade.php</h3>
+      <pre><code>// Alpine.js controla las pestañas del panel admin
+&lt;div x-data="{ tab: '{{ $activeTab }}' }"&gt;
+  &lt;button @click="tab='cursos'"&gt;Gestión de cursos&lt;/button&gt;
+  &lt;div x-show="tab==='cursos'"&gt;...&lt;/div&gt;
+&lt;/div&gt;
+
+// $activeTab viene del controlador para persistir pestaña activa
+// después de un redirect (ej: tras importar → tab='carga')
+</code></pre>
+
+      <h3>API JSON para el calendario</h3>
+      <pre><code>GET /api/horarios      → todos los horarios (público)
+GET /api/mis-horarios  → solo las reservas del estudiante autenticado
+
+// Respuesta:
+[{
+  "id": 1,
+  "title": "Cálculo I (Carlos Ruiz)",
+  "startTime": "08:00:00",
+  "endTime": "10:00:00",
+  "daysOfWeek": [1],
+  "color": "#002845",
+  "extendedProps": { "lugar": "B401", "modalidad": "Presencial", ... }
+}]
+</code></pre>
+    </section>
+
+    <!-- 11. Instalación -->
+    <section id="instalacion">
+      <h2><span class="sec-num">11</span>Instalación y despliegue</h2>
+
+      <h3>Requisitos del servidor</h3>
+      <table>
+        <thead><tr><th>Componente</th><th>Versión mínima</th></tr></thead>
+        <tbody>
+          <tr><td>PHP</td><td>8.1 con extensiones: pdo_mysql, mbstring, openssl, tokenizer, xml, ctype, json, bcmath, fileinfo</td></tr>
+          <tr><td>MySQL / MariaDB</td><td>8.0 / 10.4</td></tr>
+          <tr><td>Composer</td><td>2.x</td></tr>
+          <tr><td>Servidor web</td><td>Apache 2.4 (con mod_rewrite) o Nginx</td></tr>
+          <tr><td>Node.js</td><td>18+ (solo si se compila Tailwind localmente; no requerido en producción vía CDN)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Pasos de instalación</h3>
+      <pre><code># 1. Clonar el repositorio
+git clone https://github.com/&lt;org&gt;/agendau.git
+cd agendau
+
+# 2. Instalar dependencias PHP
+composer install --no-dev --optimize-autoloader
+
+# 3. Configurar variables de entorno
+cp .env.example .env
+php artisan key:generate
+# Editar .env: DB_*, GOOGLE_*, APP_URL, MAIL_*
+
+# 4. Crear base de datos y ejecutar migraciones
+php artisan migrate --force
+
+# 5. Crear el primer admin manualmente
+php artisan tinker
+>>> \App\Models\User::create([
+...   'name'             => 'Administrador',
+...   'email'            => 'admin@pascualbravo.edu.co',
+...   'password'         => bcrypt('Pascual2026'),
+...   'rol'              => 'admin',
+...   'activo'           => true,
+...   'cambiar_password' => true,
+... ]);
+
+# 6. Optimizar para producción
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# 7. Permisos
+chmod -R 755 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+</code></pre>
+
+      <h3>Configuración Apache (.htaccess)</h3>
+      <pre><code># public/.htaccess (ya incluido en Laravel)
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+</code></pre>
+
+      <div class="callout tip">
+        <span class="callout-icon">✅</span>
+        <div><strong>XAMPP (desarrollo local)</strong>Asegúrate de que <code>AllowOverride All</code> esté activo en el virtualhost de Apache para que <code>.htaccess</code> procese los archivos estáticos de <code>public/docs/</code>.</div>
+      </div>
+    </section>
+
+    <!-- 12. Seguridad -->
+    <section id="seguridad">
+      <h2><span class="sec-num">12</span>Consideraciones de seguridad</h2>
+
+      <table>
+        <thead><tr><th>Mecanismo</th><th>Implementación</th></tr></thead>
+        <tbody>
+          <tr><td>CSRF</td><td>Blade <code>@csrf</code> en todos los formularios POST/PUT/DELETE. Jetstream incluye verificación automática.</td></tr>
+          <tr><td>Rate limiting</td><td><code>Limit::perMinute(5)</code> por email + IP en el endpoint de login.</td></tr>
+          <tr><td>Autorización por rol</td><td>Comprobaciones explícitas <code>auth()->user()->rol !== 'admin'</code> + <code>abort(403)</code>.</td></tr>
+          <tr><td>Separación de sesiones</td><td>Estudiantes en sesión PHP; docentes/admins en Sanctum. No hay mezcla de contextos.</td></tr>
+          <tr><td>Contraseña temporal forzada</td><td>Middleware <code>ForzarCambioPassword</code> intercepta toda ruta privada si <code>cambiar_password=true</code>.</td></tr>
+          <tr><td>Desactivación de cuentas</td><td>Campo <code>activo=false</code> + validación en LoginController para rechazar login sin borrar datos.</td></tr>
+          <tr><td>Validación de archivos</td><td>Excel solo acepta <code>mimes:xlsx,xls,csv</code> con máximo 5 MB.</td></tr>
+          <tr><td>SQL Injection</td><td>Todas las consultas usan Eloquent ORM o Query Builder con parámetros enlazados.</td></tr>
+          <tr><td>XSS</td><td>Blade escapa automáticamente con <code>{{ }}</code>. No se usa <code>{!! !!}</code> con datos de usuario.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 13. Mantenimiento -->
+    <section id="mantenimiento">
+      <h2><span class="sec-num">13</span>Mantenimiento</h2>
+
+      <h3>Comandos útiles</h3>
+      <pre><code># Limpiar caché de configuración / rutas / vistas
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+
+# Volver a compilar caché para producción
+php artisan optimize
+
+# Ver logs de errores
+tail -f storage/logs/laravel.log
+
+# Modo de mantenimiento
+php artisan down --message="Actualización en progreso" --retry=60
+php artisan up
+</code></pre>
+
+      <h3>Copias de seguridad recomendadas</h3>
+      <ul style="margin:0 0 12px 20px;font-size:14px;color:#334155">
+        <li>Dump diario de la base de datos: <code>mysqldump agendau > backup_$(date +%F).sql</code></li>
+        <li>Backup del directorio <code>storage/</code> para conservar logs y archivos subidos.</li>
+        <li>Commit del código fuente a repositorio Git tras cada actualización.</li>
+      </ul>
+
+      <h3>Actualizar dependencias</h3>
+      <pre><code># Verificar dependencias desactualizadas
+composer outdated
+
+# Actualizar con restricciones semánticas del composer.json
+composer update --with-dependencies
+
+# Siempre ejecutar después de actualizar
+php artisan migrate
+php artisan optimize
+</code></pre>
+
+      <div class="callout danger">
+        <span class="callout-icon">🛑</span>
+        <div><strong>Base de datos en producción</strong>Nunca ejecutes <code>php artisan migrate:fresh</code> en producción. Usa solo <code>migrate</code> o migraciones reversibles para no perder datos.</div>
+      </div>
+    </section>
+
+    <div style="text-align:center;padding:32px 0 0;border-top:1px solid var(--border);margin-top:48px;font-size:12px;color:var(--gray)">
+      AgendaU &bull; Manual Técnico v1.0 &bull; Institución Universitaria Pascual Bravo &bull; 2026
+    </div>
+
+  </main>
+</div>
+</body>
+</html>

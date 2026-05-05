@@ -5,6 +5,7 @@ use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\EncuestaController;
+use App\Http\Controllers\CambiarPasswordController;
 use Illuminate\Support\Facades\RateLimiter; 
 use Illuminate\Cache\RateLimiting\Limit;     
 use Illuminate\Http\Request;                 
@@ -15,6 +16,15 @@ use Illuminate\Http\Request;
 RateLimiter::for('login', function (Request $request) {
     return Limit::perMinute(5)->by($request->email.$request->ip());
 });
+
+// ========================================================
+// 📄 DIAGRAMAS Y DOCUMENTACIÓN (acceso directo)
+// ========================================================
+Route::get('/docs/{archivo}', function (string $archivo) {
+    $permitidos = ['mockups', 'diagrama_er', 'casos_uso', 'manual_usuario', 'manual_tecnico'];
+    if (!in_array($archivo, $permitidos)) abort(404);
+    return response()->file(public_path("docs/{$archivo}.html"));
+})->where('archivo', '[a-z_]+');
 
 // ========================================================
 // 🌍 ZONA PÚBLICA: Pantallas Abiertas y Estudiantes
@@ -62,10 +72,17 @@ Route::post('/encuesta/{id}', [EncuestaController::class, 'guardar'])->name('enc
 // ========================================================
 // 🔐 ZONA PRIVADA: Requiere inicio de sesión (Docentes y Admin)
 // ========================================================
+// Cambio de contraseña obligatorio (dentro de sesión activa)
+Route::middleware(['auth:sanctum', config('jetstream.auth_session')])->group(function () {
+    Route::get('/cambiar-contrasena',  [CambiarPasswordController::class, 'mostrar'])->name('password.forzar.mostrar');
+    Route::post('/cambiar-contrasena', [CambiarPasswordController::class, 'actualizar'])->name('password.forzar.actualizar');
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    \App\Http\Middleware\ForzarCambioPassword::class,
 ])->group(function () {
     
     // --- 1. DASHBOARD DINÁMICO ---
@@ -73,14 +90,14 @@ Route::middleware([
         $user = auth()->user();
 
         if ($user->rol === 'admin') {
-            $horarios = \App\Models\HorarioAsesoria::withCount('seguimientos')->orderBy('dia_semana')->get();
+            $horarios = \App\Models\HorarioAsesoria::withCount('seguimientos')->orderBy('curso_nombre')->get();
             $usuarios = \App\Models\User::all();
             return view('dashboard', compact('horarios', 'usuarios'));
         }
 
         $horarios = \App\Models\HorarioAsesoria::where('user_id', $user->id)
                         ->withCount('seguimientos')
-                        ->orderBy('dia_semana')
+                        ->orderBy('curso_nombre')
                         ->get();
         $usuarios = collect();
         return view('admin.dashboard', compact('horarios', 'usuarios'));
@@ -105,6 +122,7 @@ Route::middleware([
         Route::get('/seguimiento/buscar', 'seguimientoBuscar')->name('seguimiento.buscar');
 
         // CRUD de Horarios
+        Route::get('/horarios/plantilla', 'descargarPlantilla')->name('horarios.plantilla');
         Route::post('/horarios/importar', 'importar')->name('horarios.importar');
         Route::get('/horarios/{id}/editar', 'editar')->name('horarios.editar');
         Route::put('/horarios/{id}', 'actualizar')->name('horarios.actualizar');
@@ -124,7 +142,6 @@ Route::middleware([
         Route::put('/usuarios/{id}/rol', 'actualizarRol')->name('usuarios.actualizarRol');
         Route::delete('/usuarios/{id}', 'eliminarUsuario')->name('usuarios.eliminar'); 
         Route::put('/usuarios/{id}/reactivar', 'reactivar')->name('usuarios.reactivar');
-        Route::delete('/usuarios/{id}/destruir', 'destruir')->name('usuarios.destruir');
     });
 
 });

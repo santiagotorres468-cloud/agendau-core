@@ -68,21 +68,4 @@ class UsuarioController extends Controller
             ->with('exito', 'Usuario reactivado como "' . ucfirst($request->rol) . '".');
     }
 
-    /**
-     * Eliminar definitivamente de la base de datos.
-     */
-    public function destruir($id)
-    {
-        if (auth()->user()->rol !== 'admin') abort(403);
-
-        if ((int)$id === auth()->id()) {
-            return redirect()->to(route('dashboard').'?tab=usuarios')
-                ->with('error', 'No puedes eliminarte a ti mismo.');
-        }
-
-        User::findOrFail($id)->delete();
-
-        return redirect()->to(route('dashboard').'?tab=usuarios')
-            ->with('exito', 'Usuario eliminado definitivamente.');
-    }
 }

@@ -73,7 +73,7 @@
                     <svg class="w-7 h-7 text-[#C9A227]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
                     Satisfacción estudiantil
                 </h2>
-                <p class="text-gray-500 text-sm mt-1 font-medium">Resumen de encuestas por docente y por materia</p>
+                <p class="text-gray-500 text-sm mt-1 font-medium">Resumen de encuestas por docente y por curso</p>
             </div>
             <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-[#002845] bg-gray-100 hover:bg-gray-200 px-4 py-2.5 rounded-xl border border-gray-200 transition">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
@@ -86,7 +86,23 @@
 
                 {{-- ─── POR DOCENTE ─────────────────────────────────────── --}}
                 <section>
-                    <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Por docente</h3>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                        <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest">Por docente</h3>
+
+                        {{-- Búsqueda parcial de nombre --}}
+                        <div class="relative sm:w-72">
+                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            <input
+                                id="buscar-docente"
+                                type="text"
+                                placeholder="Buscar docente..."
+                                class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#002845]/20 focus:border-[#002845] transition"
+                                oninput="filtrarDocentes(this.value)"
+                            />
+                        </div>
+                    </div>
 
                     @if($docentesConPromedio->isEmpty())
                         <div class="bg-white rounded-2xl border border-gray-100 p-10 text-center text-gray-400 text-sm font-medium">
@@ -94,106 +110,146 @@
                         </div>
                     @else
                         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                            <table class="min-w-full divide-y divide-gray-100 text-sm">
-                                <thead class="bg-[#002845] text-white">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left font-semibold">Docente</th>
-                                        <th class="px-6 py-3 text-center font-semibold">Encuestas</th>
-                                        <th class="px-6 py-3 text-center font-semibold">Promedio</th>
-                                        <th class="px-6 py-3 text-center font-semibold">Nivel</th>
-                                        <th class="px-6 py-3 text-right font-semibold">Informe PDF</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-50">
-                                    @foreach($docentesConPromedio->sortByDesc('promedio_encuesta') as $docente)
-                                        @php
-                                            $p     = $docente->promedio_encuesta;
-                                            $pct   = ($p / 5) * 100;
-                                            $color = $p >= 4.5 ? '#059669' : ($p >= 3.5 ? '#C9A227' : '#B91C1C');
-                                            $nivel = $p >= 4.5 ? 'Excelente' : ($p >= 3.5 ? 'Bueno' : ($p >= 2.5 ? 'Regular' : 'Por mejorar'));
-                                        @endphp
-                                        <tr class="hover:bg-slate-50 transition-colors">
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="w-8 h-8 rounded-full bg-[#002845] flex items-center justify-center text-xs font-bold flex-shrink-0" style="color:#C9A227">
-                                                        {{ strtoupper(substr($docente->name, 0, 1)) }}
-                                                    </div>
-                                                    <span class="font-semibold text-gray-900">{{ $docente->name }}</span>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-center text-gray-500">
-                                                @if($docente->total_encuestas > 0)
-                                                    {{ $docente->total_encuestas }}
-                                                @else
-                                                    <span class="text-gray-300">—</span>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 text-center">
-                                                @if($docente->total_encuestas > 0)
-                                                    <div class="flex items-center justify-center gap-3">
-                                                        <div class="w-28 bg-gray-100 rounded-full h-2">
-                                                            <div class="h-2 rounded-full" style="width: {{ $pct }}%; background: {{ $color }};"></div>
-                                                        </div>
-                                                        <span class="font-bold text-sm w-8" style="color: {{ $color }};">{{ number_format($p, 1) }}</span>
-                                                    </div>
-                                                @else
-                                                    <span class="text-gray-300 text-xs">Sin datos</span>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 text-center">
-                                                @if($docente->total_encuestas > 0)
-                                                    <span class="text-xs font-bold px-2.5 py-1 rounded-full" style="background: {{ $color }}22; color: {{ $color }};">
-                                                        {{ $nivel }}
-                                                    </span>
-                                                @else
-                                                    <span class="text-gray-300 text-xs">—</span>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 text-right">
-                                                @if($docente->total_encuestas > 0)
-                                                    <form action="{{ route('reportes.docente') }}" method="GET" target="_blank" class="inline">
-                                                        <input type="hidden" name="docente_id" value="{{ $docente->id }}">
-                                                        <button type="submit" class="inline-flex items-center gap-1.5 bg-[#002845] text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-[#003A5C] transition">
-                                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                                            Descargar PDF
-                                                        </button>
-                                                    </form>
-                                                @else
-                                                    <span class="text-gray-300 text-xs">Sin encuestas</span>
-                                                @endif
-                                            </td>
+                            <div class="overflow-y-auto max-h-[32rem]">
+                                <table class="min-w-full divide-y divide-gray-100 text-sm" id="tabla-docentes">
+                                    <thead class="bg-[#002845] text-white sticky top-0 z-10">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left font-semibold">Docente</th>
+                                            <th class="px-6 py-3 text-center font-semibold">Encuestas</th>
+                                            <th class="px-6 py-3 text-center font-semibold">Promedio</th>
+                                            <th class="px-6 py-3 text-center font-semibold">Nivel</th>
+                                            <th class="px-6 py-3 text-right font-semibold">Informe PDF</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-50" id="cuerpo-docentes">
+                                        @foreach($docentesConPromedio->sortBy('name') as $docente)
+                                            @php
+                                                $p     = $docente->promedio_encuesta;
+                                                $pct   = ($p / 5) * 100;
+                                                $color = $p >= 4.5 ? '#059669' : ($p >= 3.5 ? '#C9A227' : '#B91C1C');
+                                                $nivel = $p >= 4.5 ? 'Excelente' : ($p >= 3.5 ? 'Bueno' : ($p >= 2.5 ? 'Regular' : 'Por mejorar'));
+                                            @endphp
+                                            <tr class="docente-row hover:bg-slate-50 transition-colors" data-nombre="{{ strtolower($docente->name) }}">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="w-8 h-8 rounded-full bg-[#002845] flex items-center justify-center text-xs font-bold flex-shrink-0" style="color:#C9A227">
+                                                            {{ strtoupper(substr($docente->name, 0, 1)) }}
+                                                        </div>
+                                                        <span class="font-semibold text-gray-900">{{ $docente->name }}</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-center text-gray-500">
+                                                    @if($docente->total_encuestas > 0)
+                                                        {{ $docente->total_encuestas }}
+                                                    @else
+                                                        <span class="text-gray-300">—</span>
+                                                    @endif
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    @if($docente->total_encuestas > 0)
+                                                        <div class="flex items-center justify-center gap-3">
+                                                            <div class="w-28 bg-gray-100 rounded-full h-2">
+                                                                <div class="h-2 rounded-full" style="width: {{ $pct }}%; background: {{ $color }};"></div>
+                                                            </div>
+                                                            <span class="font-bold text-sm w-8" style="color: {{ $color }};">{{ number_format($p, 1) }}</span>
+                                                        </div>
+                                                    @else
+                                                        <span class="text-gray-300 text-xs">Sin datos</span>
+                                                    @endif
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    @if($docente->total_encuestas > 0)
+                                                        <span class="text-xs font-bold px-2.5 py-1 rounded-full" style="background: {{ $color }}22; color: {{ $color }};">
+                                                            {{ $nivel }}
+                                                        </span>
+                                                    @else
+                                                        <span class="text-gray-300 text-xs">—</span>
+                                                    @endif
+                                                </td>
+                                                <td class="px-6 py-4 text-right">
+                                                    @if($docente->total_encuestas > 0)
+                                                        <form action="{{ route('reportes.docente') }}" method="GET" target="_blank" class="inline">
+                                                            <input type="hidden" name="docente_id" value="{{ $docente->id }}">
+                                                            <button type="submit" class="inline-flex items-center gap-1.5 bg-[#002845] text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-[#003A5C] transition">
+                                                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                                                Descargar PDF
+                                                            </button>
+                                                        </form>
+                                                    @else
+                                                        <span class="text-gray-300 text-xs">Sin encuestas</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+                                {{-- Mensaje cuando ningún docente coincide con la búsqueda --}}
+                                <div id="sin-resultados-docente" class="hidden p-8 text-center text-gray-400 text-sm font-medium">
+                                    No se encontraron docentes que coincidan con la búsqueda.
+                                </div>
+                            </div>
                         </div>
                     @endif
                 </section>
 
-                {{-- ─── POR MATERIA ─────────────────────────────────────── --}}
+                {{-- ─── POR CURSO ─────────────────────────────────────── --}}
                 <section>
-                    <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Por materia</h3>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                        <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest">Por curso</h3>
+
+                        {{-- Búsqueda parcial de curso --}}
+                        <div class="relative sm:w-72">
+                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            <input
+                                id="buscar-curso"
+                                type="text"
+                                placeholder="Buscar curso..."
+                                class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#002845]/20 focus:border-[#002845] transition"
+                                oninput="filtrarCursos(this.value)"
+                            />
+                        </div>
+                    </div>
 
                     @if($cursos->isEmpty())
                         <div class="bg-white rounded-2xl border border-gray-100 p-10 text-center text-gray-400 text-sm font-medium">
-                            No hay materias registradas todavía.
+                            No hay cursos registrados todavía.
                         </div>
                     @else
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                            @foreach($cursos as $curso)
-                                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col gap-4">
-                                    <div class="font-bold text-[#002845] text-sm leading-snug">
-                                        {{ ucwords(strtolower($curso)) }}
-                                    </div>
-                                    <form action="{{ route('reportes.curso') }}" method="GET" target="_blank" class="mt-auto">
-                                        <input type="hidden" name="curso_nombre" value="{{ $curso }}">
-                                        <button type="submit" class="w-full inline-flex items-center justify-center gap-1.5 border border-[#002845] text-[#002845] text-xs font-bold px-4 py-2 rounded-lg hover:bg-[#002845] hover:text-white transition">
-                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                            Generar informe
-                                        </button>
-                                    </form>
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                            <div class="overflow-y-auto max-h-[28rem]">
+                                <table class="min-w-full divide-y divide-gray-100 text-sm" id="tabla-cursos">
+                                    <thead class="bg-[#002845] text-white sticky top-0 z-10">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left font-semibold">Curso</th>
+                                            <th class="px-4 py-3 text-right font-semibold">Informe</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-50" id="cuerpo-cursos">
+                                        @foreach($cursos as $curso)
+                                        <tr class="curso-row hover:bg-slate-50 transition-colors" data-nombre="{{ strtolower($curso) }}">
+                                            <td class="px-6 py-3 font-semibold text-gray-900">{{ ucwords(strtolower($curso)) }}</td>
+                                            <td class="px-4 py-3 text-right">
+                                                <form action="{{ route('reportes.curso') }}" method="GET" target="_blank" class="inline">
+                                                    <input type="hidden" name="curso_nombre" value="{{ $curso }}">
+                                                    <button type="submit" class="inline-flex items-center gap-1 border border-[#002845] text-[#002845] text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-[#002845] hover:text-white transition">
+                                                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                                        PDF
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+                                {{-- Mensaje cuando ningún curso coincide con la búsqueda --}}
+                                <div id="sin-resultados-curso" class="hidden p-8 text-center text-gray-400 text-sm font-medium">
+                                    No se encontraron cursos que coincidan con la búsqueda.
                                 </div>
-                            @endforeach
+                            </div>
                         </div>
                     @endif
                 </section>
@@ -201,6 +257,46 @@
             </div>
         </div>
     </main>
+
+    <script>
+        function filtrarDocentes(query) {
+            const q = query.toLowerCase().trim();
+            const filas = document.querySelectorAll('.docente-row');
+            let visibles = 0;
+            filas.forEach(function(fila) {
+                const nombre = fila.getAttribute('data-nombre') || '';
+                if (nombre.includes(q)) {
+                    fila.style.display = '';
+                    visibles++;
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+            const sinResultados = document.getElementById('sin-resultados-docente');
+            if (sinResultados) {
+                sinResultados.classList.toggle('hidden', visibles > 0);
+            }
+        }
+
+        function filtrarCursos(query) {
+            const q = query.toLowerCase().trim();
+            const filas = document.querySelectorAll('.curso-row');
+            let visibles = 0;
+            filas.forEach(function(fila) {
+                const nombre = fila.getAttribute('data-nombre') || '';
+                if (nombre.includes(q)) {
+                    fila.style.display = '';
+                    visibles++;
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+            const sinResultados = document.getElementById('sin-resultados-curso');
+            if (sinResultados) {
+                sinResultados.classList.toggle('hidden', visibles > 0);
+            }
+        }
+    </script>
 
 </body>
 </html>

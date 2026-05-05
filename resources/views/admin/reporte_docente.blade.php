@@ -28,16 +28,22 @@
         }
 
         .stat-row {
-            display: flex;
-            gap: 12px;
+            display: table;
+            width: 100%;
             margin-bottom: 14px;
+            border-spacing: 0;
         }
         .stat-box {
-            flex: 1;
+            display: table-cell;
+            width: 25%;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
-            padding: 10px 12px;
+            padding: 10px 8px;
             text-align: center;
+            vertical-align: middle;
+        }
+        .stat-box + .stat-box {
+            border-left: none;
         }
         .stat-box .value { font-size: 20px; font-weight: bold; color: #002845; }
         .stat-box .label { font-size: 9px; color: #64748b; margin-top: 2px; }
@@ -149,7 +155,7 @@
             <thead>
                 <tr>
                     <th>Criterio</th>
-                    <th>Promedio</th>
+                    <th style="text-align:center">Promedio</th>
                     <th style="width:200px">Calificación visual</th>
                 </tr>
             </thead>
@@ -166,7 +172,7 @@
                 @foreach($criterios as $nombre => $valor)
                     <tr>
                         <td>{{ $nombre }}</td>
-                        <td><strong>{{ number_format($valor, 1) }}</strong> / 5</td>
+                        <td style="text-align:center"><strong>{{ number_format($valor, 1) }}</strong> / 5</td>
                         <td>
                             <div class="barra-container">
                                 <div class="barra-fill" style="width: {{ ($valor / 5) * 100 }}%"></div>
@@ -195,7 +201,7 @@
     <table>
         <thead>
             <tr>
-                <th>Materia</th>
+                <th>Curso</th>
                 <th>Día</th>
                 <th>Horario</th>
                 <th>Modalidad</th>

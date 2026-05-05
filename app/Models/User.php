@@ -30,8 +30,9 @@ protected $fillable = [
     'name',
     'email',
     'password',
-    'rol',      // ✅ Permite actualizar el rol (profesor/admin)
-    'activo',   // ✅ Permite desactivar/activar usuarios
+    'rol',
+    'activo',
+    'cambiar_password',
 ];
     /**
      * The attributes that should be hidden for serialization.

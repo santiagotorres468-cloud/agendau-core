@@ -29,6 +29,8 @@
         
         .fc-v-event .fc-event-time { font-size: 0.8rem !important; font-weight: 700 !important; background-color: rgba(0, 0, 0, 0.15); color: #ffffff; padding: 4px 12px; border-radius: 20px; margin-bottom: 8px; letter-spacing: 0.5px; }
         .fc-v-event .fc-event-title { font-size: clamp(0.85rem, 1.2vw, 1.15rem) !important; font-weight: 800 !important; line-height: 1.3 !important; white-space: normal !important; width: 100%; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .fc-timegrid-event.fc-virtual { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important; border-left-color: #1e40af !important; box-shadow: 0 4px 10px rgba(59,130,246,0.25) !important; }
+        .fc-timegrid-event.fc-virtual:hover { box-shadow: 0 8px 15px rgba(59,130,246,0.45) !important; }
     </style>
 
 </head>
@@ -144,7 +146,35 @@
                 headerToolbar: { left: 'prev,next today', center: 'title', right: window.innerWidth < 768 ? 'timeGridDay,timeGridWeek' : 'dayGridMonth,timeGridWeek' },
                 buttonText: { today: 'Hoy', month: 'Mes', week: 'Semana', day: 'Día' },
                 events: '{{ route("api.mis.horarios") }}',
-                
+
+                eventDidMount: function(info) {
+                    const props = info.event.extendedProps;
+                    const esVirtual = props.modalidad && props.modalidad.toString().trim().toLowerCase() === 'virtual';
+
+                    if (esVirtual) {
+                        info.el.classList.add('fc-virtual');
+                    }
+
+                    const mainEl = info.el.querySelector('.fc-event-main');
+                    if (!mainEl) return;
+
+                    let texto = '';
+                    if (esVirtual) {
+                        texto = '💻 Virtual';
+                    } else {
+                        const sede = props.sede || '';
+                        const aula = props.aula ? 'Aula ' + props.aula : '';
+                        texto = [sede, aula].filter(Boolean).join(' · ');
+                    }
+
+                    if (texto) {
+                        const span = document.createElement('span');
+                        span.textContent = texto;
+                        span.style.cssText = 'font-size:0.8rem;font-weight:700;opacity:0.88;margin-top:5px;display:block;letter-spacing:0.3px;';
+                        mainEl.appendChild(span);
+                    }
+                },
+
                 eventClick: function(info) {
                     info.jsEvent.preventDefault();
                     

@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Especificación de Casos de Uso – AgendaU</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #eef2f7;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    padding: 48px 40px 60px;
+  }
+  .doc-title {
+    text-align: center;
+    color: #002845;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
+  }
+  .doc-subtitle {
+    text-align: center;
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  .doc-inst {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 11.5px;
+    margin-bottom: 48px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── CARD BASE ─────────────────────────────────────── */
+  .cu-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 22px rgba(0,0,0,0.09);
+    margin-bottom: 32px;
+    overflow: hidden;
+    border: 1px solid #dde4ef;
+    page-break-inside: avoid;
+  }
+
+  /* ── HEADER ────────────────────────────────────────── */
+  .cu-header {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid #e8eef7;
+  }
+  .cu-num {
+    width: 74px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+  .cu-header-info {
+    flex: 1;
+    padding: 14px 18px 12px;
+  }
+  .cu-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 5px;
+  }
+  .cu-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .cu-badge {
+    font-size: 10.5px;
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 2px 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* ── BODY ──────────────────────────────────────────── */
+  .cu-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .cu-body.full {
+    grid-template-columns: 1fr;
+  }
+  .cu-section {
+    padding: 14px 20px;
+    border-right: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .cu-section:last-child { border-right: none; }
+  .cu-section.full-width {
+    grid-column: 1 / -1;
+    border-right: none;
+  }
+  .cu-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .cu-section-title span { font-size: 12px; }
+  .cu-desc {
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.65;
+  }
+  .cu-pre {
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.65;
+  }
+  .cu-pre.none {
+    color: #94a3b8;
+    font-style: italic;
+  }
+
+  /* ── FLOW STEPS ────────────────────────────────────── */
+  .flow-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .flow-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-bottom: 6px;
+    font-size: 11.5px;
+    color: #475569;
+    line-height: 1.5;
+  }
+  .flow-item:last-child { margin-bottom: 0; }
+  .flow-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .flow-text { flex: 1; }
+
+  /* ── ALTERNATIVE FLOW ──────────────────────────────── */
+  .alt-box {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 9px 12px;
+    margin-top: 8px;
+  }
+  .alt-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #92400e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .alt-text {
+    font-size: 11.5px;
+    color: #78350f;
+    line-height: 1.55;
+  }
+
+  /* ── COLOR THEMES ──────────────────────────────────── */
+  /* Estudiante – azul */
+  .theme-student .cu-num { background: linear-gradient(135deg, #1d4ed8, #2563eb); }
+  .theme-student .cu-badge.actor { background: #dbeafe; color: #1e40af; }
+  .theme-student .flow-num { background: #2563eb; }
+  .theme-student .cu-title { color: #1e3a8a; }
+
+  /* Docente – ámbar */
+  .theme-docente .cu-num { background: linear-gradient(135deg, #b45309, #d97706); }
+  .theme-docente .cu-badge.actor { background: #fef3c7; color: #92400e; }
+  .theme-docente .flow-num { background: #d97706; }
+  .theme-docente .cu-title { color: #78350f; }
+
+  /* Administrador – rosa */
+  .theme-admin .cu-num { background: linear-gradient(135deg, #9d174d, #db2777); }
+  .theme-admin .cu-badge.actor { background: #fce7f3; color: #831843; }
+  .theme-admin .flow-num { background: #db2777; }
+  .theme-admin .cu-title { color: #831843; }
+
+  /* Sistema – verde */
+  .theme-system .cu-num { background: linear-gradient(135deg, #166534, #16a34a); }
+  .theme-system .cu-badge.actor { background: #dcfce7; color: #14532d; }
+  .theme-system .flow-num { background: #16a34a; }
+  .theme-system .cu-title { color: #14532d; }
+
+  /* Compartido – índigo */
+  .theme-shared .cu-num { background: linear-gradient(135deg, #312e81, #6366f1); }
+  .theme-shared .cu-badge.actor { background: #e0e7ff; color: #312e81; }
+  .theme-shared .flow-num { background: #6366f1; }
+  .theme-shared .cu-title { color: #312e81; }
+
+  /* ── SECTION DIVIDER ───────────────────────────────── */
+  .section-group-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 8px;
+    margin-bottom: 22px;
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-title">Especificación de Casos de Uso — Sistema AgendaU</div>
+<div class="doc-subtitle">Figura 2 · Diagrama y descripción detallada de los casos de uso del sistema</div>
+<div class="doc-inst">Institución Universitaria Pascual Bravo · Sistema de Gestión de Horarios de Asesorías</div>
+
+<!-- ══════════════════════════════════════════════════════
+     DIAGRAMA VISUAL DE CASOS DE USO
+══════════════════════════════════════════════════════ -->
+<div style="background:#fff;border-radius:14px;box-shadow:0 4px 22px rgba(0,0,0,0.09);border:1px solid #dde4ef;margin-bottom:44px;padding:22px 18px 28px;">
+  <div style="text-align:center;color:#002845;font-size:14px;font-weight:700;margin-bottom:4px;">Diagrama General de Casos de Uso</div>
+  <div style="text-align:center;color:#94a3b8;font-size:11px;margin-bottom:18px;">Vista estructural de actores, casos de uso y sus relaciones en el sistema AgendaU</div>
+<svg viewBox="0 0 1160 860" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+<defs>
+  <marker id="arr" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+    <path d="M0,0.5 L0,6.5 L7.5,3.5 z" fill="#64748b"/>
+  </marker>
+  <marker id="arr2" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+    <path d="M0,0.5 L0,6.5 L7.5,3.5 z" fill="#94a3b8"/>
+  </marker>
+  <filter id="sd" x="-10%" y="-15%" width="130%" height="145%">
+    <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#00000015"/>
+  </filter>
+</defs>
+
+<!-- System boundary -->
+<rect x="155" y="32" width="850" height="750" rx="14"
+  fill="#fafbfd" stroke="#002845" stroke-width="2" stroke-dasharray="10,5"/>
+<text x="580" y="56" text-anchor="middle" fill="#002845" font-size="14" font-weight="700" letter-spacing="0.5">Sistema AgendaU</text>
+<text x="580" y="71" text-anchor="middle" fill="#64748b" font-size="10">Institución Universitaria Pascual Bravo</text>
+
+<!-- ── ACTORS ── -->
+<!-- Estudiante (left) -->
+<g transform="translate(62,240)">
+  <circle cx="0" cy="-24" r="16" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="0" y="-19" text-anchor="middle" font-size="13">👤</text>
+  <line x1="0" y1="-8" x2="0" y2="22" stroke="#1e3a8a" stroke-width="2.2"/>
+  <line x1="-17" y1="6" x2="17" y2="6" stroke="#1e3a8a" stroke-width="2.2"/>
+  <line x1="0" y1="22" x2="-13" y2="42" stroke="#1e3a8a" stroke-width="2.2"/>
+  <line x1="0" y1="22" x2="13" y2="42" stroke="#1e3a8a" stroke-width="2.2"/>
+  <text x="0" y="58" text-anchor="middle" fill="#1e3a8a" font-size="12" font-weight="700">Estudiante</text>
+</g>
+<!-- Docente (right) -->
+<g transform="translate(1098,300)">
+  <circle cx="0" cy="-24" r="16" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="0" y="-19" text-anchor="middle" font-size="13">👤</text>
+  <line x1="0" y1="-8" x2="0" y2="22" stroke="#78350f" stroke-width="2.2"/>
+  <line x1="-17" y1="6" x2="17" y2="6" stroke="#78350f" stroke-width="2.2"/>
+  <line x1="0" y1="22" x2="-13" y2="42" stroke="#78350f" stroke-width="2.2"/>
+  <line x1="0" y1="22" x2="13" y2="42" stroke="#78350f" stroke-width="2.2"/>
+  <text x="0" y="58" text-anchor="middle" fill="#78350f" font-size="12" font-weight="700">Docente</text>
+</g>
+<!-- Administrador (bottom-left) -->
+<g transform="translate(240,820)">
+  <circle cx="0" cy="-24" r="16" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
+  <text x="0" y="-19" text-anchor="middle" font-size="13">👤</text>
+  <line x1="0" y1="-8" x2="0" y2="22" stroke="#831843" stroke-width="2.2"/>
+  <line x1="-17" y1="6" x2="17" y2="6" stroke="#831843" stroke-width="2.2"/>
+  <line x1="0" y1="22" x2="-13" y2="42" stroke="#831843" stroke-width="2.2"/>
+  <line x1="0" y1="22" x2="13" y2="42" stroke="#831843" stroke-width="2.2"/>
+  <text x="0" y="58" text-anchor="middle" fill="#831843" font-size="12" font-weight="700">Administrador</text>
+</g>
+<!-- Sistema (bottom-right) -->
+<g transform="translate(700,820)">
+  <circle cx="0" cy="-24" r="16" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="0" y="-19" text-anchor="middle" font-size="12">⚙️</text>
+  <line x1="0" y1="-8" x2="0" y2="22" stroke="#14532d" stroke-width="2.2"/>
+  <line x1="-17" y1="6" x2="17" y2="6" stroke="#14532d" stroke-width="2.2"/>
+  <line x1="0" y1="22" x2="-13" y2="42" stroke="#14532d" stroke-width="2.2"/>
+  <line x1="0" y1="22" x2="13" y2="42" stroke="#14532d" stroke-width="2.2"/>
+  <text x="0" y="58" text-anchor="middle" fill="#14532d" font-size="12" font-weight="700">Sistema</text>
+</g>
+
+<!-- ── USE CASES ── -->
+<!-- ESTUDIANTE col x=295 -->
+<g filter="url(#sd)"><ellipse cx="295" cy="130" rx="108" ry="22" fill="#dbeafe" stroke="#2563eb" stroke-width="1.6"/>
+<text x="295" y="126" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="700">CU-03</text>
+<text x="295" y="138" text-anchor="middle" fill="#1e40af" font-size="9">Calendario Público</text></g>
+
+<g filter="url(#sd)"><ellipse cx="295" cy="200" rx="108" ry="22" fill="#dbeafe" stroke="#2563eb" stroke-width="1.6"/>
+<text x="295" y="196" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="700">CU-04</text>
+<text x="295" y="208" text-anchor="middle" fill="#1e40af" font-size="9">Detalles de Ubicación</text></g>
+
+<g filter="url(#sd)"><ellipse cx="295" cy="270" rx="108" ry="22" fill="#dbeafe" stroke="#2563eb" stroke-width="1.6"/>
+<text x="295" y="266" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="700">CU-06</text>
+<text x="295" y="278" text-anchor="middle" fill="#1e40af" font-size="9">Reserva de Cupo</text></g>
+
+<g filter="url(#sd)"><ellipse cx="295" cy="340" rx="108" ry="22" fill="#dbeafe" stroke="#2563eb" stroke-width="1.6"/>
+<text x="295" y="336" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="700">CU-07</text>
+<text x="295" y="348" text-anchor="middle" fill="#1e40af" font-size="9">Cancelación de Reserva</text></g>
+
+<!-- AUTH col x=580 -->
+<g filter="url(#sd)"><ellipse cx="580" cy="100" rx="108" ry="22" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.6"/>
+<text x="580" y="96" text-anchor="middle" fill="#312e81" font-size="9" font-weight="700">CU-05</text>
+<text x="580" y="108" text-anchor="middle" fill="#3730a3" font-size="9">Autenticación RBAC</text></g>
+
+<!-- SISTEMA col x=480 -->
+<g filter="url(#sd)"><ellipse cx="470" cy="430" rx="108" ry="22" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<text x="470" y="426" text-anchor="middle" fill="#14532d" font-size="9" font-weight="700">CU-08</text>
+<text x="470" y="438" text-anchor="middle" fill="#166534" font-size="9">Actualización Disponibilidad</text></g>
+
+<g filter="url(#sd)"><ellipse cx="540" cy="660" rx="108" ry="22" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<text x="540" y="656" text-anchor="middle" fill="#14532d" font-size="9" font-weight="700">CU-02</text>
+<text x="540" y="668" text-anchor="middle" fill="#166534" font-size="9">Validación Plantilla</text></g>
+
+<!-- DOCENTE col x=868 -->
+<g filter="url(#sd)"><ellipse cx="868" cy="148" rx="108" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.6"/>
+<text x="868" y="144" text-anchor="middle" fill="#78350f" font-size="9" font-weight="700">CU-09</text>
+<text x="868" y="156" text-anchor="middle" fill="#92400e" font-size="9">Agenda Personalizada</text></g>
+
+<g filter="url(#sd)"><ellipse cx="868" cy="228" rx="108" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.6"/>
+<text x="868" y="224" text-anchor="middle" fill="#78350f" font-size="9" font-weight="700">CU-10</text>
+<text x="868" y="236" text-anchor="middle" fill="#92400e" font-size="9">Listado de Inscritos</text></g>
+
+<g filter="url(#sd)"><ellipse cx="868" cy="308" rx="108" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.6"/>
+<text x="868" y="304" text-anchor="middle" fill="#78350f" font-size="9" font-weight="700">CU-11</text>
+<text x="868" y="316" text-anchor="middle" fill="#92400e" font-size="9">Control de Asistencia</text></g>
+
+<g filter="url(#sd)"><ellipse cx="868" cy="388" rx="108" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.6"/>
+<text x="868" y="384" text-anchor="middle" fill="#78350f" font-size="9" font-weight="700">CU-12</text>
+<text x="868" y="396" text-anchor="middle" fill="#92400e" font-size="9">Observaciones de Evolución</text></g>
+
+<g filter="url(#sd)"><ellipse cx="868" cy="468" rx="108" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.6"/>
+<text x="868" y="464" text-anchor="middle" fill="#78350f" font-size="9" font-weight="700">CU-13</text>
+<text x="868" y="476" text-anchor="middle" fill="#92400e" font-size="9">Generación Informe PDF</text></g>
+
+<g filter="url(#sd)"><ellipse cx="868" cy="548" rx="108" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.6"/>
+<text x="868" y="544" text-anchor="middle" fill="#78350f" font-size="9" font-weight="700">CU-14</text>
+<text x="868" y="556" text-anchor="middle" fill="#92400e" font-size="9">Gestión de Privacidad</text></g>
+
+<!-- ADMIN bottom -->
+<g filter="url(#sd)"><ellipse cx="305" cy="590" rx="108" ry="22" fill="#fce7f3" stroke="#db2777" stroke-width="1.6"/>
+<text x="305" y="586" text-anchor="middle" fill="#831843" font-size="9" font-weight="700">CU-01</text>
+<text x="305" y="598" text-anchor="middle" fill="#9d174d" font-size="9">Carga Masiva Horarios</text></g>
+
+<g filter="url(#sd)"><ellipse cx="790" cy="590" rx="108" ry="22" fill="#fce7f3" stroke="#db2777" stroke-width="1.6"/>
+<text x="790" y="586" text-anchor="middle" fill="#831843" font-size="9" font-weight="700">CU-15</text>
+<text x="790" y="598" text-anchor="middle" fill="#9d174d" font-size="9">Respaldo de Seguridad</text></g>
+
+<!-- ── ACTOR → UC LINES ── -->
+<!-- Estudiante -->
+<line x1="80" y1="272" x2="187" y2="143" stroke="#2563eb" stroke-width="1.3" opacity="0.6"/>
+<line x1="80" y1="272" x2="187" y2="208" stroke="#2563eb" stroke-width="1.3" opacity="0.6"/>
+<line x1="80" y1="272" x2="187" y2="272" stroke="#2563eb" stroke-width="1.3" opacity="0.6"/>
+<line x1="80" y1="272" x2="187" y2="343" stroke="#2563eb" stroke-width="1.3" opacity="0.6"/>
+<!-- Docente -->
+<line x1="1083" y1="336" x2="976" y2="113" stroke="#ca8a04" stroke-width="1.3" opacity="0.6"/>
+<line x1="1083" y1="336" x2="976" y2="158" stroke="#ca8a04" stroke-width="1.3" opacity="0.6"/>
+<line x1="1083" y1="336" x2="976" y2="235" stroke="#ca8a04" stroke-width="1.3" opacity="0.6"/>
+<line x1="1083" y1="336" x2="976" y2="311" stroke="#ca8a04" stroke-width="1.3" opacity="0.6"/>
+<line x1="1083" y1="336" x2="976" y2="391" stroke="#ca8a04" stroke-width="1.3" opacity="0.6"/>
+<line x1="1083" y1="336" x2="976" y2="471" stroke="#ca8a04" stroke-width="1.3" opacity="0.6"/>
+<line x1="1083" y1="336" x2="976" y2="551" stroke="#ca8a04" stroke-width="1.3" opacity="0.6"/>
+<!-- Administrador -->
+<line x1="240" y1="796" x2="280" y2="612" stroke="#db2777" stroke-width="1.3" opacity="0.6"/>
+<line x1="240" y1="796" x2="697" y2="608" stroke="#db2777" stroke-width="1.3" opacity="0.6"/>
+<line x1="240" y1="796" x2="505" y2="115" stroke="#db2777" stroke-width="1.3" opacity="0.5" stroke-dasharray="5,3"/>
+<!-- Sistema -->
+<line x1="700" y1="796" x2="560" y2="682" stroke="#16a34a" stroke-width="1.3" opacity="0.6"/>
+<line x1="700" y1="796" x2="530" y2="452" stroke="#16a34a" stroke-width="1.3" opacity="0.6"/>
+<line x1="700" y1="796" x2="824" y2="562" stroke="#16a34a" stroke-width="1.3" opacity="0.6"/>
+
+<!-- ── INCLUDE / EXTEND ── -->
+<path d="M295,152 L295,178" fill="none" stroke="#64748b" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+<rect x="302" y="159" width="46" height="13" rx="3" fill="#fff" opacity="0.95"/>
+<text x="325" y="169" text-anchor="middle" fill="#475569" font-size="8" font-style="italic">«include»</text>
+
+<path d="M295,248 L295,222" fill="none" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#arr2)"/>
+<rect x="302" y="230" width="40" height="12" rx="3" fill="#fff" opacity="0.95"/>
+<text x="322" y="239" text-anchor="middle" fill="#64748b" font-size="8" font-style="italic">«extend»</text>
+
+<path d="M388,347 C428,370 450,408 440,408" fill="none" stroke="#64748b" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+<rect x="395" y="374" width="46" height="13" rx="3" fill="#fff" opacity="0.95"/>
+<text x="418" y="384" text-anchor="middle" fill="#475569" font-size="8" font-style="italic">«include»</text>
+
+<path d="M390,597 C465,628 492,648 432,658" fill="none" stroke="#64748b" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+<rect x="415" y="625" width="46" height="13" rx="3" fill="#fff" opacity="0.95"/>
+<text x="438" y="635" text-anchor="middle" fill="#475569" font-size="8" font-style="italic">«include»</text>
+
+<path d="M868,250 L868,230" fill="none" stroke="#64748b" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+<rect x="875" y="235" width="46" height="13" rx="3" fill="#fff" opacity="0.95"/>
+<text x="898" y="245" text-anchor="middle" fill="#475569" font-size="8" font-style="italic">«include»</text>
+
+<path d="M868,286 L868,250" fill="none" stroke="#64748b" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+<rect x="875" y="263" width="46" height="13" rx="3" fill="#fff" opacity="0.95"/>
+<text x="898" y="273" text-anchor="middle" fill="#475569" font-size="8" font-style="italic">«include»</text>
+
+<path d="M868,366 L868,330" fill="none" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#arr2)"/>
+<rect x="875" y="344" width="40" height="12" rx="3" fill="#fff" opacity="0.95"/>
+<text x="895" y="353" text-anchor="middle" fill="#64748b" font-size="8" font-style="italic">«extend»</text>
+
+<path d="M868,446 L868,410" fill="none" stroke="#64748b" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+<rect x="875" y="422" width="46" height="13" rx="3" fill="#fff" opacity="0.95"/>
+<text x="898" y="432" text-anchor="middle" fill="#475569" font-size="8" font-style="italic">«include»</text>
+
+<path d="M868,526 L868,490" fill="none" stroke="#64748b" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+<rect x="875" y="502" width="46" height="13" rx="3" fill="#fff" opacity="0.95"/>
+<text x="898" y="512" text-anchor="middle" fill="#475569" font-size="8" font-style="italic">«include»</text>
+
+<!-- LEGEND -->
+<g transform="translate(160,718)">
+  <rect x="0" y="0" width="560" height="46" rx="9" fill="#fff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="280" y="14" text-anchor="middle" fill="#334155" font-size="9.5" font-weight="700" letter-spacing="0.5">LEYENDA</text>
+  <line x1="14" y1="28" x2="44" y2="28" stroke="#475569" stroke-width="1.5"/>
+  <text x="50" y="32" fill="#475569" font-size="9">Asociación actor–CU</text>
+  <line x1="175" y1="28" x2="205" y2="28" stroke="#64748b" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+  <text x="211" y="32" fill="#475569" font-size="9">«include»</text>
+  <line x1="290" y1="28" x2="320" y2="28" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#arr2)"/>
+  <text x="326" y="32" fill="#475569" font-size="9">«extend»</text>
+  <ellipse cx="415" cy="28" rx="12" ry="7" fill="#dbeafe" stroke="#2563eb" stroke-width="1.2"/>
+  <text x="433" y="32" fill="#475569" font-size="9">Est.</text>
+  <ellipse cx="475" cy="28" rx="12" ry="7" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2"/>
+  <text x="493" y="32" fill="#475569" font-size="9">Doc.</text>
+</g>
+</svg>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     GRUPO: ESTUDIANTE
+══════════════════════════════════════════════════════ -->
+<div class="section-group-title" style="background:linear-gradient(135deg,#1d4ed8,#2563eb)">
+  👤 Casos de Uso — Actor: Estudiante
+</div>
+
+<!-- CU-03 -->
+<div class="cu-card theme-student">
+  <div class="cu-header">
+    <div class="cu-num">CU-03</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Visualización del Calendario Público de Oferta</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Estudiante / Usuario Anónimo</span>
+        <span class="cu-badge" style="background:#f0fdf4;color:#15803d">🌐 Acceso Público</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Despliegue de un calendario interactivo en la interfaz principal que muestra la oferta académica disponible, incluyendo fecha, hora y cupos de cada tutoría.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre none">Ninguna — acceso completamente público sin autenticación.</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El usuario ingresa a la URL principal de la plataforma AgendaU.</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema consulta la base de datos y renderiza un calendario mensual/semanal interactivo.</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema despliega bloques visuales con fecha, hora y cupos disponibles de cada tutoría ofertada.</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CU-04 -->
+<div class="cu-card theme-student">
+  <div class="cu-header">
+    <div class="cu-num">CU-04</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Consulta de Detalles de Ubicación y Modalidad</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Estudiante</span>
+        <span class="cu-badge" style="background:#f0fdf4;color:#15803d">🔗 Incluido en CU-03</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Permite a los estudiantes visualizar la información logística específica de una tutoría (ubicación física o enlace virtual) antes de realizar una reserva.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">El calendario público debe estar visible y el estudiante debe haber seleccionado una tutoría (CU-03).</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El estudiante hace clic sobre una tutoría específica en el calendario.</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema despliega una ventana modal con los detalles estructurados de la sesión.</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema especifica claramente la Modalidad (Presencial/Virtual) y la Ubicación exacta: Sede, Bloque y Aula, o Enlace de conexión según corresponda.</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CU-06 -->
+<div class="cu-card theme-student">
+  <div class="cu-header">
+    <div class="cu-num">CU-06</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Reserva de Cupo en Tutoría con Validación de Identidad</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Estudiante</span>
+        <span class="cu-badge" style="background:#fef3c7;color:#92400e">⚡ Extiende CU-03</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Proceso mediante el cual un estudiante asegura un espacio en una tutoría, validando su documento de identidad contra los registros institucionales activos.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">Debe existir al menos un (1) cupo disponible en la tutoría seleccionada.</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El estudiante selecciona "Reservar Cupo" en los detalles de una tutoría.</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema despliega un formulario solicitando el número de identificación (Cédula / T.I.).</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El estudiante ingresa su documento y confirma la solicitud.</div></li>
+        <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El sistema cruza el documento con la base de datos de estudiantes activos de la institución.</div></li>
+        <li class="flow-item"><div class="flow-num">5</div><div class="flow-text">El sistema registra la reserva, descuenta un cupo del aforo total y emite una confirmación en pantalla.</div></li>
+      </ul>
+      <div class="alt-box">
+        <div class="alt-label">⚠ Flujo Alternativo (4a) — Documento no encontrado</div>
+        <div class="alt-text">Si el documento ingresado no existe en los registros institucionales, el sistema bloquea la reserva y emite una alerta indicando que el estudiante no está activo en el sistema.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CU-07 -->
+<div class="cu-card theme-student">
+  <div class="cu-header">
+    <div class="cu-num">CU-07</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Cancelación de Reserva de Tutoría</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Estudiante</span>
+        <span class="cu-badge" style="background:#f0fdf4;color:#15803d">🔗 Desencadena CU-08</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Permite a un estudiante anular una reserva previamente efectuada, renunciando a su cupo y liberando el espacio para otro participante.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">El estudiante debe poseer una reserva activa registrada en el sistema.</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El estudiante accede a la opción de consulta/cancelación de reservas desde su panel.</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El estudiante selecciona la tutoría que desea cancelar de su listado de reservas activas.</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema solicita una confirmación explícita de la acción.</div></li>
+        <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El estudiante confirma la anulación.</div></li>
+        <li class="flow-item"><div class="flow-num">5</div><div class="flow-text">El sistema elimina lógicamente el registro de la base de datos y notifica el éxito de la operación.</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     GRUPO: DOCENTE
+══════════════════════════════════════════════════════ -->
+<div class="section-group-title" style="background:linear-gradient(135deg,#b45309,#d97706)">
+  👤 Casos de Uso — Actor: Docente
+</div>
+
+<!-- CU-09 -->
+<div class="cu-card theme-docente">
+  <div class="cu-header">
+    <div class="cu-num">CU-09</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Visualización de Agenda Personalizada del Docente</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Docente</span>
+        <span class="cu-badge" style="background:#e0e7ff;color:#3730a3">🔐 Requiere CU-05</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Permite al personal docente consultar un cronograma exclusivo con las sesiones de tutoría que debe impartir, filtrado únicamente por su perfil de usuario.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">El docente debe estar autenticado en el sistema (CU-05) con rol "Docente".</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El docente ingresa a su panel de control "Centro de Control".</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema filtra y renderiza únicamente las tutorías asociadas a su perfil de usuario.</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El docente visualiza el listado detallando fecha, hora, modalidad y ubicación física/virtual asignada.</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CU-10 -->
+<div class="cu-card theme-docente">
+  <div class="cu-header">
+    <div class="cu-num">CU-10</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Consulta del Listado de Estudiantes Inscritos</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Docente</span>
+        <span class="cu-badge" style="background:#f0fdf4;color:#15803d">🔗 Incluido en CU-11</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Permite al docente conocer anticipadamente la cantidad e identidad de los estudiantes que asistirán a su sesión de tutoría.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">El docente debe estar autenticado y tener al menos una tutoría programada con estudiantes inscritos.</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El docente selecciona una tutoría específica desde su agenda personal (CU-09).</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema ejecuta una consulta en la base de datos de reservas activas.</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema despliega una tabla con los nombres y documentos de identidad de los estudiantes inscritos.</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CU-11 -->
+<div class="cu-card theme-docente">
+  <div class="cu-header">
+    <div class="cu-num">CU-11</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Registro de Control de Asistencia a Sesión</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Docente</span>
+        <span class="cu-badge" style="background:#fef3c7;color:#92400e">⚡ Habilita CU-12, CU-13</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Módulo para formalizar la participación efectiva de los estudiantes que reservaron cupo, diferenciando entre asistentes y ausentes.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">La tutoría debe estar en ejecución o haber finalizado. El listado de inscritos debe ser visible (CU-10).</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El docente visualiza el listado de inscritos (CU-10).</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El docente selecciona la opción "Registrar Asistencia".</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema habilita controles de selección por alumno: <strong>Asistió / No Asistió</strong>.</div></li>
+        <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El docente marca el estado correspondiente para cada alumno y presiona "Guardar".</div></li>
+        <li class="flow-item"><div class="flow-num">5</div><div class="flow-text">El sistema actualiza el estado de asistencia en la base de datos y confirma la operación.</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CU-12 -->
+<div class="cu-card theme-docente">
+  <div class="cu-header">
+    <div class="cu-num">CU-12</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Registro de Observaciones de Evolución Académica</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Docente</span>
+        <span class="cu-badge" style="background:#fef3c7;color:#92400e">⚡ Extiende CU-11</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Permite la captura de datos cualitativos respecto al desempeño del estudiante durante la asesoría: fortalezas, debilidades y hallazgos académicos.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">El estudiante debió ser marcado como "Asistió" en el control de asistencia (CU-11).</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El docente selecciona "Agregar Evolución" frente al nombre de un estudiante asistente.</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema despliega un área de texto para redacción libre.</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El docente redacta los hallazgos, fortalezas o debilidades evidenciadas durante la sesión.</div></li>
+        <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El sistema guarda la observación, asociándola al registro histórico del estudiante.</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CU-13 -->
+<div class="cu-card theme-docente">
+  <div class="cu-header">
+    <div class="cu-num">CU-13</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Generación de Informe Consolidado de Seguimiento</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Docente</span>
+        <span class="cu-badge" style="background:#f0fdf4;color:#15803d">🔗 Requiere CU-11 y CU-12</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Funcionalidad para exportar un soporte documental formal de la sesión impartida, consolidando datos de asistencia y observaciones académicas en formato PDF.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">Debe existir registro de asistencia (CU-11) y observaciones de evolución guardadas (CU-12).</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El docente hace clic en "Generar Informe PDF" en el perfil de un estudiante.</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema recopila datos de la tutoría, datos del estudiante y las observaciones ingresadas.</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema formatea la información y renderiza un documento PDF estructurado.</div></li>
+        <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El sistema inicia la descarga automática del archivo en el equipo del docente.</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CU-14 -->
+<div class="cu-card theme-docente">
+  <div class="cu-header">
+    <div class="cu-num">CU-14</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Gestión de Privacidad de Registros Académicos</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Docente</span>
+        <span class="cu-badge" style="background:#dcfce7;color:#14532d">⚙️ Sistema / Seguridad</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Regla de negocio automatizada que garantiza la confidencialidad de las observaciones académicas, restringiendo el acceso únicamente al docente autor del registro.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">Existencia de registros de evolución académica creados (CU-12).</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">Un usuario intenta acceder a la evolución académica de un estudiante.</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema valida el ID del usuario solicitante contra el ID del docente creador de la tutoría.</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">Si coinciden (es el docente autor), el sistema permite la visualización y exportación del informe.</div></li>
+      </ul>
+      <div class="alt-box">
+        <div class="alt-label">⚠ Flujo Alternativo (3a) — Acceso no autorizado</div>
+        <div class="alt-text">Si el ID no coincide (otro docente o administrador), el sistema oculta los campos de texto y bloquea la acción, protegiendo la privacidad del historial cualitativo del estudiante.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     GRUPO: ADMINISTRADOR
+══════════════════════════════════════════════════════ -->
+<div class="section-group-title" style="background:linear-gradient(135deg,#9d174d,#db2777)">
+  👤 Casos de Uso — Actor: Administrador
+</div>
+
+<!-- CU-05 -->
+<div class="cu-card theme-shared">
+  <div class="cu-header">
+    <div class="cu-num">CU-05</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Autenticación y Control de Acceso (RBAC)</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Administrador / Docente</span>
+        <span class="cu-badge" style="background:#fce7f3;color:#831843">🔐 Compartido</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Proceso de inicio de sesión seguro que asigna permisos y vistas diferenciadas basadas en el rol del usuario (Administrador o Docente), restringiendo rutas no autorizadas.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">El usuario debe poseer credenciales válidas creadas previamente por el administrador del sistema.</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El usuario accede a la vista de "Login" del portal administrativo.</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El usuario ingresa su correo electrónico institucional y contraseña.</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema encripta y valida las credenciales contra la base de datos de usuarios.</div></li>
+        <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El sistema identifica el rol asignado y redirige al panel de control correspondiente, bloqueando rutas no autorizadas.</div></li>
+      </ul>
+      <div class="alt-box">
+        <div class="alt-label">⚠ Flujo Alternativo (3a) — Credenciales incorrectas</div>
+        <div class="alt-text">Si las credenciales son incorrectas o el usuario está inactivo, el sistema deniega el acceso y muestra una alerta de error sin revelar información sensible.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CU-01 -->
+<div class="cu-card theme-admin">
+  <div class="cu-header">
+    <div class="cu-num">CU-01</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Carga Masiva de Horarios de Tutorías</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Administrador</span>
+        <span class="cu-badge" style="background:#f0fdf4;color:#15803d">🔗 Desencadena CU-02</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Permite al administrador importar un archivo Excel estandarizado para registrar múltiples horarios de tutorías de forma simultánea, reduciendo la carga operativa manual.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">El administrador debe estar autenticado en el sistema (CU-05) con rol "Administrador".</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El administrador accede al módulo "Gestión de Horarios" → "Carga masiva".</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El administrador adjunta el archivo Excel con los campos requeridos: Materia, Docente, Correo, Modalidad, Sede, Bloque, Aula.</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema procesa el archivo, ejecuta la validación (CU-02) y almacena los registros en la base de datos.</div></li>
+        <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El sistema notifica el éxito de la operación mostrando la cantidad de horarios cargados y las filas omitidas con su motivo.</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CU-15 -->
+<div class="cu-card theme-admin">
+  <div class="cu-header">
+    <div class="cu-num">CU-15</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Ejecución de Respaldo de Seguridad (Backup)</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">👤 Administrador del Sistema</span>
+        <span class="cu-badge" style="background:#fee2e2;color:#991b1b">🛡️ Contingencia</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Procedimiento de contingencia para preservar el código fuente y los datos de la plataforma mediante volcado completo de la base de datos relacional.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">El administrador debe poseer privilegios máximos en el entorno de despliegue del servidor.</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El administrador accede al panel de herramientas del servidor/sistema.</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El administrador ejecuta el comando o botón "Generar Copia de Seguridad".</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema realiza un dump (volcado) completo de la base de datos relacional.</div></li>
+        <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El sistema almacena el archivo comprimido y notifica la finalización exitosa del respaldo.</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     GRUPO: SISTEMA (Automatizado)
+══════════════════════════════════════════════════════ -->
+<div class="section-group-title" style="background:linear-gradient(135deg,#166534,#16a34a)">
+  ⚙️ Casos de Uso — Actor: Sistema (Automatizado)
+</div>
+
+<!-- CU-02 -->
+<div class="cu-card theme-system">
+  <div class="cu-header">
+    <div class="cu-num">CU-02</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Validación de Integridad de Plantilla de Horarios</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">⚙️ Sistema / Administrador</span>
+        <span class="cu-badge" style="background:#fce7f3;color:#831843">🔗 Incluido en CU-01</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Mecanismo de validación automática que garantiza que los archivos Excel cargados cumplan con la estructura de datos obligatoria antes de su inserción en la base de datos.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">El administrador debe haber iniciado la carga de un archivo Excel (CU-01).</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El sistema intercepta el archivo Excel antes de su inserción en la base de datos.</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema verifica que los campos obligatorios estén presentes y con formato correcto según la modalidad.</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema aprueba la estructura y continúa con el proceso de carga (CU-01).</div></li>
+      </ul>
+      <div class="alt-box">
+        <div class="alt-label">⚠ Flujo Alternativo (2a) — Estructura inválida</div>
+        <div class="alt-text">Si el archivo presenta celdas vacías, formatos incorrectos o columnas faltantes, el sistema aborta la operación y despliega un reporte detallado con las filas que contienen errores para su corrección.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CU-08 -->
+<div class="cu-card theme-system">
+  <div class="cu-header">
+    <div class="cu-num">CU-08</div>
+    <div class="cu-header-info">
+      <div class="cu-title">Actualización Dinámica de Disponibilidad de Cupos</div>
+      <div class="cu-meta">
+        <span class="cu-badge actor">⚙️ Sistema Automatizado</span>
+        <span class="cu-badge" style="background:#dbeafe;color:#1e40af">🔗 Disparado por CU-07</span>
+      </div>
+    </div>
+  </div>
+  <div class="cu-body">
+    <div class="cu-section">
+      <div class="cu-section-title"><span>📋</span> Descripción</div>
+      <div class="cu-desc">Proceso automatizado en segundo plano que recalcula el aforo disponible tras cada cancelación, manteniendo el calendario público actualizado en tiempo real.</div>
+    </div>
+    <div class="cu-section">
+      <div class="cu-section-title"><span>✅</span> Precondiciones</div>
+      <div class="cu-pre">Debe haberse ejecutado exitosamente una cancelación de reserva (CU-07).</div>
+    </div>
+    <div class="cu-section full-width">
+      <div class="cu-section-title"><span>🔄</span> Flujo Principal</div>
+      <ul class="flow-list">
+        <li class="flow-item"><div class="flow-num">1</div><div class="flow-text">El sistema detecta automáticamente la eliminación lógica de una reserva en la base de datos.</div></li>
+        <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema incrementa en +1 el contador de cupos disponibles para la sesión afectada.</div></li>
+        <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema refresca el estado en el calendario público, permitiendo que otro estudiante ocupe la vacante liberada.</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

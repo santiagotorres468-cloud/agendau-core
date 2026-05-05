@@ -89,30 +89,35 @@
                     <div x-data="{ show: true }" x-show="show" x-transition class="mb-8 bg-white border border-red-200 rounded-2xl shadow-lg overflow-hidden">
                         <div class="bg-red-50 border-b border-red-100 px-6 py-4 flex justify-between items-center">
                             <div class="flex items-center space-x-3">
-                                <span class="text-2xl">⚠️</span>
-                                <h3 class="text-red-800 font-black text-lg">Reporte del Sistema</h3>
+                                <span class="text-xl">⚠️</span>
+                                <div>
+                                    <h3 class="text-red-800 font-black text-base leading-tight">No se pudo completar la operación</h3>
+                                    <p class="text-red-400 text-xs font-medium mt-0.5">Revisa los detalles a continuación</p>
+                                </div>
                             </div>
-                            <button @click="show = false" class="text-red-500 hover:text-red-800 bg-red-100 hover:bg-red-200 rounded-full w-8 h-8 flex items-center justify-center transition font-black">✖</button>
+                            <button @click="show = false" class="text-red-400 hover:text-red-700 bg-red-100 hover:bg-red-200 rounded-full w-8 h-8 flex items-center justify-center transition font-black text-sm">✕</button>
                         </div>
-                        
-                        <div class="px-6 py-5">
+
+                        <div class="px-6 py-5 space-y-4">
                             @if(session('error'))
-                                <p class="text-red-700 font-bold text-sm mb-3">{{ session('error') }}</p>
+                                <div class="flex items-start gap-3">
+                                    <span class="mt-0.5 w-5 h-5 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                                        <svg class="w-3 h-3 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                                    </span>
+                                    <p class="text-red-700 font-semibold text-sm leading-snug">{{ session('error') }}</p>
+                                </div>
                             @endif
 
                             @if(session('lista_errores') || $errors->any())
-                                <div class="bg-red-50/50 rounded-xl p-4 max-h-48 overflow-y-auto border border-red-100 shadow-inner">
-                                    <ul class="list-disc pl-5 text-xs text-red-600 font-semibold space-y-1.5">
-                                        @if(session('lista_errores'))
-                                            @foreach(session('lista_errores') as $detalle)
-                                                <li>{{ $detalle }}</li>
-                                            @endforeach
-                                        @endif
-                                        @if($errors->any())
-                                            @foreach($errors->all() as $detalle)
-                                                <li>{{ $detalle }}</li>
-                                            @endforeach
-                                        @endif
+                                <div class="bg-red-50 rounded-xl p-4 border border-red-100 max-h-52 overflow-y-auto">
+                                    <p class="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">Detalles</p>
+                                    <ul class="space-y-2">
+                                        @foreach(array_merge(session('lista_errores') ?? [], $errors->all()) as $detalle)
+                                            <li class="flex items-start gap-2 text-sm text-red-700">
+                                                <span class="mt-1 w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0"></span>
+                                                {{ $detalle }}
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             @endif
@@ -134,7 +139,7 @@
                             @if(auth()->user()->rol === 'admin')
                                 <button @click="tab = 'importar'" :class="tab === 'importar' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-5 py-2.5 rounded-xl font-semibold text-sm transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer border border-transparent">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                                    Importar Excel
+                                    Carga masiva
                                 </button>
                                 <button @click="tab = 'reportes'" :class="tab === 'reportes' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-5 py-2.5 rounded-xl font-semibold text-sm transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer border border-transparent">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
@@ -223,7 +228,8 @@
                             <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden max-w-2xl mx-auto">
                                 <div class="bg-gradient-to-r from-emerald-500 to-green-600 px-8 py-6 text-white text-center">
                                     <span class="text-5xl block mb-2">📊</span>
-                                    <h3 class="text-2xl font-extrabold tracking-wide">Carga Masiva de Horarios</h3>
+                                    <h3 class="text-2xl font-extrabold tracking-wide">Subir horarios por archivo</h3>
+                                    <p class="text-sm text-white/80 mt-1 font-medium">(Usa esta opción para cargar varios horarios al mismo tiempo mediante un archivo Excel o CSV)</p>
                                 </div>
                                 <form action="{{ route('horarios.importar') }}" method="POST" enctype="multipart/form-data" class="p-8">
                                 @csrf
@@ -242,7 +248,7 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl shadow-sm">
+                                <div class="mb-4 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl shadow-sm">
                                     <div class="flex items-start">
                                         <div class="flex-shrink-0">
                                             <span class="text-xl">ℹ️</span>
@@ -256,9 +262,16 @@
                                     </div>
                                 </div>
 
+                                <div class="mb-6 text-center">
+                                    <a href="{{ route('horarios.plantilla') }}" class="text-sm text-blue-600 hover:text-blue-800 underline font-bold inline-flex items-center justify-center gap-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                        Descargar plantilla de carga masiva (.xlsx)
+                                    </a>
+                                </div>
+
                                 <div x-data="{ fileName: null }" class="mb-8">
                                     <label :class="fileName ? 'bg-emerald-50 border-emerald-400' : 'bg-white border-gray-300 hover:bg-gray-50'" class="flex flex-col justify-center items-center w-full h-32 px-4 transition-all duration-300 border-2 border-dashed rounded-xl appearance-none cursor-pointer shadow-sm">
-                                        
+
                                         <div x-show="!fileName" class="flex flex-col items-center space-y-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
                                             <span class="font-bold text-gray-600">Haz clic para seleccionar tu archivo Excel</span>
@@ -272,18 +285,11 @@
 
                                         <input type="file" name="archivo_excel" class="hidden" required accept=".xlsx, .xls" @change="fileName = $event.target.files[0].name" />
                                     </label>
-                                    
-                                    <div class="mt-4 text-center">
-                                        <a href="{{ asset('plantillas/plantilla_horarios.xlsx') }}" download class="text-sm text-blue-600 hover:text-blue-800 underline font-bold flex items-center justify-center">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                                            Descargar plantilla para realizar carga masiva con la plantilla de la programación
-                                        </a>
-                                    </div>
                                 </div>
 
-                                <button type="submit" class="w-full bg-emerald-600 text-white font-extrabold py-4 rounded-xl shadow-lg hover:bg-emerald-700 transition transform hover:-translate-y-1 flex justify-center items-center">
+                                <button type="submit" class="w-full bg-emerald-600 text-white font-extrabold py-4 rounded-xl shadow-lg hover:bg-emerald-700 transition transform hover:-translate-y-1 flex justify-center items-center normal-case">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                                    Subir e Importar Datos
+                                    Subir e importar datos
                                 </button>
                                 </form>
                                 
@@ -327,7 +333,7 @@
                                 <div class="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
                                     <div class="bg-emerald-600 px-6 py-4 text-white font-semibold flex items-center gap-2">
                                         <svg class="w-4 h-4 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                                        Informe por materia
+                                        Informe por curso
                                     </div>
                                     <form action="{{ route('reportes.curso') }}" method="GET" target="_blank" class="p-6">
                                         <p class="text-sm text-gray-500 mb-4">Genera un reporte global del impacto de un curso.</p>
@@ -351,7 +357,7 @@
                                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                         Administradores
                                     </h3>
-                                    <span class="bg-purple-100 text-purple-800 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-widest">Seguridad Nivel 1</span>
+                                    <span class="bg-purple-100 text-purple-800 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-widest">Seguridad</span>
                                 </div>
                                 <div class="overflow-x-auto">
                                     <table class="min-w-full divide-y divide-gray-200">
@@ -501,13 +507,6 @@
                                                                 </button>
                                                             </form>
 
-                                                            <form action="{{ route('usuarios.destruir', $inactivo->id) }}" method="POST" class="m-0">
-                                                                @csrf @method('DELETE')
-                                                                <button type="button" onclick="confirmarAccion(this, '¿Borrar definitivamente?', 'Esta acción no se puede deshacer.', 'Sí, borrar', '#dc2626')" class="bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-2 px-4 rounded-lg transition text-xs ml-2 flex items-center gap-1">
-                                                                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                                                    Borrar
-                                                                </button>
-                                                            </form>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -528,7 +527,127 @@
         </div>
     </main>
 
+    {{-- ── MODAL RESULTADO DE IMPORTACIÓN ──────────────────────────────── --}}
+    @if(session('import_popup'))
+    @php
+        $imp_insertados   = session('import_insertados', 0);
+        $imp_fueraRango   = session('import_fuera_rango', []);
+        $imp_conflictos   = session('import_conflictos', []);
+        $imp_otros        = session('import_otros', []);
+        $imp_totalOmitidos = count($imp_fueraRango) + count($imp_conflictos) + count($imp_otros);
+    @endphp
+    <div id="modal-importacion" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="background:rgba(0,0,0,0.55);" onclick="if(event.target===this)cerrarModalImport()">
+        <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 w-full max-w-lg max-h-[90vh] flex flex-col" onclick="event.stopPropagation()">
+
+            {{-- Cabecera --}}
+            <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-[#002845] flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-[#002845] text-base leading-tight">Resultado de importación</h3>
+                        <p class="text-xs text-gray-400 font-medium mt-0.5">Resumen del archivo procesado</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalImport()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition text-gray-500 hover:text-gray-700 flex-shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            {{-- Contadores --}}
+            <div class="grid grid-cols-2 gap-4 px-6 py-5 border-b border-gray-100">
+                <div class="bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-4 text-center">
+                    <p class="text-3xl font-black text-emerald-700">{{ $imp_insertados }}</p>
+                    <p class="text-xs font-bold text-emerald-600 uppercase tracking-wide mt-1">Registros guardados</p>
+                </div>
+                <div class="bg-{{ $imp_totalOmitidos > 0 ? 'amber' : 'gray' }}-50 border border-{{ $imp_totalOmitidos > 0 ? 'amber' : 'gray' }}-200 rounded-2xl px-4 py-4 text-center">
+                    <p class="text-3xl font-black text-{{ $imp_totalOmitidos > 0 ? 'amber-700' : 'gray-400' }}">{{ $imp_totalOmitidos }}</p>
+                    <p class="text-xs font-bold text-{{ $imp_totalOmitidos > 0 ? 'amber-600' : 'gray-400' }} uppercase tracking-wide mt-1">Omitidos</p>
+                </div>
+            </div>
+
+            {{-- Detalle de fallos --}}
+            @if($imp_totalOmitidos > 0)
+            <div class="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+
+                @if(!empty($imp_fueraRango))
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-orange-500 flex-shrink-0"></span>
+                        <p class="text-xs font-black text-orange-600 uppercase tracking-wider">Fuera de horario institucional ({{ count($imp_fueraRango) }})</p>
+                    </div>
+                    <ul class="space-y-1.5">
+                        @foreach($imp_fueraRango as $msg)
+                        <li class="flex items-start gap-2 bg-orange-50 border border-orange-100 rounded-xl px-3 py-2">
+                            <svg class="w-3.5 h-3.5 text-orange-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span class="text-xs text-orange-800 leading-snug">{{ $msg }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                @if(!empty($imp_conflictos))
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500 flex-shrink-0"></span>
+                        <p class="text-xs font-black text-red-600 uppercase tracking-wider">Conflictos de horario ({{ count($imp_conflictos) }})</p>
+                    </div>
+                    <ul class="space-y-1.5">
+                        @foreach($imp_conflictos as $msg)
+                        <li class="flex items-start gap-2 bg-red-50 border border-red-100 rounded-xl px-3 py-2">
+                            <svg class="w-3.5 h-3.5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+                            <span class="text-xs text-red-800 leading-snug">{{ $msg }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                @if(!empty($imp_otros))
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-gray-400 flex-shrink-0"></span>
+                        <p class="text-xs font-black text-gray-500 uppercase tracking-wider">Otros ({{ count($imp_otros) }})</p>
+                    </div>
+                    <ul class="space-y-1.5">
+                        @foreach($imp_otros as $msg)
+                        <li class="flex items-start gap-2 bg-gray-50 border border-gray-100 rounded-xl px-3 py-2">
+                            <svg class="w-3.5 h-3.5 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span class="text-xs text-gray-700 leading-snug">{{ $msg }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+            </div>
+            @else
+            <div class="px-6 py-6 text-center">
+                <svg class="w-10 h-10 text-emerald-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <p class="text-sm font-bold text-emerald-700">Todos los registros fueron guardados exitosamente.</p>
+            </div>
+            @endif
+
+            {{-- Pie --}}
+            <div class="px-6 py-4 border-t border-gray-100 flex justify-end">
+                <button onclick="cerrarModalImport()" class="bg-[#002845] text-white font-bold px-6 py-2.5 rounded-xl hover:bg-[#003A5C] transition text-sm">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <script>
+        function cerrarModalImport() {
+            const m = document.getElementById('modal-importacion');
+            if (m) m.style.display = 'none';
+        }
+
         function confirmarAccion(buttonElement, titulo, texto, textoBotonConfirmar, colorBoton) {
             Swal.fire({
                 title: titulo,
