@@ -26,6 +26,23 @@ class HorariosImportWide implements ToCollection, WithHeadingRow
 
     // ─── Helpers ─────────────────────────────────────────────────────────────
 
+    private function detectarSemestre(): string
+    {
+        $mes = (int) date('n');
+        $ano = (int) date('Y');
+
+        if ($mes >= 1 && $mes <= 6) {
+            return "{$ano}-01-01";   // Primer semestre: enero – 1 junio
+        }
+        if ($mes >= 8 && $mes <= 11) {
+            return "{$ano}-08-05";   // Segundo semestre: 5 agosto – 30 noviembre
+        }
+        if ($mes === 12) {
+            return ($ano + 1) . '-01-01';
+        }
+        return "{$ano}-08-05";   // Julio intersemestral → segundo semestre entrante
+    }
+
     private function normalizar(string $s): string
     {
         $s = strtolower(trim($s));
@@ -200,7 +217,13 @@ class HorariosImportWide implements ToCollection, WithHeadingRow
 
                 [$inicio, $fin] = $rango;
 
-                // Límite de horario institucional
+                // Límite inferior: no se permiten asesorías antes de las 6:00 AM
+                if ($inicio < '06:00:00') {
+                    $this->omitidas[] = "Horario antes de las 6:00 AM: \"$curso\" con $docenteNombre el $diaNombre — inicio a las $inicio. No se permiten asesorías antes de las 6:00 AM.";
+                    continue;
+                }
+
+                // Límite superior de horario institucional
                 $esSabado     = $diaNorm === 'sabado';
                 $limiteMaximo = $esSabado ? '17:00:00' : '22:00:00';
                 if ($fin > $limiteMaximo) {
@@ -234,7 +257,7 @@ class HorariosImportWide implements ToCollection, WithHeadingRow
                     'bloque'         => '',
                     'aula'           => '',
                     'lugar'          => '',
-                    'semestre'       => date('Y-m-d'),
+                    'semestre'       => $this->detectarSemestre(),
                     'user_id'        => $profesor->id,
                 ]);
                 $this->insertados++;

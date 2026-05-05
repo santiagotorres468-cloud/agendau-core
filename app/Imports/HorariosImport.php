@@ -60,6 +60,23 @@ class HorariosImport implements ToModel, WithHeadingRow
         return null;
     }
 
+    private function detectarSemestre(): string
+    {
+        $mes = (int) date('n');
+        $ano = (int) date('Y');
+
+        if ($mes >= 1 && $mes <= 6) {
+            return "{$ano}-01-01";   // Primer semestre: enero – 1 junio
+        }
+        if ($mes >= 8 && $mes <= 11) {
+            return "{$ano}-08-05";   // Segundo semestre: 5 agosto – 30 noviembre
+        }
+        if ($mes === 12) {
+            return ($ano + 1) . '-01-01';   // Diciembre → apunta al primer semestre siguiente
+        }
+        return "{$ano}-08-05";   // Julio intersemestral → segundo semestre entrante
+    }
+
     private function normalizar(string $texto): string
     {
         $texto = strtolower(trim($texto));
@@ -137,7 +154,13 @@ class HorariosImport implements ToModel, WithHeadingRow
         if ($inicio === '00:00:00' && $fin === '00:00:00') return null;
         if (empty($curso) || empty($docenteNombre)) return null;
 
-        // Límite de horario institucional
+        // Límite inferior: no se permiten asesorías antes de las 6:00 AM
+        if ($inicio < '06:00:00') {
+            $this->omitidas[] = "Horario antes de las 6:00 AM: \"$curso\" con $docenteNombre el $dia — inicio a las $inicio. No se permiten asesorías antes de las 6:00 AM.";
+            return null;
+        }
+
+        // Límite superior de horario institucional
         $esSabado   = strtolower($dia) === 'sábado' || strtolower($dia) === 'sabado';
         $limiteMaximo = $esSabado ? '17:00:00' : '22:00:00';
         if ($fin > $limiteMaximo) {
@@ -163,7 +186,7 @@ class HorariosImport implements ToModel, WithHeadingRow
 
         $semestreRaw = $semestreKey ? $this->getString($row[$semestreKey]) : '';
         $sTime = strtotime(str_replace('/', '-', preg_replace('/[^\d\/\-]/', '', $semestreRaw)));
-        $semestre = ($sTime !== false && $sTime > 0) ? date('Y-m-d', $sTime) : date('Y-m-d');
+        $semestre = ($sTime !== false && $sTime > 0) ? date('Y-m-d', $sTime) : $this->detectarSemestre();
 
         // ──────────────────────────────────────────────────────────────
         // 3. VALIDAR CRUCE DE HORARIOS (anti-duplicado por docente)

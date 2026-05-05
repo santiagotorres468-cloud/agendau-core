@@ -3,403 +3,67 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Manual de Usuario — AgendaU</title>
+  <title>Manuales de Usuario — AgendaU</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    :root{
-      --navy:#002845; --gold:#C9A227; --emerald:#059669;
-      --amber:#D97706; --red:#B91C1C; --gray:#64748b;
-      --light:#F8FAFC; --border:#E2E8F0;
-    }
+    :root{--navy:#002845;--gold:#C9A227;--border:#e2e8f0;--light:#f8fafc}
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Manrope',sans-serif;background:var(--light);color:#1e293b;line-height:1.7}
-
-    /* ── Layout ── */
-    .page-wrap{display:flex;min-height:100vh}
-    aside{width:270px;background:var(--navy);color:#fff;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
-    main{flex:1;max-width:860px;padding:48px 48px 80px;margin:0 auto}
-
-    /* ── Sidebar ── */
-    .sb-brand{padding:28px 24px 20px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:12px}
-    .sb-badge{width:38px;height:38px;background:var(--gold);border-radius:10px;color:var(--navy);font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .sb-title{font-size:15px;font-weight:800;line-height:1.3}
-    .sb-sub{font-size:11px;color:rgba(255,255,255,.5);font-weight:500}
-    .sb-section{padding:20px 16px 4px;font-size:10px;font-weight:800;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase}
-    .sb-link{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,.7);text-decoration:none;border-radius:8px;margin:2px 8px;transition:.15s}
-    .sb-link:hover,.sb-link.active{background:rgba(255,255,255,.1);color:#fff}
-    .sb-link .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
-
-    /* ── Cover ── */
-    .cover{background:linear-gradient(135deg,var(--navy) 0%,#004080 100%);border-radius:24px;padding:52px 48px;color:#fff;margin-bottom:48px;position:relative;overflow:hidden}
-    .cover::before{content:'';position:absolute;top:-60px;right:-60px;width:250px;height:250px;background:rgba(201,162,39,.15);border-radius:50%}
-    .cover-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(201,162,39,.2);color:var(--gold);border:1px solid rgba(201,162,39,.4);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.06em;margin-bottom:16px}
-    .cover h1{font-size:32px;font-weight:900;line-height:1.2;margin-bottom:8px}
-    .cover p{font-size:14px;color:rgba(255,255,255,.7);max-width:480px}
-    .cover-meta{margin-top:28px;display:flex;gap:24px;flex-wrap:wrap}
-    .meta-item{font-size:12px;color:rgba(255,255,255,.5)}
-    .meta-item strong{display:block;color:#fff;font-size:13px;font-weight:700}
-
-    /* ── Sections ── */
-    section{margin-bottom:56px;scroll-margin-top:24px}
-    h2{font-size:20px;font-weight:900;color:var(--navy);display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:2px solid var(--border);margin-bottom:24px}
-    h2 .sec-num{width:28px;height:28px;background:var(--navy);color:#fff;border-radius:8px;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    h3{font-size:15px;font-weight:800;color:var(--navy);margin:28px 0 10px}
-    p{font-size:14px;margin-bottom:12px;color:#334155}
-
-    /* ── Cards ── */
-    .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:8px}
-    .card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-    .card-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px}
-    .card h4{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:4px}
-    .card p{font-size:12px;color:var(--gray);margin:0}
-
-    /* ── Steps ── */
-    .steps{list-style:none;counter-reset:step;margin:0 0 16px}
-    .steps li{counter-increment:step;display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
-    .steps li::before{content:counter(step);min-width:28px;height:28px;background:var(--navy);color:#fff;border-radius:8px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-    .steps li p{margin:0;font-size:14px;color:#334155;padding-top:4px}
-
-    /* ── Callouts ── */
-    .callout{border-radius:14px;padding:16px 18px;margin:16px 0;display:flex;gap:12px;align-items:flex-start;font-size:13px}
-    .callout.tip{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
-    .callout.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
-    .callout.info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}
-    .callout.danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
-    .callout-icon{font-size:18px;flex-shrink:0;margin-top:1px}
-    .callout strong{display:block;font-size:13px;font-weight:800;margin-bottom:3px}
-
-    /* ── Table ── */
-    table{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0}
-    th{background:var(--navy);color:#fff;padding:10px 14px;text-align:left;font-weight:700}
-    td{padding:10px 14px;border-bottom:1px solid var(--border);color:#334155}
-    tr:last-child td{border-bottom:none}
-    tr:nth-child(even) td{background:#f8fafc}
-
-    /* ── Badge ── */
-    .badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700}
-    .badge.green{background:#d1fae5;color:#065f46}
-    .badge.blue{background:#dbeafe;color:#1e40af}
-    .badge.gold{background:#fef3c7;color:#92400e}
-    .badge.red{background:#fee2e2;color:#991b1b}
-
-    /* ── Print ── */
-    @media print{aside{display:none}.page-wrap{display:block}main{padding:24px}}
-    @media(max-width:700px){aside{display:none}main{padding:24px}}
+    body{font-family:'Manrope',sans-serif;background:var(--light);color:#1e293b;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+    .logo-row{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+    .logo-badge{width:48px;height:48px;background:var(--gold);border-radius:14px;color:var(--navy);font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center}
+    .logo-text h1{font-size:20px;font-weight:900;color:var(--navy)}
+    .logo-text p{font-size:13px;color:#64748b}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:820px;width:100%}
+    .card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,.06);text-decoration:none;color:inherit;transition:.2s;display:flex;flex-direction:column;gap:16px}
+    .card:hover{box-shadow:0 8px 30px rgba(0,0,0,.12);transform:translateY(-3px)}
+    .card-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+    .card h2{font-size:17px;font-weight:900;color:var(--navy);margin-bottom:4px}
+    .card p{font-size:13px;color:#64748b;line-height:1.6;flex:1}
+    .card .arrow{font-size:13px;font-weight:700;display:flex;align-items:center;gap:4px;margin-top:4px}
+    .card.blue .card-icon{background:#dbeafe}.card.blue .arrow{color:#2563eb}
+    .card.amber .card-icon{background:#fef3c7}.card.amber .arrow{color:#d97706}
+    .card.purple .card-icon{background:#ede9fe}.card.purple .arrow{color:#7c3aed}
+    .foot{margin-top:40px;font-size:12px;color:#94a3b8;text-align:center}
   </style>
 </head>
 <body>
-<div class="page-wrap">
+  <div class="logo-row">
+    <div class="logo-badge">AU</div>
+    <div class="logo-text">
+      <h1>Agenda U</h1>
+      <p>Institución Universitaria Pascual Bravo — Manuales de Usuario</p>
+    </div>
+  </div>
 
-  <!-- ─── Sidebar ────────────────────────────────────────── -->
-  <aside>
-    <div class="sb-brand">
-      <div class="sb-badge">AU</div>
+  <div class="cards">
+    <a href="manual_estudiante.html" class="card blue">
+      <div class="card-icon">🎓</div>
       <div>
-        <div class="sb-title">Agenda U</div>
-        <div class="sb-sub">Manual de Usuario</div>
+        <h2>Manual del Estudiante</h2>
+        <p>Cómo ingresar con Google, reservar asesorías, cancelar inscripciones y responder encuestas de satisfacción.</p>
+        <div class="arrow">Ver manual →</div>
       </div>
-    </div>
+    </a>
 
-    <div class="sb-section">Contenido</div>
-    <a href="#introduccion"  class="sb-link"><span class="dot"></span>Introducción</a>
-    <a href="#acceso"        class="sb-link"><span class="dot"></span>Acceso al sistema</a>
-    <a href="#roles"         class="sb-link"><span class="dot"></span>Roles de usuario</a>
-    <a href="#estudiante"    class="sb-link"><span class="dot"></span>Portal Estudiante</a>
-    <a href="#docente"       class="sb-link"><span class="dot"></span>Portal Docente</a>
-    <a href="#admin"         class="sb-link"><span class="dot"></span>Panel Administrador</a>
-    <a href="#importar"      class="sb-link"><span class="dot"></span>Carga masiva de horarios</a>
-    <a href="#encuesta"      class="sb-link"><span class="dot"></span>Encuesta de satisfacción</a>
-    <a href="#reportes"      class="sb-link"><span class="dot"></span>Reportes PDF</a>
-    <a href="#seguridad"     class="sb-link"><span class="dot"></span>Seguridad y contraseñas</a>
-    <a href="#preguntas"     class="sb-link"><span class="dot"></span>Preguntas frecuentes</a>
-  </aside>
-
-  <!-- ─── Main ─────────────────────────────────────────────── -->
-  <main>
-
-    <!-- Portada -->
-    <div class="cover">
-      <div class="cover-tag">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-        Manual de Usuario
+    <a href="manual_docente.html" class="card amber">
+      <div class="card-icon">👨‍🏫</div>
+      <div>
+        <h2>Manual del Docente</h2>
+        <p>Gestión de asesorías, registro de asistencia, seguimiento estudiantil y generación de PDFs.</p>
+        <div class="arrow">Ver manual →</div>
       </div>
-      <h1>AgendaU — Sistema de Gestión<br>de Asesorías Universitarias</h1>
-      <p>Guía completa para estudiantes, docentes y administradores de la plataforma de programación de asesorías académicas.</p>
-      <div class="cover-meta">
-        <div class="meta-item"><strong>Institución</strong>I.U. Pascual Bravo</div>
-        <div class="meta-item"><strong>Versión</strong>1.0.0 — 2026</div>
-        <div class="meta-item"><strong>Audiencia</strong>Usuarios finales</div>
+    </a>
+
+    <a href="manual_administrador.html" class="card purple">
+      <div class="card-icon">🛡️</div>
+      <div>
+        <h2>Manual del Administrador</h2>
+        <p>Carga masiva de horarios, control de roles, análisis de satisfacción y reportes globales del sistema.</p>
+        <div class="arrow">Ver manual →</div>
       </div>
-    </div>
+    </a>
+  </div>
 
-    <!-- 1. Introducción -->
-    <section id="introduccion">
-      <h2><span class="sec-num">1</span>Introducción</h2>
-      <p><strong>AgendaU</strong> es la plataforma web de la Institución Universitaria Pascual Bravo para la gestión integral de asesorías académicas. Permite a los estudiantes explorar y reservar horarios de tutoría, y brinda a los docentes y administradores herramientas para programar sesiones, registrar asistencia y analizar indicadores de satisfacción.</p>
-
-      <div class="card-grid" style="margin-top:20px">
-        <div class="card">
-          <div class="card-icon" style="background:#e0f2fe">🎓</div>
-          <h4>Estudiantes</h4>
-          <p>Reservan asesorías, consultan su calendario y responden encuestas post-sesión.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon" style="background:#fef9c3">👨‍🏫</div>
-          <h4>Docentes</h4>
-          <p>Gestionan sus horarios, registran asistencia y generan informes individuales.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon" style="background:#fce7f3">🛡️</div>
-          <h4>Administradores</h4>
-          <p>Cargan masivamente horarios, controlan roles de usuario y acceden a reportes globales de satisfacción.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. Acceso -->
-    <section id="acceso">
-      <h2><span class="sec-num">2</span>Acceso al sistema</h2>
-
-      <h3>Para estudiantes — Google OAuth</h3>
-      <p>Los estudiantes no tienen usuario y contraseña propios; acceden con su cuenta institucional de Google.</p>
-      <ol class="steps">
-        <li><p>Ingresa a la URL pública del sistema (portal de estudiante).</p></li>
-        <li><p>Haz clic en <strong>"Ingresar con Google"</strong>. Se abrirá la pantalla de autenticación de Google.</p></li>
-        <li><p>Selecciona tu cuenta de correo institucional (<code>@pascualbravo.edu.co</code>).</p></li>
-        <li><p>La primera vez se te pedirá tu número de <strong>cédula</strong> para vincular tu perfil académico.</p></li>
-        <li><p>Al autenticarte correctamente serás redirigido al panel de reservas.</p></li>
-      </ol>
-
-      <h3>Para docentes y administradores — Correo y contraseña</h3>
-      <ol class="steps">
-        <li><p>Ingresa a la URL de administración y haz clic en <strong>"Iniciar sesión"</strong>.</p></li>
-        <li><p>Escribe tu correo institucional y tu contraseña temporal (asignada por el administrador).</p></li>
-        <li><p>En el primer ingreso el sistema te pedirá <strong>cambiar tu contraseña</strong> de forma obligatoria.</p></li>
-        <li><p>Tras el cambio serás redirigido a tu panel según tu rol.</p></li>
-      </ol>
-
-      <div class="callout warn">
-        <span class="callout-icon">⚠️</span>
-        <div><strong>Límite de intentos</strong>Después de 5 intentos fallidos de inicio de sesión en un minuto, el acceso queda bloqueado temporalmente para proteger la cuenta.</div>
-      </div>
-    </section>
-
-    <!-- 3. Roles -->
-    <section id="roles">
-      <h2><span class="sec-num">3</span>Roles de usuario</h2>
-      <table>
-        <thead><tr><th>Rol</th><th>Acceso</th><th>Capacidades principales</th></tr></thead>
-        <tbody>
-          <tr><td><span class="badge blue">Estudiante</span></td><td>Portal público Google OAuth</td><td>Ver horarios, reservar asesorías, cancelar reservas, responder encuestas</td></tr>
-          <tr><td><span class="badge gold">Docente</span></td><td>Panel privado (usuario + contraseña)</td><td>Ver sus cursos, registrar asistencia, generar PDFs, consultar seguimiento de estudiantes</td></tr>
-          <tr><td><span class="badge red">Administrador</span></td><td>Panel privado (usuario + contraseña)</td><td>Todo lo anterior + carga masiva de horarios, gestión de usuarios, reportes globales de satisfacción</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- 4. Estudiante -->
-    <section id="estudiante">
-      <h2><span class="sec-num">4</span>Portal del estudiante</h2>
-
-      <h3>4.1 Explorar horarios disponibles</h3>
-      <p>Al ingresar al sistema, el estudiante puede ver el calendario completo de asesorías disponibles. Los eventos en <strong style="color:#10b981">verde</strong> corresponden a sesiones presenciales y en <strong style="color:#3b82f6">azul</strong> a sesiones virtuales.</p>
-
-      <h3>4.2 Reservar una asesoría</h3>
-      <ol class="steps">
-        <li><p>En el calendario, haz clic sobre la asesoría que deseas reservar.</p></li>
-        <li><p>Se desplegará un panel lateral con los detalles de la sesión (docente, lugar, modalidad).</p></li>
-        <li><p>Selecciona la <strong>fecha</strong> disponible y confirma con el botón <strong>"Reservar"</strong>.</p></li>
-        <li><p>El sistema confirmará la reserva y la mostrará en tu pestaña <strong>"Mis Reservas"</strong>.</p></li>
-      </ol>
-
-      <div class="callout info">
-        <span class="callout-icon">ℹ️</span>
-        <div><strong>Encuesta pendiente</strong>Si tienes una encuesta pendiente de una sesión anterior, el sistema te redirigirá a completarla antes de hacer una nueva reserva.</div>
-      </div>
-
-      <h3>4.3 Cancelar una reserva</h3>
-      <ol class="steps">
-        <li><p>Ve a la pestaña <strong>"Mis Reservas"</strong>.</p></li>
-        <li><p>Localiza la reserva que deseas cancelar y haz clic en el ícono de eliminar.</p></li>
-        <li><p>Confirma la acción. La cancelación es inmediata.</p></li>
-      </ol>
-
-      <div class="callout warn">
-        <span class="callout-icon">⚠️</span>
-        <div><strong>Solo reservas pendientes</strong>Solo puedes cancelar reservas con estado <em>Programada</em>. Las sesiones ya evaluadas no pueden cancelarse.</div>
-      </div>
-    </section>
-
-    <!-- 5. Docente -->
-    <section id="docente">
-      <h2><span class="sec-num">5</span>Portal del docente</h2>
-
-      <h3>5.1 Vista de cursos</h3>
-      <p>En el panel del docente verás una lista de tus asesorías programadas, organizadas como tarjetas. Cada tarjeta muestra el nombre del curso, la modalidad (presencial/virtual) y el número de estudiantes inscritos.</p>
-
-      <h3>5.2 Registrar asistencia</h3>
-      <ol class="steps">
-        <li><p>Haz clic en <strong>"Ver estudiantes"</strong> en la tarjeta del curso correspondiente.</p></li>
-        <li><p>Se mostrará la lista de estudiantes con reserva para esa sesión.</p></li>
-        <li><p>Para cada estudiante, marca <strong>Asistió</strong> o <strong>No asistió</strong>.</p></li>
-        <li><p>El sistema registrará la evaluación y enviará automáticamente la encuesta al estudiante que asistió.</p></li>
-      </ol>
-
-      <h3>5.3 Corregir asistencia</h3>
-      <p>Si cometiste un error al marcar la asistencia, puedes restablecerla a estado <em>Pendiente</em> con el botón <strong>"Corregir"</strong> disponible en la fila del estudiante, siempre que el estudiante no haya respondido aún la encuesta.</p>
-
-      <h3>5.4 Seguimiento estudiantil</h3>
-      <p>Desde la pestaña <strong>"Seguimiento"</strong>, busca a un estudiante por su número de cédula para ver su historial completo de asesorías en tus cursos, incluyendo asistencias, notas de evolución y evolución de desempeño.</p>
-
-      <h3>5.5 Generar PDF de asistencia</h3>
-      <p>Desde la vista de estudiantes de un curso, haz clic en <strong>"Descargar lista PDF"</strong> para obtener un informe imprimible con todos los registros de asistencia.</p>
-    </section>
-
-    <!-- 6. Administrador -->
-    <section id="admin">
-      <h2><span class="sec-num">6</span>Panel del administrador</h2>
-
-      <h3>6.1 Centro de control (Gestión de cursos)</h3>
-      <p>El administrador ve todos los cursos de todos los docentes. Puede editarlos, eliminarlos individualmente o vaciar toda la base de datos de horarios y reservas desde la <strong>Zona de peligro</strong> (requiere confirmación explícita).</p>
-
-      <h3>6.2 Control de roles</h3>
-      <p>Desde la pestaña <strong>"Control de roles"</strong>:</p>
-      <ul style="margin:0 0 12px 20px;font-size:14px;color:#334155">
-        <li>Cambia el rol de un usuario entre <em>Docente</em> y <em>Administrador</em>.</li>
-        <li>Desactiva cuentas de docentes o administradores (acceso revocado sin borrar datos).</li>
-        <li>Reactiva cuentas previamente desactivadas.</li>
-      </ul>
-      <div class="callout danger">
-        <span class="callout-icon">🛑</span>
-        <div><strong>Protección de cuenta propia</strong>El sistema no permite desactivar ni degradar el único administrador activo para evitar quedar sin acceso.</div>
-      </div>
-
-      <h3>6.3 Satisfacción estudiantil</h3>
-      <p>Accede desde el menú lateral a <strong>"Satisfacción"</strong> para ver el resumen de encuestas agrupadas por docente (en orden alfabético con buscador) y por curso (también con buscador). Desde allí puedes descargar informes PDF detallados.</p>
-    </section>
-
-    <!-- 7. Carga masiva -->
-    <section id="importar">
-      <h2><span class="sec-num">7</span>Carga masiva de horarios</h2>
-
-      <h3>7.1 Descargar la plantilla</h3>
-      <p>En el panel administrador, pestaña <strong>"Carga masiva"</strong>, haz clic en <strong>"Descargar plantilla de carga masiva (.xlsx)"</strong>. Esta plantilla ya tiene los encabezados correctos y filas de ejemplo.</p>
-
-      <h3>7.2 Completar el archivo</h3>
-      <table>
-        <thead><tr><th>Columna</th><th>Requerida</th><th>Descripción</th></tr></thead>
-        <tbody>
-          <tr><td>CURSO</td><td><span class="badge green">Sí</span></td><td>Nombre de la asignatura o materia</td></tr>
-          <tr><td>DOCENTE</td><td><span class="badge green">Sí</span></td><td>Nombre completo del docente</td></tr>
-          <tr><td>CORREO</td><td><span class="badge gold">Opcional</span></td><td>Correo del docente para vincularlo a su cuenta existente</td></tr>
-          <tr><td>DIA</td><td><span class="badge green">Sí</span></td><td>Día de la semana (Lunes, Martes…)</td></tr>
-          <tr><td>INICIO</td><td><span class="badge green">Sí</span></td><td>Hora de inicio en formato HH:MM (ej: 08:00)</td></tr>
-          <tr><td>FIN</td><td><span class="badge green">Sí</span></td><td>Hora de fin en formato HH:MM (ej: 10:00)</td></tr>
-          <tr><td>MODALIDAD</td><td><span class="badge gold">Opcional</span></td><td>Presencial / Virtual (por defecto: Presencial)</td></tr>
-          <tr><td>SEDE / BLOQUE / AULA</td><td><span class="badge gold">Opcional</span></td><td>Ubicación física de la asesoría</td></tr>
-        </tbody>
-      </table>
-
-      <h3>7.3 Subir el archivo</h3>
-      <ol class="steps">
-        <li><p>Haz clic en el área de carga y selecciona tu archivo Excel (.xlsx o .xls).</p></li>
-        <li><p>Verifica que aparezca el nombre del archivo en el área de carga.</p></li>
-        <li><p>Haz clic en <strong>"Subir e importar datos"</strong>.</p></li>
-        <li><p>Aparecerá un <strong>pop-up de resultado</strong> con el número de registros guardados y la lista de filas omitidas con su causa.</p></li>
-      </ol>
-
-      <h3>7.4 Causas de omisión</h3>
-      <div class="callout warn">
-        <span class="callout-icon">🕐</span>
-        <div><strong>Fuera de horario institucional</strong>Los horarios de lunes a viernes solo pueden programarse hasta las 10:00 PM. Los sábados hasta las 5:00 PM.</div>
-      </div>
-      <div class="callout danger">
-        <span class="callout-icon">⚡</span>
-        <div><strong>Conflicto de horarios</strong>Si un docente ya tiene una asesoría que se superpone con el horario que se intenta importar, esa fila es omitida para evitar doble asignación.</div>
-      </div>
-    </section>
-
-    <!-- 8. Encuesta -->
-    <section id="encuesta">
-      <h2><span class="sec-num">8</span>Encuesta de satisfacción</h2>
-      <p>Después de cada asesoría evaluada con asistencia registrada, el sistema envía automáticamente una encuesta al estudiante. La encuesta consta de <strong>5 preguntas</strong> calificadas de 1 a 5:</p>
-      <table>
-        <thead><tr><th>#</th><th>Dimensión</th><th>Escala</th></tr></thead>
-        <tbody>
-          <tr><td>P1</td><td>Claridad del docente</td><td>1 (Muy mala) — 5 (Excelente)</td></tr>
-          <tr><td>P2</td><td>Puntualidad</td><td>1 — 5</td></tr>
-          <tr><td>P3</td><td>Dominio del tema</td><td>1 — 5</td></tr>
-          <tr><td>P4</td><td>Utilidad de la sesión</td><td>1 — 5</td></tr>
-          <tr><td>P5</td><td>Ambiente / espacio</td><td>1 — 5</td></tr>
-        </tbody>
-      </table>
-      <p>El campo de <strong>comentario</strong> es opcional y tiene un máximo de 500 caracteres.</p>
-      <div class="callout tip">
-        <span class="callout-icon">✅</span>
-        <div><strong>Una sola vez por sesión</strong>La encuesta solo puede responderse una vez. Una vez enviada, el sistema registra la respuesta y no permite reenvíos.</div>
-      </div>
-    </section>
-
-    <!-- 9. Reportes -->
-    <section id="reportes">
-      <h2><span class="sec-num">9</span>Reportes PDF</h2>
-
-      <h3>Reporte por docente</h3>
-      <p>Disponible en la pestaña <strong>"Informes"</strong> del panel administrador y en la pantalla de <strong>Satisfacción</strong>. Incluye promedio general, desglose por dimensión, historial de sesiones y comentarios de estudiantes.</p>
-
-      <h3>Reporte por curso</h3>
-      <p>Desde <strong>"Satisfacción → Por curso"</strong>, selecciona el curso y descarga el informe con estadísticas agregadas y comentarios abiertos.</p>
-
-      <h3>Lista de asistencia</h3>
-      <p>Disponible para docentes y administradores desde la vista de estudiantes de cada curso. Lista imprimible con nombre, cédula y estado de asistencia.</p>
-    </section>
-
-    <!-- 10. Seguridad -->
-    <section id="seguridad">
-      <h2><span class="sec-num">10</span>Seguridad y contraseñas</h2>
-
-      <h3>Cambio obligatorio de contraseña</h3>
-      <p>Las cuentas creadas por el administrador tienen la contraseña temporal <code>Pascual2026</code>. En el primer inicio de sesión, el sistema fuerza el cambio antes de dar acceso al panel.</p>
-
-      <h3>Recomendaciones de contraseña segura</h3>
-      <ul style="margin:0 0 12px 20px;font-size:14px;color:#334155">
-        <li>Mínimo 8 caracteres</li>
-        <li>Combina letras mayúsculas, minúsculas, números y símbolos</li>
-        <li>No compartas tu contraseña con otros</li>
-        <li>Cierra siempre la sesión al terminar (botón "Cerrar Sesión" en el menú lateral)</li>
-      </ul>
-
-      <div class="callout tip">
-        <span class="callout-icon">🔒</span>
-        <div><strong>Rate limiting</strong>El sistema limita los intentos de inicio de sesión a 5 por minuto para proteger las cuentas de ataques de fuerza bruta.</div>
-      </div>
-    </section>
-
-    <!-- 11. FAQ -->
-    <section id="preguntas">
-      <h2><span class="sec-num">11</span>Preguntas frecuentes</h2>
-
-      <h3>¿Qué hago si olvidé mi contraseña?</h3>
-      <p>Contacta al administrador del sistema para que restablezca tu acceso. El administrador puede asignarte una nueva contraseña temporal.</p>
-
-      <h3>¿Por qué no puedo reservar una nueva asesoría?</h3>
-      <p>El sistema puede estarte redirigiendo a completar una encuesta pendiente de una sesión anterior. Responde la encuesta primero y podrás reservar nuevamente.</p>
-
-      <h3>¿Por qué algunas filas de mi Excel no se importaron?</h3>
-      <p>El pop-up de resultado muestra las filas omitidas y la causa exacta (conflicto de horario o fuera del horario institucional). Corrige esas filas en el Excel y vuelve a importar.</p>
-
-      <h3>¿Puedo usar cualquier correo para autenticarme como estudiante?</h3>
-      <p>El sistema acepta cualquier cuenta de Google, pero tu cédula debe estar previamente registrada en la institución. Si obtienes un error de cédula, contacta al administrador.</p>
-
-      <h3>¿Cómo sé si una asesoría es presencial o virtual?</h3>
-      <p>En el calendario, los eventos <strong style="color:#10b981">verdes</strong> son presenciales y los <strong style="color:#3b82f6">azules</strong> son virtuales. Al hacer clic sobre el evento se muestran los detalles del lugar.</p>
-    </section>
-
-    <div style="text-align:center;padding:32px 0 0;border-top:1px solid var(--border);margin-top:48px;font-size:12px;color:var(--gray)">
-      AgendaU &bull; Manual de Usuario v1.0 &bull; Institución Universitaria Pascual Bravo &bull; 2026
-    </div>
-
-  </main>
-</div>
+  <div class="foot">AgendaU v1.0 &bull; 2026 &bull; I.U. Pascual Bravo</div>
 </body>
 </html>

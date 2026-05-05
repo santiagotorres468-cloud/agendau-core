@@ -21,7 +21,7 @@ RateLimiter::for('login', function (Request $request) {
 // 📄 DIAGRAMAS Y DOCUMENTACIÓN (acceso directo)
 // ========================================================
 Route::get('/docs/{archivo}', function (string $archivo) {
-    $permitidos = ['mockups', 'diagrama_er', 'casos_uso', 'manual_usuario', 'manual_tecnico'];
+    $permitidos = ['mockups', 'diagrama_er', 'casos_uso', 'manual_usuario', 'manual_tecnico', 'manual_estudiante', 'manual_docente', 'manual_administrador'];
     if (!in_array($archivo, $permitidos)) abort(404);
     return response()->file(public_path("docs/{$archivo}.html"));
 })->where('archivo', '[a-z_]+');

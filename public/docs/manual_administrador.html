@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Manual Administrador — AgendaU</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#002845;--gold:#C9A227;--purple:#7c3aed;--green:#059669;--red:#b91c1c;--gray:#64748b;--border:#e2e8f0;--light:#f8fafc}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Manrope',sans-serif;background:var(--light);color:#1e293b;line-height:1.7}
+    .page-wrap{display:flex;min-height:100vh}
+    aside{width:265px;background:var(--navy);color:#fff;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+    main{flex:1;max-width:860px;padding:48px 48px 80px;margin:0 auto}
+    .sb-brand{padding:28px 22px 20px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:12px}
+    .sb-badge{width:36px;height:36px;background:var(--gold);border-radius:10px;color:var(--navy);font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .sb-title{font-size:14px;font-weight:800}.sb-sub{font-size:11px;color:rgba(255,255,255,.4)}
+    .sb-section{padding:18px 16px 4px;font-size:10px;font-weight:800;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase}
+    .sb-link{display:flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,.7);text-decoration:none;border-radius:8px;margin:2px 8px;transition:.15s}
+    .sb-link:hover{background:rgba(255,255,255,.1);color:#fff}
+    .sb-link .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
+    .cover{background:linear-gradient(135deg,#4c1d95 0%,var(--navy) 100%);border-radius:24px;padding:48px 44px;color:#fff;margin-bottom:44px;position:relative;overflow:hidden}
+    .cover::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:rgba(201,162,39,.1);border-radius:50%}
+    .cover-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(201,162,39,.2);color:var(--gold);border:1px solid rgba(201,162,39,.4);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:14px}
+    .cover h1{font-size:28px;font-weight:900;line-height:1.2;margin-bottom:8px}
+    .cover p{font-size:14px;color:rgba(255,255,255,.7);max-width:480px}
+    .cover-meta{margin-top:24px;display:flex;gap:20px;flex-wrap:wrap}
+    .meta-item{font-size:12px;color:rgba(255,255,255,.5)}.meta-item strong{display:block;color:#fff;font-size:13px;font-weight:700}
+    section{margin-bottom:52px;scroll-margin-top:24px}
+    h2{font-size:19px;font-weight:900;color:var(--navy);display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:2px solid var(--border);margin-bottom:22px}
+    h2 .n{width:26px;height:26px;background:var(--navy);color:#fff;border-radius:7px;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    h3{font-size:15px;font-weight:800;color:var(--navy);margin:24px 0 10px}
+    p{font-size:14px;margin-bottom:12px;color:#334155}
+    .steps{list-style:none;counter-reset:s;margin:0 0 14px}
+    .steps li{counter-increment:s;display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+    .steps li::before{content:counter(s);min-width:26px;height:26px;background:var(--purple);color:#fff;border-radius:7px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+    .steps li p{margin:0;font-size:14px;color:#334155;padding-top:3px}
+    .callout{border-radius:13px;padding:14px 17px;margin:14px 0;display:flex;gap:12px;align-items:flex-start;font-size:13px}
+    .callout.tip{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+    .callout.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+    .callout.info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}
+    .callout.danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+    .callout-icon{font-size:18px;flex-shrink:0}
+    .callout strong{display:block;font-size:13px;font-weight:800;margin-bottom:3px}
+    table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
+    th{background:var(--navy);color:#fff;padding:9px 13px;text-align:left;font-weight:700}
+    td{padding:9px 13px;border-bottom:1px solid var(--border);color:#334155;vertical-align:top}
+    tr:last-child td{border-bottom:none}
+    tr:nth-child(even) td{background:#f8fafc}
+    .badge{display:inline-flex;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700}
+    .badge.green{background:#d1fae5;color:#065f46}
+    .badge.gold{background:#fef3c7;color:#92400e}
+    .badge.red{background:#fee2e2;color:#991b1b}
+    .badge.blue{background:#dbeafe;color:#1e40af}
+    code{font-family:monospace;font-size:12px;background:#f1f5f9;color:#0f172a;padding:1px 6px;border-radius:5px;border:1px solid #e2e8f0}
+    @media(max-width:700px){aside{display:none}main{padding:24px}}
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+  <aside>
+    <div class="sb-brand">
+      <div class="sb-badge">AU</div>
+      <div><div class="sb-title">Agenda U</div><div class="sb-sub">Manual del Administrador</div></div>
+    </div>
+    <div class="sb-section">Contenido</div>
+    <a href="#acceso"        class="sb-link"><span class="dot"></span>Acceso al sistema</a>
+    <a href="#panel"         class="sb-link"><span class="dot"></span>Panel de control</a>
+    <a href="#gestion"       class="sb-link"><span class="dot"></span>Gestión de cursos</a>
+    <a href="#importar"      class="sb-link"><span class="dot"></span>Carga masiva de horarios</a>
+    <a href="#popup"         class="sb-link"><span class="dot"></span>Resultado de importación</a>
+    <a href="#horarios"      class="sb-link"><span class="dot"></span>Franjas horarias válidas</a>
+    <a href="#semestres"     class="sb-link"><span class="dot"></span>Semestres académicos</a>
+    <a href="#roles"         class="sb-link"><span class="dot"></span>Control de roles</a>
+    <a href="#satisfaccion"  class="sb-link"><span class="dot"></span>Satisfacción estudiantil</a>
+    <a href="#reportes"      class="sb-link"><span class="dot"></span>Reportes PDF</a>
+    <a href="#faq"           class="sb-link"><span class="dot"></span>Preguntas frecuentes</a>
+  </aside>
+  <main>
+
+    <div class="cover">
+      <div class="cover-tag">🛡️ Panel Administrativo</div>
+      <h1>Manual del Administrador<br>AgendaU</h1>
+      <p>Guía completa para gestionar horarios, usuarios, carga masiva de Excel, análisis de satisfacción y reportes del sistema.</p>
+      <div class="cover-meta">
+        <div class="meta-item"><strong>Institución</strong>I.U. Pascual Bravo</div>
+        <div class="meta-item"><strong>Rol</strong>Administrador</div>
+        <div class="meta-item"><strong>Versión</strong>1.0 — 2026</div>
+      </div>
+    </div>
+
+    <section id="acceso">
+      <h2><span class="n">1</span>Acceso al sistema</h2>
+      <ol class="steps">
+        <li><p>Ingresa a la URL del sistema e inicia sesión con tu <strong>correo institucional</strong> y contraseña.</p></li>
+        <li><p>En el primer ingreso el sistema te pedirá cambiar la contraseña temporal de forma obligatoria.</p></li>
+        <li><p>Tras el cambio serás redirigido al <strong>Centro de Control</strong> (panel de administración).</p></li>
+      </ol>
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>5 intentos máximos</strong>Tras 5 intentos fallidos en un minuto el sistema bloquea temporalmente el acceso para proteger la cuenta.</div>
+      </div>
+    </section>
+
+    <section id="panel">
+      <h2><span class="n">2</span>Panel de control</h2>
+      <p>El panel está organizado en <strong>cuatro pestañas</strong> principales:</p>
+      <table>
+        <thead><tr><th>Pestaña</th><th>Función</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Gestión de cursos</strong></td><td>Ver, editar y eliminar todos los horarios del sistema.</td></tr>
+          <tr><td><strong>Carga masiva</strong></td><td>Importar horarios desde Excel. Descarga de plantilla.</td></tr>
+          <tr><td><strong>Informes</strong></td><td>Generar PDFs de asistencia por docente o por curso.</td></tr>
+          <tr><td><strong>Control de roles</strong></td><td>Gestionar usuarios: roles, activación y desactivación.</td></tr>
+        </tbody>
+      </table>
+      <p>Adicionalmente, en el menú lateral encontrarás el acceso directo a <strong>Satisfacción estudiantil</strong>.</p>
+    </section>
+
+    <section id="gestion">
+      <h2><span class="n">3</span>Gestión de cursos</h2>
+      <h3>Editar un horario</h3>
+      <ol class="steps">
+        <li><p>En la pestaña <strong>"Gestión de cursos"</strong>, localiza el curso a editar.</p></li>
+        <li><p>Haz clic en el ícono de edición (lápiz).</p></li>
+        <li><p>Modifica los campos necesarios: curso, docente, día, horario, modalidad, sede, bloque o aula.</p></li>
+        <li><p>Guarda los cambios con el botón <strong>"Actualizar"</strong>.</p></li>
+      </ol>
+      <h3>Eliminar un horario individual</h3>
+      <ol class="steps">
+        <li><p>Localiza el curso y haz clic en el ícono de eliminar (papelera).</p></li>
+        <li><p>Confirma la acción en el diálogo de seguridad.</p></li>
+      </ol>
+      <h3>Vaciar todo el sistema</h3>
+      <p>La <strong>Zona de peligro</strong> (al final de la pestaña Carga masiva) permite eliminar <em>todos</em> los horarios y reservas del sistema en una sola acción.</p>
+      <div class="callout danger">
+        <span class="callout-icon">🛑</span>
+        <div><strong>Acción irreversible</strong>Vaciar el sistema borra todos los horarios y reservas permanentemente. Esta acción no se puede deshacer. Úsala solo al inicio de un nuevo semestre.</div>
+      </div>
+    </section>
+
+    <section id="importar">
+      <h2><span class="n">4</span>Carga masiva de horarios desde Excel</h2>
+
+      <h3>4.1 Descargar la plantilla</h3>
+      <p>En la pestaña <strong>"Carga masiva"</strong>, haz clic en <strong>"Descargar plantilla de carga masiva (.xlsx)"</strong>. La plantilla tiene los encabezados correctos y filas de ejemplo que puedes reemplazar.</p>
+
+      <h3>4.2 Columnas del Excel</h3>
+      <table>
+        <thead><tr><th>Columna</th><th>Requerida</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>CURSO</code></td><td><span class="badge green">Sí</span></td><td>Nombre del curso o asignatura</td></tr>
+          <tr><td><code>DOCENTE</code></td><td><span class="badge green">Sí</span></td><td>Nombre completo del docente</td></tr>
+          <tr><td><code>CORREO</code></td><td><span class="badge gold">Opcional</span></td><td>Correo del docente para vincularlo a su cuenta existente. Si no existe la cuenta, se crea automáticamente.</td></tr>
+          <tr><td><code>DIA</code></td><td><span class="badge green">Sí</span></td><td>Día de la semana (Lunes, Martes, Miércoles, Jueves, Viernes, Sábado)</td></tr>
+          <tr><td><code>INICIO</code></td><td><span class="badge green">Sí</span></td><td>Hora de inicio formato <code>HH:MM</code> (ej: <code>08:00</code>). Mínimo: 06:00.</td></tr>
+          <tr><td><code>FIN</code></td><td><span class="badge green">Sí</span></td><td>Hora de fin formato <code>HH:MM</code> (ej: <code>10:00</code>). Máximo L–V: 22:00 | Sábados: 17:00.</td></tr>
+          <tr><td><code>MODALIDAD</code></td><td><span class="badge gold">Opcional</span></td><td>Presencial o Virtual. Por defecto: Presencial.</td></tr>
+          <tr><td><code>SEDE / BLOQUE / AULA</code></td><td><span class="badge gold">Opcional</span></td><td>Datos de ubicación física</td></tr>
+          <tr><td><code>SEMESTRE</code></td><td><span class="badge gold">Opcional</span></td><td>Si no se incluye, el sistema asigna automáticamente el semestre activo según la fecha actual.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>4.3 Subir el archivo</h3>
+      <ol class="steps">
+        <li><p>En la pestaña <strong>"Carga masiva"</strong>, haz clic en el área de carga (recuadro punteado) y selecciona tu archivo Excel.</p></li>
+        <li><p>Verifica que aparezca el nombre del archivo en el área.</p></li>
+        <li><p>Haz clic en <strong>"Subir e importar datos"</strong>.</p></li>
+        <li><p>Espera a que el sistema procese el archivo. Aparecerá el <strong>pop-up de resultado</strong>.</p></li>
+      </ol>
+      <div class="callout tip">
+        <span class="callout-icon">✅</span>
+        <div><strong>Creación automática de docentes</strong>Si el correo del Excel no coincide con ningún usuario, el sistema crea la cuenta automáticamente con contraseña temporal <code>Pascual2026</code> y marca que debe cambiar la contraseña al primer ingreso.</div>
+      </div>
+    </section>
+
+    <section id="popup">
+      <h2><span class="n">5</span>Pop-up de resultado de importación</h2>
+      <p>Al finalizar la importación aparece automáticamente un modal con el resumen del procesamiento:</p>
+      <table>
+        <thead><tr><th>Indicador</th><th>Qué significa</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Registros guardados</strong> (verde)</td><td>Horarios importados exitosamente a la base de datos.</td></tr>
+          <tr><td><strong>Omitidos</strong> (ámbar)</td><td>Filas del Excel que no pudieron importarse.</td></tr>
+        </tbody>
+      </table>
+      <p>Las filas omitidas se listan con la causa exacta, clasificadas en tres categorías:</p>
+      <table>
+        <thead><tr><th>Categoría</th><th>Causa</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge" style="background:#fff7ed;color:#c2410c">Fuera de horario institucional</span></td><td>El horario inicia antes de las 6:00 AM o finaliza después del límite permitido (10:00 PM L-V / 5:00 PM Sábados).</td></tr>
+          <tr><td><span class="badge red">Conflicto de horario</span></td><td>El mismo docente ya tiene una asesoría que se superpone en ese día y horario.</td></tr>
+          <tr><td><span class="badge" style="background:#f1f5f9;color:#475569">Otros</span></td><td>Filas vacías, columnas requeridas faltantes u otros errores de formato.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div>Los registros válidos se guardan aunque haya filas con errores. Los errores NO detienen la importación de los registros correctos.</div>
+      </div>
+    </section>
+
+    <section id="horarios">
+      <h2><span class="n">6</span>Franjas horarias válidas</h2>
+      <p>El sistema valida automáticamente cada fila del Excel contra las franjas habilitadas por la institución:</p>
+      <table>
+        <thead><tr><th>Día</th><th>Hora mínima de inicio</th><th>Hora máxima de fin</th></tr></thead>
+        <tbody>
+          <tr><td>Lunes a viernes</td><td>6:00 AM</td><td>10:00 PM (22:00)</td></tr>
+          <tr><td>Sábados</td><td>6:00 AM</td><td>5:00 PM (17:00)</td></tr>
+          <tr><td>Domingos</td><td colspan="2">No habilitados</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warn">
+        <span class="callout-icon">🕐</span>
+        <div><strong>Antes de las 6:00 AM</strong>Cualquier horario cuya hora de inicio sea anterior a las 6:00 AM será omitido con un mensaje de error descriptivo en el pop-up de resultado.</div>
+      </div>
+    </section>
+
+    <section id="semestres">
+      <h2><span class="n">7</span>Semestres académicos</h2>
+      <p>El sistema detecta automáticamente el semestre activo al importar horarios. Si el Excel no incluye la columna <code>SEMESTRE</code>, se asigna según la fecha de importación:</p>
+      <table>
+        <thead><tr><th>Período de importación</th><th>Semestre asignado</th></tr></thead>
+        <tbody>
+          <tr><td>Enero — 1 de junio</td><td><strong>Primer semestre</strong> (fecha de referencia: 1 enero del año)</td></tr>
+          <tr><td>5 de agosto — 30 de noviembre</td><td><strong>Segundo semestre</strong> (fecha de referencia: 5 agosto del año)</td></tr>
+          <tr><td>Julio (intersemestral)</td><td>Segundo semestre entrante</td></tr>
+          <tr><td>Diciembre</td><td>Primer semestre del año siguiente</td></tr>
+        </tbody>
+      </table>
+      <div class="callout tip">
+        <span class="callout-icon">📅</span>
+        <div>Al inicio de cada semestre, vacía el sistema y vuelve a importar los horarios actualizados para que la diferenciación por semestre sea correcta en los reportes.</div>
+      </div>
+    </section>
+
+    <section id="roles">
+      <h2><span class="n">8</span>Control de roles y usuarios</h2>
+      <p>Desde la pestaña <strong>"Control de roles"</strong> puedes gestionar todos los usuarios del sistema (docentes y administradores).</p>
+
+      <h3>Cambiar el rol de un usuario</h3>
+      <ol class="steps">
+        <li><p>Localiza al usuario en la lista de Docentes o Administradores.</p></li>
+        <li><p>Despliega el selector de rol y elige entre <em>Admin</em> y <em>Docente</em>.</p></li>
+        <li><p>Haz clic en <strong>"Actualizar"</strong>.</p></li>
+      </ol>
+
+      <h3>Desactivar una cuenta</h3>
+      <ol class="steps">
+        <li><p>Haz clic en <strong>"Desactivar"</strong> en la fila del usuario.</p></li>
+        <li><p>Confirma la acción. El usuario no podrá iniciar sesión pero sus datos se conservan.</p></li>
+      </ol>
+
+      <h3>Reactivar una cuenta</h3>
+      <p>Las cuentas inactivas aparecen en la sección de usuarios desactivados. Haz clic en <strong>"Reactivar"</strong> para restaurar el acceso.</p>
+
+      <div class="callout danger">
+        <span class="callout-icon">🛑</span>
+        <div><strong>Protección del único administrador</strong>El sistema no permite desactivar ni degradar de rol al único administrador activo. Siempre debe existir al menos un administrador para garantizar el acceso al sistema.</div>
+      </div>
+
+      <h3>Crear un docente nuevo</h3>
+      <p>Los docentes se crean automáticamente al importar el Excel. También puedes ir a <strong>Configuración de usuarios</strong> (panel de Jetstream) para crear cuentas manualmente. La contraseña inicial es <code>Pascual2026</code>.</p>
+    </section>
+
+    <section id="satisfaccion">
+      <h2><span class="n">9</span>Satisfacción estudiantil</h2>
+      <p>Accede desde el menú lateral haciendo clic en <strong>"Satisfacción"</strong>. Esta pantalla muestra dos secciones:</p>
+
+      <h3>Por docente</h3>
+      <ul style="margin:0 0 14px 20px;font-size:14px;color:#334155">
+        <li>Lista de todos los docentes en <strong>orden alfabético</strong>.</li>
+        <li>Buscador con coincidencia parcial de nombre.</li>
+        <li>Número de encuestas recibidas, promedio y nivel (Excelente / Bueno / Regular / Por mejorar).</li>
+        <li>Botón <strong>"Descargar PDF"</strong> con el informe detallado de cada docente.</li>
+      </ul>
+
+      <h3>Por curso</h3>
+      <ul style="margin:0 0 14px 20px;font-size:14px;color:#334155">
+        <li>Lista de todos los cursos en <strong>orden alfabético</strong> con buscador.</li>
+        <li>Botón <strong>"PDF"</strong> para generar el reporte de satisfacción de ese curso.</li>
+      </ul>
+    </section>
+
+    <section id="reportes">
+      <h2><span class="n">10</span>Reportes PDF</h2>
+      <table>
+        <thead><tr><th>Reporte</th><th>Acceso</th><th>Contenido</th></tr></thead>
+        <tbody>
+          <tr><td>Informe por docente</td><td>Satisfacción → Por docente → Descargar PDF<br>o Panel → Informes → Seleccionar docente</td><td>Promedio general, desglose por las 5 dimensiones, total sesiones, asistencias y comentarios de estudiantes.</td></tr>
+          <tr><td>Informe por curso</td><td>Satisfacción → Por curso → PDF<br>o Panel → Informes → Seleccionar curso</td><td>Estadísticas del impacto del curso: inscritos, asistencias, encuestas, promedios por dimensión y comentarios.</td></tr>
+          <tr><td>Lista de asistencia</td><td>Gestión de cursos → Ver estudiantes → Descargar lista PDF</td><td>Nombre, cédula y estado de asistencia de los inscritos.</td></tr>
+          <tr><td>Reporte individual</td><td>Gestión de cursos → Ver estudiantes → Reporte</td><td>Historial de asistencias y notas de evolución de un estudiante específico.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="faq">
+      <h2><span class="n">11</span>Preguntas frecuentes</h2>
+      <h3>¿Puedo importar horarios durante el semestre sin borrar los existentes?</h3>
+      <p>Sí. La importación solo agrega registros nuevos y omite los que generen conflicto de horario con los ya existentes. No borra lo que ya está en el sistema.</p>
+      <h3>¿Qué pasa si importo un horario dos veces?</h3>
+      <p>La segunda importación detectará el conflicto de horario (mismo docente, mismo día, mismas horas) y omitirá la fila duplicada. Lo verás en el pop-up de resultado bajo la categoría "Conflictos de horario".</p>
+      <h3>¿Cómo sé cuántos docentes tiene el sistema?</h3>
+      <p>En la pestaña <strong>"Control de roles"</strong> verás la tabla completa de docentes con su estado (activo/inactivo).</p>
+      <h3>¿Puedo editar un horario sin borrar las reservas de los estudiantes?</h3>
+      <p>Sí. Editar un horario (nombre del curso, modalidad, lugar, etc.) no afecta las reservas existentes de los estudiantes para ese horario.</p>
+      <h3>¿Qué ocurre si un docente no tiene cuenta y lo incluyo en el Excel?</h3>
+      <p>El sistema crea automáticamente su cuenta con el correo del Excel (o uno derivado del nombre) y la contraseña temporal <code>Pascual2026</code>. El docente deberá cambiarla en su primer ingreso.</p>
+    </section>
+
+    <div style="text-align:center;padding:28px 0 0;border-top:1px solid var(--border);margin-top:40px;font-size:12px;color:var(--gray)">
+      AgendaU &bull; Manual del Administrador v1.0 &bull; Institución Universitaria Pascual Bravo &bull; 2026
+    </div>
+  </main>
+</div>
+</body>
+</html>
