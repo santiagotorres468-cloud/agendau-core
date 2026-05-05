@@ -108,56 +108,83 @@
       </ol>
 
       <figure class="ui-fig">
-        <svg viewBox="0 0 620 310" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+        <svg viewBox="0 0 620 334" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+          <defs><filter id="shL"><feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#00000022"/></filter></defs>
           <!-- Fondo -->
-          <rect width="620" height="310" fill="#eef2f7"/>
+          <rect width="620" height="334" fill="#eef2f7"/>
           <!-- Tarjeta central -->
-          <rect x="160" y="18" width="300" height="274" rx="16" fill="white" filter="url(#sh)"/>
-          <defs><filter id="sh"><feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#00000020"/></filter></defs>
+          <rect x="148" y="16" width="290" height="298" rx="16" fill="white" filter="url(#shL)"/>
           <!-- Header azul oscuro -->
-          <rect x="160" y="18" width="300" height="62" rx="16" fill="#002845"/>
-          <rect x="160" y="58" width="300" height="22" fill="#002845"/>
+          <rect x="148" y="16" width="290" height="62" rx="16" fill="#002845"/>
+          <rect x="148" y="56" width="290" height="22" fill="#002845"/>
           <!-- Badge AU -->
-          <rect x="176" y="31" width="32" height="32" rx="8" fill="#C9A227"/>
-          <text x="192" y="51" fill="#002845" font-size="12" font-weight="900" text-anchor="middle">AU</text>
+          <rect x="164" y="28" width="32" height="32" rx="8" fill="#C9A227"/>
+          <text x="180" y="49" fill="#002845" font-size="12" font-weight="bold" text-anchor="middle">AU</text>
           <!-- Header texto -->
-          <text x="220" y="45" fill="white" font-size="13" font-weight="800">Agenda U</text>
-          <text x="220" y="61" fill="rgba(255,255,255,0.55)" font-size="10">Sistema de Asesorías</text>
+          <text x="208" y="44" fill="white" font-size="13" font-weight="bold">Agenda U</text>
+          <text x="208" y="60" fill="rgba(255,255,255,0.5)" font-size="10">Sistema de Asesorías</text>
           <!-- Subtítulo -->
-          <text x="310" y="108" fill="#002845" font-size="13" font-weight="800" text-anchor="middle">Portal Estudiantil</text>
-          <text x="310" y="124" fill="#94a3b8" font-size="10" text-anchor="middle">Accede con tu cuenta Google institucional</text>
-          <!-- Botón Google -->
-          <rect x="185" y="148" width="250" height="44" rx="10" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
-          <circle cx="210" cy="170" r="10" fill="#fff"/>
-          <text x="210" y="174" fill="#4285F4" font-size="14" font-weight="900" text-anchor="middle">G</text>
-          <text x="315" y="175" fill="#374151" font-size="12" font-weight="700" text-anchor="middle">Ingresar con Google</text>
-          <!-- HIGHLIGHT ① Google button -->
-          <rect x="181" y="144" width="258" height="52" rx="12" fill="rgba(249,115,22,0.07)" stroke="#f97316" stroke-width="2.5" stroke-dasharray="6,3"/>
-          <!-- Badge ① -->
-          <circle cx="444" cy="170" r="12" fill="#f97316"/>
-          <text x="444" y="174" fill="white" font-size="12" font-weight="900" text-anchor="middle">1</text>
-          <line x1="440" y1="170" x2="439" y2="170" stroke="#f97316" stroke-width="1"/>
-          <!-- Separador -->
-          <line x1="185" y1="208" x2="435" y2="208" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,2"/>
-          <text x="310" y="204" fill="#cbd5e1" font-size="9" text-anchor="middle" dominant-baseline="middle" fill="#94a3b8">Primera vez</text>
-          <!-- Campo cédula (primera vez) -->
-          <rect x="185" y="218" width="250" height="36" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
-          <text x="198" y="240" fill="#94a3b8" font-size="11">Número de cédula</text>
-          <!-- HIGHLIGHT ② cédula -->
-          <rect x="181" y="214" width="258" height="44" rx="10" fill="rgba(249,115,22,0.05)" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
-          <!-- Badge ② -->
-          <circle cx="444" cy="236" r="12" fill="#f97316"/>
-          <text x="444" y="240" fill="white" font-size="12" font-weight="900" text-anchor="middle">2</text>
-          <!-- Footer -->
-          <text x="310" y="280" fill="#C9A227" font-size="9" font-weight="700" text-anchor="middle">© 2026 Agenda U — I.U. Pascual Bravo</text>
-          <!-- Leyenda externa -->
-          <text x="490" y="160" fill="#475569" font-size="11" font-weight="700">① Botón Google</text>
-          <text x="490" y="174" fill="#64748b" font-size="10">Haz clic aquí para</text>
-          <text x="490" y="186" fill="#64748b" font-size="10">autenticarte</text>
-          <text x="490" y="226" fill="#475569" font-size="11" font-weight="700">② Cédula</text>
-          <text x="490" y="240" fill="#64748b" font-size="10">Solo la primera vez</text>
+          <text x="293" y="102" fill="#002845" font-size="13" font-weight="bold" text-anchor="middle">Portal Estudiantil</text>
+          <text x="293" y="118" fill="#94a3b8" font-size="10" text-anchor="middle">Accede con tu cuenta Google institucional</text>
+          <!-- ─── PASO 1: Botón Google ─── -->
+          <rect x="168" y="136" width="250" height="42" rx="10" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+          <text x="196" y="161" fill="#4285F4" font-size="15" font-weight="bold">G</text>
+          <text x="295" y="162" fill="#374151" font-size="12" font-weight="bold" text-anchor="middle">Ingresar con Google</text>
+          <!-- Highlight ① -->
+          <rect x="164" y="132" width="258" height="50" rx="12" fill="rgba(249,115,22,0.06)" stroke="#f97316" stroke-width="2.5" stroke-dasharray="6 3"/>
+          <circle cx="426" cy="157" r="12" fill="#f97316"/>
+          <text x="426" y="162" fill="white" font-size="12" font-weight="bold" text-anchor="middle">1</text>
+          <!-- ─── Separador "primera vez" ─── -->
+          <line x1="168" y1="198" x2="418" y2="198" stroke="#e2e8f0" stroke-dasharray="4 3"/>
+          <rect x="248" y="191" width="90" height="14" rx="7" fill="#f1f5f9"/>
+          <text x="293" y="201" fill="#94a3b8" font-size="8" font-weight="bold" text-anchor="middle">PRIMERA VEZ</text>
+          <!-- ─── PASO 2: Campo cédula ─── -->
+          <rect x="168" y="212" width="250" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+          <text x="182" y="233" fill="#94a3b8" font-size="11">Número de cédula</text>
+          <!-- Highlight ② -->
+          <rect x="164" y="208" width="258" height="42" rx="10" fill="rgba(249,115,22,0.05)" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
+          <circle cx="426" cy="229" r="12" fill="#f97316"/>
+          <text x="426" y="234" fill="white" font-size="12" font-weight="bold" text-anchor="middle">2</text>
+          <!-- ─── PASO 3: Botón confirmar ─── -->
+          <rect x="168" y="262" width="250" height="32" rx="8" fill="#002845"/>
+          <text x="293" y="282" fill="white" font-size="11" font-weight="bold" text-anchor="middle">Vincular y continuar →</text>
+          <!-- Highlight ③ -->
+          <rect x="164" y="258" width="258" height="40" rx="10" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
+          <circle cx="426" cy="278" r="12" fill="#f97316"/>
+          <text x="426" y="283" fill="white" font-size="12" font-weight="bold" text-anchor="middle">3</text>
+          <!-- Footer tarjeta -->
+          <text x="293" y="320" fill="#C9A227" font-size="8" font-weight="bold" text-anchor="middle">© 2026 Agenda U — I.U. Pascual Bravo</text>
+          <!-- ─── Panel de anotaciones (derecha) ─── -->
+          <rect x="447" y="124" width="162" height="170" rx="12" fill="white" stroke="#e2e8f0"/>
+          <!-- Anotación ① -->
+          <circle cx="463" cy="142" r="10" fill="#f97316"/>
+          <text x="463" y="147" font-size="10" font-weight="bold" fill="white" text-anchor="middle">1</text>
+          <text x="480" y="140" font-size="10" font-weight="bold" fill="#002845">Ingresar con Google</text>
+          <text x="458" y="154" font-size="9" fill="#64748b">Haz clic y elige tu correo</text>
+          <text x="458" y="165" font-size="9" fill="#64748b">@pascualbravo.edu.co</text>
+          <!-- Divider -->
+          <line x1="457" y1="174" x2="599" y2="174" stroke="#e2e8f0"/>
+          <!-- Anotación ② -->
+          <circle cx="463" cy="188" r="10" fill="#f97316"/>
+          <text x="463" y="193" font-size="10" font-weight="bold" fill="white" text-anchor="middle">2</text>
+          <text x="480" y="186" font-size="10" font-weight="bold" fill="#002845">Número de cédula</text>
+          <text x="458" y="200" font-size="9" fill="#64748b">Solo la primera vez.</text>
+          <text x="458" y="211" font-size="9" fill="#64748b">Vincula tu cuenta Google</text>
+          <text x="458" y="222" font-size="9" fill="#64748b">con el registro académico</text>
+          <!-- Divider -->
+          <line x1="457" y1="231" x2="599" y2="231" stroke="#e2e8f0"/>
+          <!-- Anotación ③ -->
+          <circle cx="463" cy="245" r="10" fill="#f97316"/>
+          <text x="463" y="250" font-size="10" font-weight="bold" fill="white" text-anchor="middle">3</text>
+          <text x="480" y="243" font-size="10" font-weight="bold" fill="#002845">Vincular y continuar</text>
+          <text x="458" y="257" font-size="9" fill="#64748b">Confirma tu cédula para</text>
+          <text x="458" y="268" font-size="9" fill="#64748b">acceder al panel de reservas</text>
+          <!-- Líneas conector badge → panel -->
+          <line x1="438" y1="157" x2="447" y2="148" stroke="#f97316" stroke-width="1" stroke-dasharray="3 2"/>
+          <line x1="438" y1="229" x2="447" y2="214" stroke="#f97316" stroke-width="1" stroke-dasharray="3 2"/>
+          <line x1="438" y1="278" x2="447" y2="262" stroke="#f97316" stroke-width="1" stroke-dasharray="3 2"/>
         </svg>
-        <figcaption>Pantalla de acceso del portal estudiantil — autentica con tu cuenta Google institucional</figcaption>
+        <figcaption>Pantalla de acceso del portal estudiantil — los pasos ① y ② solo son necesarios la primera vez; desde la segunda visita el sistema reconoce tu cuenta automáticamente</figcaption>
       </figure>
 
       <div class="callout warn">
