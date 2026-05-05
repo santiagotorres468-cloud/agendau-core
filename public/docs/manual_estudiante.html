@@ -6,7 +6,7 @@
   <title>Manual Estudiante — AgendaU</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    :root{--navy:#002845;--gold:#C9A227;--blue:#2563eb;--green:#059669;--gray:#64748b;--border:#e2e8f0;--light:#f8fafc}
+    :root{--navy:#002845;--gold:#C9A227;--blue:#2563eb;--green:#059669;--orange:#f97316;--gray:#64748b;--border:#e2e8f0;--light:#f8fafc}
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Manrope',sans-serif;background:var(--light);color:#1e293b;line-height:1.7}
     .page-wrap{display:flex;min-height:100vh}
@@ -49,6 +49,11 @@
     td{padding:9px 13px;border-bottom:1px solid var(--border);color:#334155}
     tr:last-child td{border-bottom:none}
     tr:nth-child(even) td{background:#f8fafc}
+    /* ── UI Figure (screenshot mockup) ── */
+    .ui-fig{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:20px 0 24px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+    .ui-fig svg{display:block;width:100%;height:auto}
+    .ui-fig figcaption{padding:9px 16px;background:#f8fafc;border-top:1px solid var(--border);font-size:12px;color:#64748b;font-style:italic;display:flex;align-items:center;gap:6px}
+    .ui-fig figcaption::before{content:'🔍';font-style:normal}
     @media(max-width:700px){aside{display:none}main{padding:24px}}
   </style>
 </head>
@@ -83,22 +88,78 @@
       </div>
     </div>
 
+    <!-- 1 -->
     <section id="introduccion">
       <h2><span class="n">1</span>¿Qué es AgendaU?</h2>
       <p><strong>AgendaU</strong> es la plataforma web de la Institución Universitaria Pascual Bravo para programar asesorías y monitorias académicas. Como estudiante puedes ver los horarios disponibles, reservar tu cupo, cancelar si es necesario y dejar tu opinión sobre la sesión mediante una encuesta.</p>
       <p>El acceso para estudiantes es completamente a través de tu cuenta de <strong>Google institucional</strong> — no necesitas recordar una contraseña adicional.</p>
     </section>
 
+    <!-- 2 -->
     <section id="acceso">
       <h2><span class="n">2</span>Cómo ingresar al sistema</h2>
       <h3>Inicio de sesión con Google</h3>
       <ol class="steps">
         <li><p>Abre el <strong>portal de estudiante</strong> en tu navegador (URL proporcionada por la institución).</p></li>
-        <li><p>Haz clic en el botón <strong>"Ingresar con Google"</strong>.</p></li>
+        <li><p>Haz clic en el botón <strong>"Ingresar con Google"</strong> — marcado con <strong>①</strong> en la imagen.</p></li>
         <li><p>Selecciona tu cuenta de correo institucional (<code>@pascualbravo.edu.co</code>).</p></li>
-        <li><p><strong>Primera vez:</strong> el sistema te pedirá tu <strong>número de cédula</strong> para vincularte al registro académico. Escríbela y confirma.</p></li>
+        <li><p><strong>Primera vez:</strong> el sistema te pedirá tu <strong>número de cédula</strong> para vincularte al registro académico — campo marcado con <strong>②</strong>.</p></li>
         <li><p>Listo — serás redirigido a tu panel de reservas.</p></li>
       </ol>
+
+      <figure class="ui-fig">
+        <svg viewBox="0 0 620 310" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+          <!-- Fondo -->
+          <rect width="620" height="310" fill="#eef2f7"/>
+          <!-- Tarjeta central -->
+          <rect x="160" y="18" width="300" height="274" rx="16" fill="white" filter="url(#sh)"/>
+          <defs><filter id="sh"><feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#00000020"/></filter></defs>
+          <!-- Header azul oscuro -->
+          <rect x="160" y="18" width="300" height="62" rx="16" fill="#002845"/>
+          <rect x="160" y="58" width="300" height="22" fill="#002845"/>
+          <!-- Badge AU -->
+          <rect x="176" y="31" width="32" height="32" rx="8" fill="#C9A227"/>
+          <text x="192" y="51" fill="#002845" font-size="12" font-weight="900" text-anchor="middle">AU</text>
+          <!-- Header texto -->
+          <text x="220" y="45" fill="white" font-size="13" font-weight="800">Agenda U</text>
+          <text x="220" y="61" fill="rgba(255,255,255,0.55)" font-size="10">Sistema de Asesorías</text>
+          <!-- Subtítulo -->
+          <text x="310" y="108" fill="#002845" font-size="13" font-weight="800" text-anchor="middle">Portal Estudiantil</text>
+          <text x="310" y="124" fill="#94a3b8" font-size="10" text-anchor="middle">Accede con tu cuenta Google institucional</text>
+          <!-- Botón Google -->
+          <rect x="185" y="148" width="250" height="44" rx="10" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+          <circle cx="210" cy="170" r="10" fill="#fff"/>
+          <text x="210" y="174" fill="#4285F4" font-size="14" font-weight="900" text-anchor="middle">G</text>
+          <text x="315" y="175" fill="#374151" font-size="12" font-weight="700" text-anchor="middle">Ingresar con Google</text>
+          <!-- HIGHLIGHT ① Google button -->
+          <rect x="181" y="144" width="258" height="52" rx="12" fill="rgba(249,115,22,0.07)" stroke="#f97316" stroke-width="2.5" stroke-dasharray="6,3"/>
+          <!-- Badge ① -->
+          <circle cx="444" cy="170" r="12" fill="#f97316"/>
+          <text x="444" y="174" fill="white" font-size="12" font-weight="900" text-anchor="middle">1</text>
+          <line x1="440" y1="170" x2="439" y2="170" stroke="#f97316" stroke-width="1"/>
+          <!-- Separador -->
+          <line x1="185" y1="208" x2="435" y2="208" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,2"/>
+          <text x="310" y="204" fill="#cbd5e1" font-size="9" text-anchor="middle" dominant-baseline="middle" fill="#94a3b8">Primera vez</text>
+          <!-- Campo cédula (primera vez) -->
+          <rect x="185" y="218" width="250" height="36" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+          <text x="198" y="240" fill="#94a3b8" font-size="11">Número de cédula</text>
+          <!-- HIGHLIGHT ② cédula -->
+          <rect x="181" y="214" width="258" height="44" rx="10" fill="rgba(249,115,22,0.05)" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <!-- Badge ② -->
+          <circle cx="444" cy="236" r="12" fill="#f97316"/>
+          <text x="444" y="240" fill="white" font-size="12" font-weight="900" text-anchor="middle">2</text>
+          <!-- Footer -->
+          <text x="310" y="280" fill="#C9A227" font-size="9" font-weight="700" text-anchor="middle">© 2026 Agenda U — I.U. Pascual Bravo</text>
+          <!-- Leyenda externa -->
+          <text x="490" y="160" fill="#475569" font-size="11" font-weight="700">① Botón Google</text>
+          <text x="490" y="174" fill="#64748b" font-size="10">Haz clic aquí para</text>
+          <text x="490" y="186" fill="#64748b" font-size="10">autenticarte</text>
+          <text x="490" y="226" fill="#475569" font-size="11" font-weight="700">② Cédula</text>
+          <text x="490" y="240" fill="#64748b" font-size="10">Solo la primera vez</text>
+        </svg>
+        <figcaption>Pantalla de acceso del portal estudiantil — autentica con tu cuenta Google institucional</figcaption>
+      </figure>
+
       <div class="callout warn">
         <span class="callout-icon">⚠️</span>
         <div><strong>Cédula no encontrada</strong>Si ves un error al ingresar tu cédula, comunícate con la coordinación académica para verificar que tu número esté registrado en el sistema.</div>
@@ -109,32 +170,166 @@
       </div>
     </section>
 
+    <!-- 3 -->
     <section id="calendario">
       <h2><span class="n">3</span>Ver el calendario de asesorías</h2>
-      <p>Al ingresar verás un <strong>calendario semanal</strong> con todas las asesorías y monitorias disponibles del semestre actual. Puedes navegar entre semanas usando las flechas de la parte superior del calendario.</p>
-      <h3>Colores del calendario</h3>
+      <p>Al ingresar verás un <strong>calendario semanal</strong> con todas las asesorías y monitorias disponibles. Puedes navegar entre semanas usando las flechas de la parte superior.</p>
+
+      <figure class="ui-fig">
+        <svg viewBox="0 0 620 330" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+          <defs><filter id="sh2"><feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#00000015"/></filter></defs>
+          <!-- Fondo app -->
+          <rect width="620" height="330" fill="#f1f5f9"/>
+          <!-- Sidebar mini -->
+          <rect x="0" y="0" width="130" height="330" fill="#002845"/>
+          <!-- AU badge sidebar -->
+          <rect x="12" y="14" width="28" height="28" rx="7" fill="#C9A227"/>
+          <text x="26" y="32" fill="#002845" font-size="10" font-weight="900" text-anchor="middle">AU</text>
+          <text x="50" y="24" fill="white" font-size="10" font-weight="800">Agenda U</text>
+          <text x="50" y="36" fill="rgba(255,255,255,0.45)" font-size="8">Asesorías</text>
+          <!-- Nav items sidebar -->
+          <rect x="8" y="56" width="114" height="28" rx="7" fill="rgba(255,255,255,0.12)"/>
+          <text x="20" y="74" fill="white" font-size="10" font-weight="700">📅 Mis Reservas</text>
+          <text x="20" y="100" fill="rgba(255,255,255,0.6)" font-size="10">🔍 Explorar Clases</text>
+          <!-- Área principal -->
+          <rect x="138" y="8" width="474" height="314" rx="12" fill="white" filter="url(#sh2)"/>
+          <!-- Header calendario -->
+          <rect x="138" y="8" width="474" height="40" rx="12" fill="#f8fafc"/>
+          <rect x="138" y="32" width="474" height="16" fill="#f8fafc"/>
+          <text x="310" y="30" fill="#002845" font-size="12" font-weight="800" text-anchor="middle">Semana del 5 al 9 de Mayo, 2026</text>
+          <text x="148" y="30" fill="#002845" font-size="14" font-weight="700">‹</text>
+          <text x="596" y="30" fill="#002845" font-size="14" font-weight="700">›</text>
+          <!-- Columnas días -->
+          <line x1="138" y1="48" x2="612" y2="48" stroke="#e2e8f0" stroke-width="1"/>
+          <!-- Días de semana -->
+          <text x="186" y="62" fill="#64748b" font-size="10" font-weight="700" text-anchor="middle">LUN 5</text>
+          <text x="280" y="62" fill="#64748b" font-size="10" font-weight="700" text-anchor="middle">MAR 6</text>
+          <text x="374" y="62" fill="#64748b" font-size="10" font-weight="700" text-anchor="middle">MIÉ 7</text>
+          <text x="468" y="62" fill="#64748b" font-size="10" font-weight="700" text-anchor="middle">JUE 8</text>
+          <text x="562" y="62" fill="#64748b" font-size="10" font-weight="700" text-anchor="middle">VIE 9</text>
+          <!-- Líneas verticales -->
+          <line x1="233" y1="48" x2="233" y2="322" stroke="#f1f5f9" stroke-width="1"/>
+          <line x1="327" y1="48" x2="327" y2="322" stroke="#f1f5f9" stroke-width="1"/>
+          <line x1="421" y1="48" x2="421" y2="322" stroke="#f1f5f9" stroke-width="1"/>
+          <line x1="515" y1="48" x2="515" y2="322" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Horas -->
+          <text x="143" y="90" fill="#cbd5e1" font-size="8">8am</text>
+          <line x1="156" y1="87" x2="612" y2="87" stroke="#f1f5f9" stroke-width="1"/>
+          <text x="143" y="134" fill="#cbd5e1" font-size="8">10am</text>
+          <line x1="156" y1="131" x2="612" y2="131" stroke="#f1f5f9" stroke-width="1"/>
+          <text x="143" y="178" fill="#cbd5e1" font-size="8">12pm</text>
+          <line x1="156" y1="175" x2="612" y2="175" stroke="#f1f5f9" stroke-width="1"/>
+          <text x="143" y="222" fill="#cbd5e1" font-size="8">2pm</text>
+          <line x1="156" y1="219" x2="612" y2="219" stroke="#f1f5f9" stroke-width="1"/>
+          <text x="143" y="266" fill="#cbd5e1" font-size="8">4pm</text>
+          <line x1="156" y1="263" x2="612" y2="263" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Evento verde (Presencial) - Lunes 8am -->
+          <rect x="158" y="70" width="68" height="55" rx="6" fill="#10b981"/>
+          <text x="192" y="88" fill="white" font-size="9" font-weight="800" text-anchor="middle">Cálculo I</text>
+          <text x="192" y="100" fill="rgba(255,255,255,0.85)" font-size="8" text-anchor="middle">C. Rodríguez</text>
+          <text x="192" y="112" fill="rgba(255,255,255,0.75)" font-size="8" text-anchor="middle">8:00–10:00</text>
+          <!-- Evento verde (Presencial) - Jueves 2pm -->
+          <rect x="440" y="200" width="68" height="55" rx="6" fill="#10b981"/>
+          <text x="474" y="218" fill="white" font-size="9" font-weight="800" text-anchor="middle">Física I</text>
+          <text x="474" y="230" fill="rgba(255,255,255,0.85)" font-size="8" text-anchor="middle">L. Martínez</text>
+          <text x="474" y="242" fill="rgba(255,255,255,0.75)" font-size="8" text-anchor="middle">2:00–4:00</text>
+          <!-- Evento azul (Virtual) - Miércoles 10am -->
+          <rect x="346" y="112" width="68" height="55" rx="6" fill="#3b82f6"/>
+          <text x="380" y="130" fill="white" font-size="9" font-weight="800" text-anchor="middle">Álgebra</text>
+          <text x="380" y="142" fill="rgba(255,255,255,0.85)" font-size="8" text-anchor="middle">M. García</text>
+          <text x="380" y="154" fill="rgba(255,255,255,0.75)" font-size="8" text-anchor="middle">10:00–12:00</text>
+          <!-- Leyenda colores -->
+          <rect x="156" y="285" width="200" height="28" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+          <rect x="164" y="295" width="10" height="10" rx="2" fill="#10b981"/>
+          <text x="180" y="304" fill="#334155" font-size="10" font-weight="600">Presencial</text>
+          <rect x="234" y="295" width="10" height="10" rx="2" fill="#3b82f6"/>
+          <text x="250" y="304" fill="#334155" font-size="10" font-weight="600">Virtual</text>
+          <!-- HIGHLIGHT ① leyenda colores -->
+          <rect x="152" y="281" width="208" height="36" rx="10" fill="rgba(249,115,22,0.07)" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <!-- Badge ① -->
+          <circle cx="370" cy="299" r="11" fill="#f97316"/>
+          <text x="370" y="303" fill="white" font-size="11" font-weight="900" text-anchor="middle">1</text>
+          <!-- HIGHLIGHT ② evento verde -->
+          <rect x="154" y="66" width="76" height="63" rx="8" fill="none" stroke="#f97316" stroke-width="2.5" stroke-dasharray="5,3"/>
+          <!-- Badge ② -->
+          <circle cx="143" cy="97" r="11" fill="#f97316"/>
+          <text x="143" y="101" fill="white" font-size="11" font-weight="900" text-anchor="middle">2</text>
+          <!-- HIGHLIGHT ③ evento azul -->
+          <rect x="342" y="108" width="76" height="63" rx="8" fill="none" stroke="#f97316" stroke-width="2.5" stroke-dasharray="5,3"/>
+          <!-- Badge ③ -->
+          <circle cx="331" cy="139" r="11" fill="#f97316"/>
+          <text x="331" y="143" fill="white" font-size="11" font-weight="900" text-anchor="middle">3</text>
+        </svg>
+        <figcaption>① Leyenda de colores — ② Sesión presencial (verde) — ③ Sesión virtual (azul)</figcaption>
+      </figure>
+
       <div class="legend">
         <div class="legend-item"><div class="color-dot" style="background:#10b981"></div>Verde — Sesión Presencial</div>
         <div class="legend-item"><div class="color-dot" style="background:#3b82f6"></div>Azul — Sesión Virtual</div>
       </div>
-      <p>Al hacer clic sobre cualquier evento del calendario se abrirá un panel lateral con los detalles: nombre del docente, lugar o enlace, sede, bloque y aula.</p>
+      <p>Al hacer clic sobre cualquier evento se abrirá un panel con los detalles: nombre del docente, lugar o enlace, sede, bloque y aula.</p>
     </section>
 
+    <!-- 4 -->
     <section id="reservar">
       <h2><span class="n">4</span>Reservar una asesoría</h2>
       <ol class="steps">
-        <li><p>Encuentra en el calendario la asesoría que te interesa.</p></li>
-        <li><p>Haz clic sobre el evento para ver sus detalles.</p></li>
-        <li><p>Selecciona la <strong>fecha específica</strong> de la sesión a la que deseas asistir.</p></li>
-        <li><p>Haz clic en <strong>"Reservar"</strong>.</p></li>
-        <li><p>Recibirás una confirmación y la reserva aparecerá en tu pestaña <strong>"Mis Reservas"</strong>.</p></li>
+        <li><p>Encuentra en el calendario la asesoría que te interesa y haz clic sobre el evento.</p></li>
+        <li><p>Se abrirá el panel de detalles — selecciona la <strong>fecha</strong> en el campo marcado con <strong>①</strong>.</p></li>
+        <li><p>Haz clic en el botón <strong>"Reservar"</strong> — resaltado con <strong>②</strong>.</p></li>
+        <li><p>La reserva aparecerá en tu pestaña <strong>"Mis Reservas"</strong>.</p></li>
       </ol>
+
+      <figure class="ui-fig">
+        <svg viewBox="0 0 620 280" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+          <defs><filter id="sh3"><feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#00000018"/></filter></defs>
+          <rect width="620" height="280" fill="#eef2f7"/>
+          <!-- Panel lateral derecho (detalle evento) -->
+          <rect x="30" y="20" width="560" height="240" rx="14" fill="white" filter="url(#sh3)"/>
+          <!-- Header del panel -->
+          <rect x="30" y="20" width="560" height="50" rx="14" fill="#002845"/>
+          <rect x="30" y="54" width="560" height="16" fill="#002845"/>
+          <text x="50" y="50" fill="white" font-size="14" font-weight="900">Cálculo Diferencial</text>
+          <rect x="460" y="28" width="90" height="20" rx="10" fill="#10b981"/>
+          <text x="505" y="42" fill="white" font-size="10" font-weight="700" text-anchor="middle">PRESENCIAL</text>
+          <!-- Info rows -->
+          <text x="50" y="88" fill="#64748b" font-size="11">👨‍🏫 Docente:</text>
+          <text x="140" y="88" fill="#002845" font-size="11" font-weight="700">Carlos Rodríguez</text>
+          <text x="50" y="108" fill="#64748b" font-size="11">📍 Ubicación:</text>
+          <text x="140" y="108" fill="#002845" font-size="11" font-weight="700">Bloque 4 — Aula C401</text>
+          <text x="50" y="128" fill="#64748b" font-size="11">🕐 Horario:</text>
+          <text x="140" y="128" fill="#002845" font-size="11" font-weight="700">Lunes 8:00 AM – 10:00 AM</text>
+          <line x1="50" y1="140" x2="570" y2="140" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Selector de fecha -->
+          <text x="50" y="162" fill="#475569" font-size="12" font-weight="700">Selecciona la fecha de asistencia:</text>
+          <rect x="50" y="170" width="220" height="36" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+          <text x="65" y="192" fill="#374151" font-size="12">📅  12 de mayo, 2026</text>
+          <!-- HIGHLIGHT ① fecha -->
+          <rect x="46" y="166" width="228" height="44" rx="10" fill="rgba(249,115,22,0.07)" stroke="#f97316" stroke-width="2.5" stroke-dasharray="6,3"/>
+          <!-- Badge ① -->
+          <circle cx="39" cy="188" r="11" fill="#f97316"/>
+          <text x="39" y="192" fill="white" font-size="11" font-weight="900" text-anchor="middle">1</text>
+          <!-- Botón Reservar -->
+          <rect x="300" y="170" width="140" height="36" rx="9" fill="#002845"/>
+          <text x="370" y="192" fill="white" font-size="12" font-weight="800" text-anchor="middle">✓  Reservar</text>
+          <!-- HIGHLIGHT ② Reservar -->
+          <rect x="296" y="166" width="148" height="44" rx="11" fill="rgba(249,115,22,0.07)" stroke="#f97316" stroke-width="2.5" stroke-dasharray="6,3"/>
+          <!-- Badge ② -->
+          <circle cx="451" cy="188" r="11" fill="#f97316"/>
+          <text x="451" y="192" fill="white" font-size="11" font-weight="900" text-anchor="middle">2</text>
+          <!-- Nota -->
+          <text x="50" y="238" fill="#94a3b8" font-size="10">La reserva quedará registrada en "Mis Reservas" inmediatamente.</text>
+        </svg>
+        <figcaption>① Selecciona la fecha de la sesión — ② Confirma la reserva con este botón</figcaption>
+      </figure>
+
       <div class="callout info">
         <span class="callout-icon">📋</span>
         <div><strong>Encuesta pendiente</strong>Si tienes una encuesta sin responder de una sesión anterior, el sistema te pedirá completarla antes de hacer una nueva reserva.</div>
       </div>
     </section>
 
+    <!-- 5 -->
     <section id="mis-reservas">
       <h2><span class="n">5</span>Mis reservas</h2>
       <p>La pestaña <strong>"Mis Reservas"</strong> muestra todas tus inscripciones activas con la siguiente información:</p>
@@ -150,6 +345,7 @@
       </table>
     </section>
 
+    <!-- 6 -->
     <section id="cancelar">
       <h2><span class="n">6</span>Cancelar una reserva</h2>
       <ol class="steps">
@@ -160,14 +356,66 @@
       </ol>
       <div class="callout warn">
         <span class="callout-icon">⚠️</span>
-        <div><strong>Solo reservas pendientes</strong>Solo puedes cancelar reservas con estado <em>Programada</em>. Las sesiones que ya fueron evaluadas (asistencia registrada por el docente) no pueden cancelarse.</div>
+        <div><strong>Solo reservas pendientes</strong>Solo puedes cancelar reservas con estado <em>Programada</em>. Las sesiones ya evaluadas no pueden cancelarse.</div>
       </div>
     </section>
 
+    <!-- 7 -->
     <section id="encuesta">
       <h2><span class="n">7</span>Encuesta de satisfacción</h2>
-      <p>Después de cada asesoría en la que el docente registre tu asistencia, recibirás una <strong>encuesta de satisfacción</strong> automáticamente. Esta encuesta es importante para mejorar la calidad del servicio.</p>
-      <h3>Preguntas de la encuesta</h3>
+      <p>Después de cada asesoría en la que el docente registre tu asistencia, recibirás una <strong>encuesta de satisfacción</strong> automáticamente.</p>
+
+      <figure class="ui-fig">
+        <svg viewBox="0 0 620 350" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+          <defs><filter id="sh4"><feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#00000015"/></filter></defs>
+          <rect width="620" height="350" fill="#eef2f7"/>
+          <!-- Tarjeta encuesta -->
+          <rect x="60" y="16" width="500" height="318" rx="16" fill="white" filter="url(#sh4)"/>
+          <!-- Header -->
+          <rect x="60" y="16" width="500" height="50" rx="16" fill="#002845"/>
+          <rect x="60" y="48" width="500" height="18" fill="#002845"/>
+          <text x="310" y="44" fill="white" font-size="13" font-weight="900" text-anchor="middle">⭐  Encuesta de satisfacción</text>
+          <text x="310" y="60" fill="rgba(255,255,255,0.55)" font-size="10" text-anchor="middle">Cálculo Diferencial — Carlos Rodríguez — Lunes 12 Mayo</text>
+          <!-- Filas de calificación -->
+          <!-- Row 1 -->
+          <text x="80" y="100" fill="#334155" font-size="11" font-weight="600">P1. Claridad del docente</text>
+          <text x="390" y="100" fill="#C9A227" font-size="16" letter-spacing="4">★★★★★</text>
+          <line x1="80" y1="108" x2="540" y2="108" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Row 2 -->
+          <text x="80" y="128" fill="#334155" font-size="11" font-weight="600">P2. Puntualidad</text>
+          <text x="390" y="128" fill="#C9A227" font-size="16" letter-spacing="4">★★★★☆</text>
+          <line x1="80" y1="136" x2="540" y2="136" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Row 3 -->
+          <text x="80" y="156" fill="#334155" font-size="11" font-weight="600">P3. Dominio del tema</text>
+          <text x="390" y="156" fill="#C9A227" font-size="16" letter-spacing="4">★★★★★</text>
+          <line x1="80" y1="164" x2="540" y2="164" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Row 4 -->
+          <text x="80" y="184" fill="#334155" font-size="11" font-weight="600">P4. Utilidad de la sesión</text>
+          <text x="390" y="184" fill="#C9A227" font-size="16" letter-spacing="4">★★★★★</text>
+          <line x1="80" y1="192" x2="540" y2="192" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Row 5 -->
+          <text x="80" y="212" fill="#334155" font-size="11" font-weight="600">P5. Ambiente y espacio</text>
+          <text x="390" y="212" fill="#C9A227" font-size="16" letter-spacing="4">★★★★☆</text>
+          <!-- HIGHLIGHT ① estrellas (columna de ratings) -->
+          <rect x="382" y="82" width="158" height="140" rx="8" fill="rgba(249,115,22,0.06)" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <!-- Badge ① -->
+          <circle cx="546" cy="152" r="12" fill="#f97316"/>
+          <text x="546" y="156" fill="white" font-size="12" font-weight="900" text-anchor="middle">1</text>
+          <!-- Comentario -->
+          <rect x="80" y="228" width="460" height="44" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+          <text x="94" y="254" fill="#94a3b8" font-size="11">Comentario adicional (opcional, máx. 500 caracteres)...</text>
+          <!-- Botón enviar -->
+          <rect x="200" y="285" width="220" height="36" rx="9" fill="#002845"/>
+          <text x="310" y="307" fill="white" font-size="12" font-weight="800" text-anchor="middle">Enviar encuesta</text>
+          <!-- HIGHLIGHT ② botón enviar -->
+          <rect x="196" y="281" width="228" height="44" rx="11" fill="rgba(249,115,22,0.07)" stroke="#f97316" stroke-width="2.5" stroke-dasharray="6,3"/>
+          <!-- Badge ② -->
+          <circle cx="430" cy="303" r="11" fill="#f97316"/>
+          <text x="430" y="307" fill="white" font-size="11" font-weight="900" text-anchor="middle">2</text>
+        </svg>
+        <figcaption>① Califica cada dimensión del 1 al 5 — ② Envía la encuesta con este botón</figcaption>
+      </figure>
+
       <table>
         <thead><tr><th>#</th><th>Dimensión evaluada</th><th>Escala</th></tr></thead>
         <tbody>
@@ -178,16 +426,15 @@
           <tr><td>5</td><td>Ambiente y espacio de la sesión</td><td>1 a 5 estrellas</td></tr>
         </tbody>
       </table>
-      <p>Al final de la encuesta puedes dejar un comentario abierto (máximo 500 caracteres). El campo es opcional.</p>
       <div class="callout tip">
         <span class="callout-icon">✅</span>
         <div><strong>Una sola respuesta por sesión</strong>La encuesta solo puede enviarse una vez por cada sesión. Una vez respondida no puede modificarse.</div>
       </div>
     </section>
 
+    <!-- 8 -->
     <section id="semestre">
       <h2><span class="n">8</span>Semestres y períodos activos</h2>
-      <p>Las asesorías y monitorias están activas durante los períodos académicos establecidos por la institución:</p>
       <table>
         <thead><tr><th>Semestre</th><th>Período</th></tr></thead>
         <tbody>
@@ -195,7 +442,6 @@
           <tr><td><strong>Segundo semestre</strong></td><td>5 de agosto — 30 de noviembre</td></tr>
         </tbody>
       </table>
-      <p>Fuera de estos períodos los horarios de asesorías no están disponibles. Si necesitas apoyo intersemestral, contacta directamente a tu docente.</p>
       <h3>Horarios habilitados</h3>
       <table>
         <thead><tr><th>Día</th><th>Hora mínima</th><th>Hora máxima</th></tr></thead>
@@ -206,6 +452,7 @@
       </table>
     </section>
 
+    <!-- 9 -->
     <section id="faq">
       <h2><span class="n">9</span>Preguntas frecuentes</h2>
       <h3>¿Puedo inscribirme en más de una asesoría a la vez?</h3>
@@ -213,11 +460,9 @@
       <h3>¿Qué pasa si no asisto a una asesoría reservada?</h3>
       <p>Si el docente registra tu inasistencia, la reserva queda marcada como evaluada sin asistencia. No recibirás encuesta de satisfacción en ese caso.</p>
       <h3>¿Por qué me redirige a una encuesta cuando intento reservar?</h3>
-      <p>Tienes una encuesta pendiente de una sesión anterior a la que asististe. Complétala primero y podrás hacer nuevas reservas sin restricciones.</p>
+      <p>Tienes una encuesta pendiente de una sesión anterior a la que asististe. Complétala primero y podrás hacer nuevas reservas.</p>
       <h3>¿Qué hago si mi cédula no aparece en el sistema?</h3>
-      <p>Comunícate con la oficina de sistemas o la coordinación académica de la Institución Universitaria Pascual Bravo para solicitar el registro de tu cédula.</p>
-      <h3>¿Cómo sé si una sesión es presencial o virtual?</h3>
-      <p>Los eventos en <strong style="color:#10b981">verde</strong> son presenciales y los que aparecen en <strong style="color:#3b82f6">azul</strong> son virtuales. Al hacer clic se muestra la ubicación o el enlace de conexión.</p>
+      <p>Comunícate con la coordinación académica para solicitar el registro de tu cédula.</p>
     </section>
 
     <div style="text-align:center;padding:28px 0 0;border-top:1px solid var(--border);margin-top:40px;font-size:12px;color:var(--gray)">
