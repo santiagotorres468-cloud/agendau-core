@@ -3,7 +3,14 @@
     "allow": [
       "Bash(\"C:\\\\xampp\\\\php\\\\php.exe\" artisan *)",
       "Bash(\"C:\\\\xampp\\\\php\\\\php.exe\" -l resources/views/horarios/editar.blade.php)",
-      "Bash(\"C:\\\\xampp\\\\php\\\\php.exe\" -l resources/views/admin/dashboard.blade.php)"
+      "Bash(\"C:\\\\xampp\\\\php\\\\php.exe\" -l resources/views/admin/dashboard.blade.php)",
+      "Bash(xargs grep *)",
+      "Bash(php artisan *)",
+      "Bash(git add *)",
+      "Bash(git push *)",
+      "Bash(git commit -m ' *)",
+      "Bash(findstr /i \"laravel\")",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\xampp\\\\htdocs\\\\LARAVEL\\\\agendaU\" -Directory | Where-Object { $_.Name -match \"\\(doc|spec|requirement|case\\)\" })"
     ]
   }
 }

@@ -449,6 +449,189 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════════
+     ANATOMÍA DE UN CASO DE USO
+══════════════════════════════════════════════════════ -->
+<div style="background:#fff;border-radius:14px;box-shadow:0 4px 22px rgba(0,0,0,0.09);border:1px solid #dde4ef;margin-bottom:44px;padding:22px 18px 32px;">
+  <div style="text-align:center;color:#002845;font-size:14px;font-weight:700;margin-bottom:4px;">Anatomía de una Especificación de Caso de Uso</div>
+  <div style="text-align:center;color:#94a3b8;font-size:11px;margin-bottom:6px;">Guía de lectura — estructura y elementos que componen cada tarjeta de caso de uso</div>
+  <div style="text-align:center;color:#64748b;font-size:10.5px;margin-bottom:22px;font-style:italic;">Cada caso de uso en este documento sigue la plantilla anotada a continuación</div>
+
+<svg viewBox="0 0 1140 600" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+<defs>
+  <marker id="ano" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+    <path d="M0,0.5 L0,6.5 L7.5,3.5 z" fill="#64748b"/>
+  </marker>
+  <filter id="sh2" x="-6%" y="-8%" width="120%" height="130%">
+    <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#00000014"/>
+  </filter>
+</defs>
+
+<!-- ════════════════════════════════
+     ETIQUETAS SUPERIORES
+════════════════════════════════ -->
+<rect x="18" y="8" width="90" height="22" rx="11" fill="#002845"/>
+<text x="63" y="23" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="Segoe UI,Arial,sans-serif" letter-spacing="0.5">EJEMPLO</text>
+
+<rect x="590" y="8" width="135" height="22" rx="11" fill="#475569"/>
+<text x="657" y="23" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="Segoe UI,Arial,sans-serif" letter-spacing="0.5">ANOTACIONES</text>
+
+<!-- ════════════════════════════════
+     TARJETA SIMULADA (izquierda)
+     translate(18, 38) — 520px wide, 530px tall
+════════════════════════════════ -->
+<g transform="translate(18, 38)" filter="url(#sh2)">
+  <!-- Borde exterior -->
+  <rect x="0" y="0" width="520" height="530" rx="13" fill="#fff" stroke="#dde4ef" stroke-width="1.5"/>
+  <!-- HEADER bg -->
+  <path d="M13,0 L520,0 L520,70 L13,70 Q0,70 0,57 L0,13 Q0,0 13,0 Z" fill="#f8fafc"/>
+  <!-- Badge CU-06 -->
+  <path d="M13,0 L80,0 L80,70 L13,70 Q0,70 0,57 L0,13 Q0,0 13,0 Z" fill="#1d4ed8"/>
+  <text x="40" y="30" text-anchor="middle" fill="#fff" font-size="10" font-weight="800" font-family="Segoe UI,Arial,sans-serif">CU</text>
+  <text x="40" y="46" text-anchor="middle" fill="#fff" font-size="10" font-weight="800" font-family="Segoe UI,Arial,sans-serif">-06</text>
+  <!-- Título -->
+  <text x="96" y="27" fill="#1e3a8a" font-size="15" font-weight="700" font-family="Segoe UI,Arial,sans-serif">Reserva de Cupo en Tutoría</text>
+  <!-- Badges -->
+  <rect x="96" y="36" width="96" height="20" rx="10" fill="#dbeafe"/>
+  <text x="144" y="50" text-anchor="middle" fill="#1e40af" font-size="10.5" font-weight="600" font-family="Segoe UI,Arial,sans-serif">👤 Estudiante</text>
+  <rect x="200" y="36" width="118" height="20" rx="10" fill="#fef3c7"/>
+  <text x="259" y="50" text-anchor="middle" fill="#92400e" font-size="10.5" font-weight="600" font-family="Segoe UI,Arial,sans-serif">⚡ Extiende CU-03</text>
+  <!-- Separador header -->
+  <line x1="0" y1="70" x2="520" y2="70" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- ── DESCRIPCIÓN (col izq) ── -->
+  <rect x="0" y="70" width="260" height="120" fill="#fafbfd"/>
+  <text x="14" y="90" fill="#94a3b8" font-size="9" font-weight="700" font-family="Segoe UI,Arial,sans-serif" letter-spacing="0.8">📋  DESCRIPCIÓN</text>
+  <text x="14" y="108" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">Proceso mediante el cual un</text>
+  <text x="14" y="124" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">estudiante asegura un espacio</text>
+  <text x="14" y="140" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">en una tutoría, validando su</text>
+  <text x="14" y="156" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">documento de identidad.</text>
+  <line x1="260" y1="70" x2="260" y2="190" stroke="#e8eef7" stroke-width="1"/>
+
+  <!-- ── PRECONDICIONES (col der) ── -->
+  <text x="274" y="90" fill="#94a3b8" font-size="9" font-weight="700" font-family="Segoe UI,Arial,sans-serif" letter-spacing="0.8">✅  PRECONDICIONES</text>
+  <text x="274" y="108" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">Debe existir al menos un (1)</text>
+  <text x="274" y="124" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">cupo disponible en la tutoría</text>
+  <text x="274" y="140" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">seleccionada por el estudiante.</text>
+
+  <!-- Separador horizontal -->
+  <line x1="0" y1="190" x2="520" y2="190" stroke="#e8eef7" stroke-width="1"/>
+
+  <!-- ── FLUJO PRINCIPAL ── -->
+  <text x="14" y="212" fill="#94a3b8" font-size="9" font-weight="700" font-family="Segoe UI,Arial,sans-serif" letter-spacing="0.8">🔄  FLUJO PRINCIPAL</text>
+  <!-- Pasos -->
+  <circle cx="30" cy="234" r="11" fill="#2563eb"/>
+  <text x="30" y="238" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="Segoe UI,Arial,sans-serif">1</text>
+  <text x="48" y="238" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">El estudiante selecciona "Reservar Cupo".</text>
+  <circle cx="30" cy="260" r="11" fill="#2563eb"/>
+  <text x="30" y="264" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="Segoe UI,Arial,sans-serif">2</text>
+  <text x="48" y="264" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">El sistema solicita el número de identificación.</text>
+  <circle cx="30" cy="286" r="11" fill="#2563eb"/>
+  <text x="30" y="290" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="Segoe UI,Arial,sans-serif">3</text>
+  <text x="48" y="290" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">El estudiante ingresa su documento y confirma.</text>
+  <circle cx="30" cy="312" r="11" fill="#2563eb"/>
+  <text x="30" y="316" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="Segoe UI,Arial,sans-serif">4</text>
+  <text x="48" y="316" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">El sistema valida el documento en la BD.</text>
+  <circle cx="30" cy="338" r="11" fill="#2563eb"/>
+  <text x="30" y="342" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="Segoe UI,Arial,sans-serif">5</text>
+  <text x="48" y="342" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">El sistema registra la reserva y confirma.</text>
+
+  <!-- ── FLUJO ALTERNATIVO ── -->
+  <rect x="10" y="360" width="500" height="60" rx="9" fill="#fffbeb" stroke="#fde68a" stroke-width="1.2"/>
+  <text x="24" y="379" fill="#92400e" font-size="9.5" font-weight="700" font-family="Segoe UI,Arial,sans-serif">⚠  FLUJO ALTERNATIVO (4a) — Documento no encontrado</text>
+  <text x="24" y="396" fill="#78350f" font-size="10" font-family="Segoe UI,Arial,sans-serif">Si el documento no existe en los registros, el sistema bloquea</text>
+  <text x="24" y="411" fill="#78350f" font-size="10" font-family="Segoe UI,Arial,sans-serif">la reserva y muestra una alerta al estudiante.</text>
+
+  <!-- Separador relaciones -->
+  <line x1="0" y1="435" x2="520" y2="435" stroke="#e8eef7" stroke-width="1"/>
+
+  <!-- ── RELACIONES ── -->
+  <text x="14" y="456" fill="#94a3b8" font-size="9" font-weight="700" font-family="Segoe UI,Arial,sans-serif" letter-spacing="0.8">🔗  RELACIONES CON OTROS CASOS DE USO</text>
+  <rect x="14" y="465" width="150" height="20" rx="10" fill="#e0e7ff"/>
+  <text x="89" y="479" text-anchor="middle" fill="#312e81" font-size="10" font-weight="600" font-family="Segoe UI,Arial,sans-serif">«extend» de CU-03</text>
+  <rect x="174" y="465" width="160" height="20" rx="10" fill="#f0fdf4"/>
+  <text x="254" y="479" text-anchor="middle" fill="#15803d" font-size="10" font-weight="600" font-family="Segoe UI,Arial,sans-serif">Desencadena CU-08</text>
+
+  <!-- Borde -->
+  <rect x="0" y="0" width="520" height="530" rx="13" fill="none" stroke="#dde4ef" stroke-width="1.5"/>
+</g>
+
+<!-- ════════════════════════════════
+     ANOTACIONES (derecha, x=590)
+     Cada caja: height=52, gap=12 → pitch=64
+     Inicio y=38
+════════════════════════════════ -->
+
+<!-- ① ID -->
+<polyline points="58,72 560,72 590,72" fill="none" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#ano)"/>
+<rect x="590" y="38" width="532" height="52" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.2"/>
+<text x="610" y="57" fill="#1e3a8a" font-size="12" font-weight="700" font-family="Segoe UI,Arial,sans-serif">① Identificador único (CU-##)</text>
+<text x="610" y="76" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">Código secuencial que identifica y referencia el caso de uso en el sistema</text>
+
+<!-- ② Título -->
+<polyline points="280,51 560,51 590,102" fill="none" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#ano)"/>
+<rect x="590" y="102" width="532" height="52" rx="10" fill="#f8fafc" stroke="#334155" stroke-width="1.2"/>
+<text x="610" y="121" fill="#1e293b" font-size="12" font-weight="700" font-family="Segoe UI,Arial,sans-serif">② Título del caso de uso</text>
+<text x="610" y="140" fill="#475569" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">Nombre descriptivo que expresa el objetivo funcional de la interacción</text>
+
+<!-- ③ Actor -->
+<polyline points="240,56 560,56 590,166" fill="none" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#ano)"/>
+<rect x="590" y="166" width="532" height="52" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="1.2"/>
+<text x="610" y="185" fill="#1e3a8a" font-size="12" font-weight="700" font-family="Segoe UI,Arial,sans-serif">③ Actor principal</text>
+<text x="610" y="204" fill="#1e40af" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">Rol del usuario que inicia o participa directamente en el caso de uso</text>
+
+<!-- ④ Relación UML -->
+<polyline points="320,56 560,56 590,230" fill="none" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#ano)"/>
+<rect x="590" y="230" width="532" height="52" rx="10" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2"/>
+<text x="610" y="249" fill="#92400e" font-size="12" font-weight="700" font-family="Segoe UI,Arial,sans-serif">④ Tipo de relación UML</text>
+<text x="610" y="268" fill="#78350f" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">«extend» = ampliación opcional · «include» = inclusión obligatoria</text>
+
+<!-- ⑤ Descripción -->
+<polyline points="160,148 560,148 590,294" fill="none" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#ano)"/>
+<rect x="590" y="294" width="532" height="52" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.2"/>
+<text x="610" y="313" fill="#14532d" font-size="12" font-weight="700" font-family="Segoe UI,Arial,sans-serif">⑤ Descripción del objetivo</text>
+<text x="610" y="332" fill="#166534" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">Qué hace el caso de uso y qué valor entrega al actor o al sistema</text>
+
+<!-- ⑥ Precondiciones -->
+<polyline points="400,140 560,140 590,358" fill="none" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#ano)"/>
+<rect x="590" y="358" width="532" height="52" rx="10" fill="#fdf4ff" stroke="#a855f7" stroke-width="1.2"/>
+<text x="610" y="377" fill="#581c87" font-size="12" font-weight="700" font-family="Segoe UI,Arial,sans-serif">⑥ Precondiciones</text>
+<text x="610" y="396" fill="#6b21a8" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">Estado obligatorio del sistema que debe cumplirse antes de ejecutar el CU</text>
+
+<!-- ⑦ Flujo principal -->
+<polyline points="160,286 560,286 590,422" fill="none" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#ano)"/>
+<rect x="590" y="422" width="532" height="52" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.2"/>
+<text x="610" y="441" fill="#1d4ed8" font-size="12" font-weight="700" font-family="Segoe UI,Arial,sans-serif">⑦ Flujo principal (happy path)</text>
+<text x="610" y="460" fill="#1e40af" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">Pasos ordenados que describen la ejecución exitosa del caso de uso</text>
+
+<!-- ⑧ Flujo alternativo -->
+<polyline points="270,420 560,420 590,486" fill="none" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#ano)"/>
+<rect x="590" y="486" width="532" height="52" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.2"/>
+<text x="610" y="505" fill="#92400e" font-size="12" font-weight="700" font-family="Segoe UI,Arial,sans-serif">⑧ Flujo alternativo (excepción)</text>
+<text x="610" y="524" fill="#78350f" font-size="10.5" font-family="Segoe UI,Arial,sans-serif">Qué hace el sistema cuando ocurre un error o condición inesperada</text>
+
+<!-- ⑨ Relaciones con CU -->
+<polyline points="200,484 560,484 590,550" fill="none" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#ano)"/>
+<rect x="590" y="550" width="532" height="40" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.2"/>
+<text x="610" y="569" fill="#312e81" font-size="12" font-weight="700" font-family="Segoe UI,Arial,sans-serif">⑨ Relaciones con otros CU</text>
+<text x="610" y="582" fill="#3730a3" font-size="10" font-family="Segoe UI,Arial,sans-serif">Vínculos funcionales: include · extend · desencadena · requiere</text>
+
+</svg>
+
+  <!-- Nota de convenciones UML -->
+  <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+    <div style="background:#e0e7ff;border:1px solid #818cf8;border-radius:8px;padding:8px 16px;font-size:11px;color:#312e81;font-weight:600;">
+      «include» — El caso de uso A <strong>siempre</strong> invoca a B (obligatorio)
+    </div>
+    <div style="background:#fef3c7;border:1px solid #fbbf24;border-radius:8px;padding:8px 16px;font-size:11px;color:#92400e;font-weight:600;">
+      «extend» — El caso de uso A puede invocar a B <strong>condicionalmente</strong>
+    </div>
+    <div style="background:#dcfce7;border:1px solid #4ade80;border-radius:8px;padding:8px 16px;font-size:11px;color:#14532d;font-weight:600;">
+      Desencadena — A provoca automáticamente la ejecución de B
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
      GRUPO: ESTUDIANTE
 ══════════════════════════════════════════════════════ -->
 <div class="section-group-title" style="background:linear-gradient(135deg,#1d4ed8,#2563eb)">
@@ -484,6 +667,25 @@
         <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema despliega bloques visuales con fecha, hora y cupos disponibles de cada tutoría ofertada.</div></li>
       </ul>
     </div>
+    <div class="cu-section full-width" style="background:#f8fafc;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 590 118" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <rect x="104" y="4" width="480" height="110" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="344" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="22" r="9" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="52" y1="31" x2="52" y2="54" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="38" y1="41" x2="66" y2="41" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="42" y2="70" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="62" y2="70" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="52" y="84" text-anchor="middle" fill="#1e3a8a" font-size="8.5" font-weight="600" font-family="sans-serif">Estudiante</text>
+        <line x1="66" y1="42" x2="196" y2="59" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="322" cy="62" rx="122" ry="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.8"/>
+        <text x="322" y="57" text-anchor="middle" fill="#1e3a8a" font-size="9.5" font-weight="700" font-family="sans-serif">CU-03</text>
+        <text x="322" y="70" text-anchor="middle" fill="#1e40af" font-size="8" font-family="sans-serif">Visualización del Calendario Público</text>
+        <rect x="454" y="88" width="116" height="16" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+        <text x="512" y="99" text-anchor="middle" fill="#15803d" font-size="7.5" font-weight="600" font-family="sans-serif">🌐 Acceso Público</text>
+      </svg>
+    </div>
   </div>
 </div>
 
@@ -515,6 +717,29 @@
         <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema despliega una ventana modal con los detalles estructurados de la sesión.</div></li>
         <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema especifica claramente la Modalidad (Presencial/Virtual) y la Ubicación exacta: Sede, Bloque y Aula, o Enlace de conexión según corresponda.</div></li>
       </ul>
+    </div>
+    <div class="cu-section full-width" style="background:#f8fafc;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 620 118" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs><marker id="m04" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#475569"/></marker></defs>
+        <rect x="104" y="4" width="510" height="110" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="359" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="22" r="9" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="52" y1="31" x2="52" y2="54" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="38" y1="41" x2="66" y2="41" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="42" y2="70" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="62" y2="70" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="52" y="84" text-anchor="middle" fill="#1e3a8a" font-size="8.5" font-weight="600" font-family="sans-serif">Estudiante</text>
+        <line x1="66" y1="42" x2="162" y2="58" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="258" cy="62" rx="94" ry="27" fill="#dbeafe" stroke="#2563eb" stroke-width="1.8"/>
+        <text x="258" y="57" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="700" font-family="sans-serif">CU-04</text>
+        <text x="258" y="70" text-anchor="middle" fill="#1e40af" font-size="7.5" font-family="sans-serif">Consulta Ubicación</text>
+        <ellipse cx="488" cy="62" rx="92" ry="27" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="488" y="57" text-anchor="middle" fill="#0c4a6e" font-size="9" font-weight="700" font-family="sans-serif">CU-03</text>
+        <text x="488" y="70" text-anchor="middle" fill="#0369a1" font-size="7.5" font-family="sans-serif">Cal. Público</text>
+        <line x1="396" y1="62" x2="354" y2="62" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#m04)"/>
+        <text x="375" y="56" text-anchor="middle" fill="#475569" font-size="7.5" font-style="italic" font-family="sans-serif">«include»</text>
+      </svg>
     </div>
   </div>
 </div>
@@ -554,6 +779,37 @@
         <div class="alt-text">Si el documento ingresado no existe en los registros institucionales, el sistema bloquea la reserva y emite una alerta indicando que el estudiante no está activo en el sistema.</div>
       </div>
     </div>
+    <div class="cu-section full-width" style="background:#f8fafc;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 660 162" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs>
+          <marker id="m06a" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#94a3b8"/></marker>
+          <marker id="m06b" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#475569"/></marker>
+        </defs>
+        <rect x="104" y="4" width="550" height="154" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="379" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="52" r="9" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="52" y1="61" x2="52" y2="84" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="38" y1="71" x2="66" y2="71" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="52" y1="84" x2="42" y2="100" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="52" y1="84" x2="62" y2="100" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="52" y="114" text-anchor="middle" fill="#1e3a8a" font-size="8.5" font-weight="600" font-family="sans-serif">Estudiante</text>
+        <line x1="66" y1="72" x2="158" y2="82" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="254" cy="82" rx="94" ry="27" fill="#dbeafe" stroke="#2563eb" stroke-width="1.8"/>
+        <text x="254" y="77" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="700" font-family="sans-serif">CU-06</text>
+        <text x="254" y="90" text-anchor="middle" fill="#1e40af" font-size="7.5" font-family="sans-serif">Reserva de Cupo</text>
+        <ellipse cx="500" cy="40" rx="86" ry="24" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="500" y="36" text-anchor="middle" fill="#0c4a6e" font-size="9" font-weight="700" font-family="sans-serif">CU-03</text>
+        <text x="500" y="48" text-anchor="middle" fill="#0369a1" font-size="7.5" font-family="sans-serif">Cal. Público</text>
+        <ellipse cx="500" cy="128" rx="86" ry="24" fill="#dcfce7" stroke="#16a34a" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="500" y="124" text-anchor="middle" fill="#14532d" font-size="9" font-weight="700" font-family="sans-serif">CU-08</text>
+        <text x="500" y="136" text-anchor="middle" fill="#15803d" font-size="7.5" font-family="sans-serif">Act. Cupos</text>
+        <line x1="340" y1="70" x2="416" y2="48" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#m06a)"/>
+        <text x="378" y="54" text-anchor="middle" fill="#64748b" font-size="7.5" font-style="italic" font-family="sans-serif">«extend»</text>
+        <line x1="340" y1="94" x2="416" y2="118" stroke="#475569" stroke-width="1.3" marker-end="url(#m06b)"/>
+        <text x="378" y="114" text-anchor="middle" fill="#475569" font-size="7.5" font-family="sans-serif">desencadena</text>
+      </svg>
+    </div>
   </div>
 </div>
 
@@ -587,6 +843,29 @@
         <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El estudiante confirma la anulación.</div></li>
         <li class="flow-item"><div class="flow-num">5</div><div class="flow-text">El sistema elimina lógicamente el registro de la base de datos y notifica el éxito de la operación.</div></li>
       </ul>
+    </div>
+    <div class="cu-section full-width" style="background:#f8fafc;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 620 118" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs><marker id="m07" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#475569"/></marker></defs>
+        <rect x="104" y="4" width="510" height="110" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="359" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="22" r="9" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="52" y1="31" x2="52" y2="54" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="38" y1="41" x2="66" y2="41" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="42" y2="70" stroke="#2563eb" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="62" y2="70" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="52" y="84" text-anchor="middle" fill="#1e3a8a" font-size="8.5" font-weight="600" font-family="sans-serif">Estudiante</text>
+        <line x1="66" y1="42" x2="162" y2="58" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="258" cy="62" rx="94" ry="27" fill="#dbeafe" stroke="#2563eb" stroke-width="1.8"/>
+        <text x="258" y="57" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="700" font-family="sans-serif">CU-07</text>
+        <text x="258" y="70" text-anchor="middle" fill="#1e40af" font-size="7.5" font-family="sans-serif">Cancelación Reserva</text>
+        <ellipse cx="488" cy="62" rx="92" ry="27" fill="#dcfce7" stroke="#16a34a" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="488" y="57" text-anchor="middle" fill="#14532d" font-size="9" font-weight="700" font-family="sans-serif">CU-08</text>
+        <text x="488" y="70" text-anchor="middle" fill="#15803d" font-size="7.5" font-family="sans-serif">Act. Cupos</text>
+        <line x1="352" y1="62" x2="396" y2="62" stroke="#475569" stroke-width="1.3" marker-end="url(#m07)"/>
+        <text x="374" y="56" text-anchor="middle" fill="#475569" font-size="7.5" font-family="sans-serif">desencadena</text>
+      </svg>
     </div>
   </div>
 </div>
@@ -627,6 +906,29 @@
         <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El docente visualiza el listado detallando fecha, hora, modalidad y ubicación física/virtual asignada.</div></li>
       </ul>
     </div>
+    <div class="cu-section full-width" style="background:#fffdf7;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 620 118" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs><marker id="m09" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#475569"/></marker></defs>
+        <rect x="104" y="4" width="510" height="110" rx="8" fill="#fffdf7" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="359" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="22" r="9" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="31" x2="52" y2="54" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="38" y1="41" x2="66" y2="41" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="42" y2="70" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="62" y2="70" stroke="#d97706" stroke-width="1.5"/>
+        <text x="52" y="84" text-anchor="middle" fill="#78350f" font-size="8.5" font-weight="600" font-family="sans-serif">Docente</text>
+        <line x1="66" y1="42" x2="162" y2="58" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="258" cy="62" rx="94" ry="27" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/>
+        <text x="258" y="57" text-anchor="middle" fill="#78350f" font-size="9" font-weight="700" font-family="sans-serif">CU-09</text>
+        <text x="258" y="70" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Agenda Docente</text>
+        <ellipse cx="488" cy="62" rx="92" ry="27" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="488" y="57" text-anchor="middle" fill="#312e81" font-size="9" font-weight="700" font-family="sans-serif">CU-05</text>
+        <text x="488" y="70" text-anchor="middle" fill="#3730a3" font-size="7.5" font-family="sans-serif">Autenticación</text>
+        <line x1="396" y1="62" x2="354" y2="62" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#m09)"/>
+        <text x="375" y="56" text-anchor="middle" fill="#475569" font-size="7.5" font-style="italic" font-family="sans-serif">«include»</text>
+      </svg>
+    </div>
   </div>
 </div>
 
@@ -658,6 +960,29 @@
         <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema ejecuta una consulta en la base de datos de reservas activas.</div></li>
         <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema despliega una tabla con los nombres y documentos de identidad de los estudiantes inscritos.</div></li>
       </ul>
+    </div>
+    <div class="cu-section full-width" style="background:#fffdf7;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 620 118" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs><marker id="m10" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#475569"/></marker></defs>
+        <rect x="104" y="4" width="510" height="110" rx="8" fill="#fffdf7" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="359" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="22" r="9" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="31" x2="52" y2="54" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="38" y1="41" x2="66" y2="41" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="42" y2="70" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="62" y2="70" stroke="#d97706" stroke-width="1.5"/>
+        <text x="52" y="84" text-anchor="middle" fill="#78350f" font-size="8.5" font-weight="600" font-family="sans-serif">Docente</text>
+        <line x1="66" y1="42" x2="162" y2="58" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="258" cy="62" rx="94" ry="27" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/>
+        <text x="258" y="57" text-anchor="middle" fill="#78350f" font-size="9" font-weight="700" font-family="sans-serif">CU-10</text>
+        <text x="258" y="70" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Listado Inscritos</text>
+        <ellipse cx="488" cy="62" rx="92" ry="27" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="488" y="57" text-anchor="middle" fill="#713f12" font-size="9" font-weight="700" font-family="sans-serif">CU-11</text>
+        <text x="488" y="70" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Reg. Asistencia</text>
+        <line x1="396" y1="62" x2="354" y2="62" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#m10)"/>
+        <text x="375" y="56" text-anchor="middle" fill="#475569" font-size="7.5" font-style="italic" font-family="sans-serif">«include»</text>
+      </svg>
     </div>
   </div>
 </div>
@@ -693,6 +1018,42 @@
         <li class="flow-item"><div class="flow-num">5</div><div class="flow-text">El sistema actualiza el estado de asistencia en la base de datos y confirma la operación.</div></li>
       </ul>
     </div>
+    <div class="cu-section full-width" style="background:#fffdf7;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 720 162" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs>
+          <marker id="m11a" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#475569"/></marker>
+          <marker id="m11b" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#64748b"/></marker>
+        </defs>
+        <rect x="104" y="4" width="610" height="154" rx="8" fill="#fffdf7" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="409" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="52" r="9" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="61" x2="52" y2="84" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="38" y1="71" x2="66" y2="71" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="84" x2="42" y2="100" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="84" x2="62" y2="100" stroke="#d97706" stroke-width="1.5"/>
+        <text x="52" y="114" text-anchor="middle" fill="#78350f" font-size="8.5" font-weight="600" font-family="sans-serif">Docente</text>
+        <line x1="66" y1="72" x2="152" y2="80" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="248" cy="80" rx="94" ry="27" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/>
+        <text x="248" y="75" text-anchor="middle" fill="#78350f" font-size="9" font-weight="700" font-family="sans-serif">CU-11</text>
+        <text x="248" y="88" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Reg. Asistencia</text>
+        <ellipse cx="510" cy="36" rx="90" ry="24" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="510" y="32" text-anchor="middle" fill="#713f12" font-size="9" font-weight="700" font-family="sans-serif">CU-10</text>
+        <text x="510" y="44" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Listado Inscritos</text>
+        <ellipse cx="546" cy="98" rx="82" ry="22" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="546" y="94" text-anchor="middle" fill="#713f12" font-size="9" font-weight="700" font-family="sans-serif">CU-12</text>
+        <text x="546" y="106" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Observaciones</text>
+        <ellipse cx="510" cy="148" rx="82" ry="20" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="510" y="144" text-anchor="middle" fill="#713f12" font-size="9" font-weight="700" font-family="sans-serif">CU-13</text>
+        <text x="510" y="156" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Informe PDF</text>
+        <line x1="342" y1="68" x2="422" y2="44" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#m11a)"/>
+        <text x="382" y="50" text-anchor="middle" fill="#475569" font-size="7.5" font-style="italic" font-family="sans-serif">«include»</text>
+        <line x1="342" y1="88" x2="465" y2="94" stroke="#64748b" stroke-width="1.2" marker-end="url(#m11b)"/>
+        <text x="403" y="86" text-anchor="middle" fill="#64748b" font-size="7.5" font-family="sans-serif">habilita</text>
+        <line x1="342" y1="94" x2="430" y2="140" stroke="#64748b" stroke-width="1.2" marker-end="url(#m11b)"/>
+        <text x="386" y="128" text-anchor="middle" fill="#64748b" font-size="7.5" font-family="sans-serif">habilita</text>
+      </svg>
+    </div>
   </div>
 </div>
 
@@ -726,6 +1087,29 @@
         <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El sistema guarda la observación, asociándola al registro histórico del estudiante.</div></li>
       </ul>
     </div>
+    <div class="cu-section full-width" style="background:#fffdf7;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 620 118" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs><marker id="m12" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#94a3b8"/></marker></defs>
+        <rect x="104" y="4" width="510" height="110" rx="8" fill="#fffdf7" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="359" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="22" r="9" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="31" x2="52" y2="54" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="38" y1="41" x2="66" y2="41" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="42" y2="70" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="62" y2="70" stroke="#d97706" stroke-width="1.5"/>
+        <text x="52" y="84" text-anchor="middle" fill="#78350f" font-size="8.5" font-weight="600" font-family="sans-serif">Docente</text>
+        <line x1="66" y1="42" x2="162" y2="58" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="258" cy="62" rx="94" ry="27" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/>
+        <text x="258" y="57" text-anchor="middle" fill="#78350f" font-size="9" font-weight="700" font-family="sans-serif">CU-12</text>
+        <text x="258" y="70" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Observaciones</text>
+        <ellipse cx="488" cy="62" rx="92" ry="27" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="488" y="57" text-anchor="middle" fill="#713f12" font-size="9" font-weight="700" font-family="sans-serif">CU-11</text>
+        <text x="488" y="70" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Reg. Asistencia</text>
+        <line x1="352" y1="62" x2="396" y2="62" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#m12)"/>
+        <text x="374" y="56" text-anchor="middle" fill="#64748b" font-size="7.5" font-style="italic" font-family="sans-serif">«extend»</text>
+      </svg>
+    </div>
   </div>
 </div>
 
@@ -758,6 +1142,34 @@
         <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema formatea la información y renderiza un documento PDF estructurado.</div></li>
         <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El sistema inicia la descarga automática del archivo en el equipo del docente.</div></li>
       </ul>
+    </div>
+    <div class="cu-section full-width" style="background:#fffdf7;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 680 148" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs><marker id="m13" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#475569"/></marker></defs>
+        <rect x="104" y="4" width="570" height="140" rx="8" fill="#fffdf7" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="389" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="42" r="9" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="51" x2="52" y2="74" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="38" y1="61" x2="66" y2="61" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="74" x2="42" y2="90" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="74" x2="62" y2="90" stroke="#d97706" stroke-width="1.5"/>
+        <text x="52" y="104" text-anchor="middle" fill="#78350f" font-size="8.5" font-weight="600" font-family="sans-serif">Docente</text>
+        <line x1="66" y1="62" x2="152" y2="72" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="248" cy="72" rx="94" ry="27" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/>
+        <text x="248" y="67" text-anchor="middle" fill="#78350f" font-size="9" font-weight="700" font-family="sans-serif">CU-13</text>
+        <text x="248" y="80" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Informe PDF</text>
+        <ellipse cx="500" cy="38" rx="86" ry="24" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="500" y="34" text-anchor="middle" fill="#713f12" font-size="9" font-weight="700" font-family="sans-serif">CU-11</text>
+        <text x="500" y="46" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Reg. Asistencia</text>
+        <ellipse cx="500" cy="112" rx="86" ry="24" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="500" y="108" text-anchor="middle" fill="#713f12" font-size="9" font-weight="700" font-family="sans-serif">CU-12</text>
+        <text x="500" y="120" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Observaciones</text>
+        <line x1="416" y1="44" x2="344" y2="60" stroke="#475569" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#m13)"/>
+        <text x="380" y="46" text-anchor="middle" fill="#475569" font-size="7.5" font-style="italic" font-family="sans-serif">«include»</text>
+        <line x1="416" y1="106" x2="344" y2="84" stroke="#475569" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#m13)"/>
+        <text x="380" y="102" text-anchor="middle" fill="#475569" font-size="7.5" font-style="italic" font-family="sans-serif">«include»</text>
+      </svg>
     </div>
   </div>
 </div>
@@ -794,6 +1206,29 @@
         <div class="alt-label">⚠ Flujo Alternativo (3a) — Acceso no autorizado</div>
         <div class="alt-text">Si el ID no coincide (otro docente o administrador), el sistema oculta los campos de texto y bloquea la acción, protegiendo la privacidad del historial cualitativo del estudiante.</div>
       </div>
+    </div>
+    <div class="cu-section full-width" style="background:#fffdf7;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 620 118" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs><marker id="m14" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#475569"/></marker></defs>
+        <rect x="104" y="4" width="510" height="110" rx="8" fill="#fffdf7" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="359" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="22" r="9" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="31" x2="52" y2="54" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="38" y1="41" x2="66" y2="41" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="42" y2="70" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="62" y2="70" stroke="#d97706" stroke-width="1.5"/>
+        <text x="52" y="84" text-anchor="middle" fill="#78350f" font-size="8.5" font-weight="600" font-family="sans-serif">Docente</text>
+        <line x1="66" y1="42" x2="162" y2="58" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="258" cy="62" rx="94" ry="27" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/>
+        <text x="258" y="57" text-anchor="middle" fill="#78350f" font-size="9" font-weight="700" font-family="sans-serif">CU-14</text>
+        <text x="258" y="70" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Privacidad Académica</text>
+        <ellipse cx="488" cy="62" rx="92" ry="27" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="488" y="57" text-anchor="middle" fill="#713f12" font-size="9" font-weight="700" font-family="sans-serif">CU-12</text>
+        <text x="488" y="70" text-anchor="middle" fill="#92400e" font-size="7.5" font-family="sans-serif">Observaciones</text>
+        <line x1="352" y1="62" x2="396" y2="62" stroke="#475569" stroke-width="1.3" marker-end="url(#m14)"/>
+        <text x="374" y="56" text-anchor="middle" fill="#475569" font-size="7.5" font-family="sans-serif">protege</text>
+      </svg>
     </div>
   </div>
 </div>
@@ -839,6 +1274,28 @@
         <div class="alt-text">Si las credenciales son incorrectas o el usuario está inactivo, el sistema deniega el acceso y muestra una alerta de error sin revelar información sensible.</div>
       </div>
     </div>
+    <div class="cu-section full-width" style="background:#fdf4ff;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 620 148" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <rect x="104" y="4" width="510" height="140" rx="8" fill="#fdf4ff" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="359" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="28" r="9" fill="#fce7f3" stroke="#db2777" stroke-width="1.5"/>
+        <line x1="52" y1="37" x2="52" y2="60" stroke="#db2777" stroke-width="1.5"/>
+        <line x1="38" y1="47" x2="66" y2="47" stroke="#db2777" stroke-width="1.5"/>
+        <line x1="52" y1="60" x2="42" y2="76" stroke="#db2777" stroke-width="1.5"/>
+        <line x1="52" y1="60" x2="62" y2="76" stroke="#db2777" stroke-width="1.5"/>
+        <text x="52" y="90" text-anchor="middle" fill="#831843" font-size="8.5" font-weight="600" font-family="sans-serif">Admin</text>
+        <circle cx="52" cy="110" r="9" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="52" y1="119" x2="52" y2="135" stroke="#d97706" stroke-width="1.5"/>
+        <line x1="38" y1="126" x2="66" y2="126" stroke="#d97706" stroke-width="1.5"/>
+        <text x="52" y="148" text-anchor="middle" fill="#78350f" font-size="8.5" font-weight="600" font-family="sans-serif">Docente</text>
+        <line x1="66" y1="48" x2="180" y2="66" stroke="#64748b" stroke-width="1.2"/>
+        <line x1="66" y1="116" x2="180" y2="78" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="306" cy="72" rx="120" ry="32" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.8"/>
+        <text x="306" y="67" text-anchor="middle" fill="#312e81" font-size="9.5" font-weight="700" font-family="sans-serif">CU-05</text>
+        <text x="306" y="80" text-anchor="middle" fill="#3730a3" font-size="8" font-family="sans-serif">Autenticación y Control Acceso (RBAC)</text>
+      </svg>
+    </div>
   </div>
 </div>
 
@@ -872,6 +1329,34 @@
         <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El sistema notifica el éxito de la operación mostrando la cantidad de horarios cargados y las filas omitidas con su motivo.</div></li>
       </ul>
     </div>
+    <div class="cu-section full-width" style="background:#fff0f6;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 680 148" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs><marker id="m01" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#475569"/></marker></defs>
+        <rect x="104" y="4" width="570" height="140" rx="8" fill="#fff0f6" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="389" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="42" r="9" fill="#fce7f3" stroke="#db2777" stroke-width="1.5"/>
+        <line x1="52" y1="51" x2="52" y2="74" stroke="#db2777" stroke-width="1.5"/>
+        <line x1="38" y1="61" x2="66" y2="61" stroke="#db2777" stroke-width="1.5"/>
+        <line x1="52" y1="74" x2="42" y2="90" stroke="#db2777" stroke-width="1.5"/>
+        <line x1="52" y1="74" x2="62" y2="90" stroke="#db2777" stroke-width="1.5"/>
+        <text x="52" y="104" text-anchor="middle" fill="#831843" font-size="8.5" font-weight="600" font-family="sans-serif">Admin</text>
+        <line x1="66" y1="62" x2="150" y2="72" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="246" cy="72" rx="94" ry="27" fill="#fce7f3" stroke="#db2777" stroke-width="1.8"/>
+        <text x="246" y="67" text-anchor="middle" fill="#831843" font-size="9" font-weight="700" font-family="sans-serif">CU-01</text>
+        <text x="246" y="80" text-anchor="middle" fill="#9d174d" font-size="7.5" font-family="sans-serif">Carga Masiva</text>
+        <ellipse cx="490" cy="40" rx="88" ry="24" fill="#dcfce7" stroke="#16a34a" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="490" y="36" text-anchor="middle" fill="#14532d" font-size="9" font-weight="700" font-family="sans-serif">CU-02</text>
+        <text x="490" y="48" text-anchor="middle" fill="#15803d" font-size="7.5" font-family="sans-serif">Validación Plantilla</text>
+        <ellipse cx="490" cy="112" rx="88" ry="24" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="490" y="108" text-anchor="middle" fill="#312e81" font-size="9" font-weight="700" font-family="sans-serif">CU-05</text>
+        <text x="490" y="120" text-anchor="middle" fill="#3730a3" font-size="7.5" font-family="sans-serif">Autenticación</text>
+        <line x1="340" y1="60" x2="404" y2="46" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#m01)"/>
+        <text x="372" y="46" text-anchor="middle" fill="#475569" font-size="7.5" font-style="italic" font-family="sans-serif">«include»</text>
+        <line x1="404" y1="104" x2="340" y2="82" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#m01)"/>
+        <text x="372" y="102" text-anchor="middle" fill="#475569" font-size="7.5" font-style="italic" font-family="sans-serif">«include»</text>
+      </svg>
+    </div>
   </div>
 </div>
 
@@ -904,6 +1389,25 @@
         <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema realiza un dump (volcado) completo de la base de datos relacional.</div></li>
         <li class="flow-item"><div class="flow-num">4</div><div class="flow-text">El sistema almacena el archivo comprimido y notifica la finalización exitosa del respaldo.</div></li>
       </ul>
+    </div>
+    <div class="cu-section full-width" style="background:#fff0f6;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 590 118" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <rect x="104" y="4" width="480" height="110" rx="8" fill="#fff0f6" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="344" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <circle cx="52" cy="22" r="9" fill="#fce7f3" stroke="#db2777" stroke-width="1.5"/>
+        <line x1="52" y1="31" x2="52" y2="54" stroke="#db2777" stroke-width="1.5"/>
+        <line x1="38" y1="41" x2="66" y2="41" stroke="#db2777" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="42" y2="70" stroke="#db2777" stroke-width="1.5"/>
+        <line x1="52" y1="54" x2="62" y2="70" stroke="#db2777" stroke-width="1.5"/>
+        <text x="52" y="84" text-anchor="middle" fill="#831843" font-size="8.5" font-weight="600" font-family="sans-serif">Admin</text>
+        <line x1="66" y1="42" x2="196" y2="59" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="322" cy="62" rx="122" ry="30" fill="#fce7f3" stroke="#db2777" stroke-width="1.8"/>
+        <text x="322" y="57" text-anchor="middle" fill="#831843" font-size="9.5" font-weight="700" font-family="sans-serif">CU-15</text>
+        <text x="322" y="70" text-anchor="middle" fill="#9d174d" font-size="8" font-family="sans-serif">Ejecución de Respaldo (Backup)</text>
+        <rect x="450" y="88" width="110" height="16" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+        <text x="505" y="99" text-anchor="middle" fill="#991b1b" font-size="7.5" font-weight="600" font-family="sans-serif">🛡️ Contingencia</text>
+      </svg>
     </div>
   </div>
 </div>
@@ -948,6 +1452,27 @@
         <div class="alt-text">Si el archivo presenta celdas vacías, formatos incorrectos o columnas faltantes, el sistema aborta la operación y despliega un reporte detallado con las filas que contienen errores para su corrección.</div>
       </div>
     </div>
+    <div class="cu-section full-width" style="background:#f0fdf4;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 620 118" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs><marker id="m02" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#475569"/></marker></defs>
+        <rect x="104" y="4" width="510" height="110" rx="8" fill="#f0fdf4" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="359" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <rect x="36" y="14" width="30" height="36" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+        <line x1="36" y1="24" x2="66" y2="24" stroke="#16a34a" stroke-width="1"/>
+        <rect x="41" y="28" width="5" height="4" rx="1" fill="#16a34a"/><rect x="49" y="28" width="5" height="4" rx="1" fill="#16a34a"/><rect x="41" y="35" width="13" height="3" rx="1" fill="#16a34a" opacity="0.5"/>
+        <text x="51" y="62" text-anchor="middle" fill="#14532d" font-size="8" font-weight="600" font-family="sans-serif">Sistema</text>
+        <line x1="67" y1="32" x2="162" y2="56" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="258" cy="62" rx="94" ry="27" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8"/>
+        <text x="258" y="57" text-anchor="middle" fill="#14532d" font-size="9" font-weight="700" font-family="sans-serif">CU-02</text>
+        <text x="258" y="70" text-anchor="middle" fill="#15803d" font-size="7.5" font-family="sans-serif">Validación Plantilla</text>
+        <ellipse cx="488" cy="62" rx="92" ry="27" fill="#fce7f3" stroke="#db2777" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="488" y="57" text-anchor="middle" fill="#831843" font-size="9" font-weight="700" font-family="sans-serif">CU-01</text>
+        <text x="488" y="70" text-anchor="middle" fill="#9d174d" font-size="7.5" font-family="sans-serif">Carga Masiva</text>
+        <line x1="396" y1="62" x2="354" y2="62" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#m02)"/>
+        <text x="375" y="56" text-anchor="middle" fill="#475569" font-size="7.5" font-style="italic" font-family="sans-serif">«include»</text>
+      </svg>
+    </div>
   </div>
 </div>
 
@@ -979,6 +1504,27 @@
         <li class="flow-item"><div class="flow-num">2</div><div class="flow-text">El sistema incrementa en +1 el contador de cupos disponibles para la sesión afectada.</div></li>
         <li class="flow-item"><div class="flow-num">3</div><div class="flow-text">El sistema refresca el estado en el calendario público, permitiendo que otro estudiante ocupe la vacante liberada.</div></li>
       </ul>
+    </div>
+    <div class="cu-section full-width" style="background:#f0fdf4;">
+      <div class="cu-section-title"><span>📐</span> Diagrama UML del Caso de Uso</div>
+      <svg viewBox="0 0 620 118" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs><marker id="m08" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0.5 L0,5.5 L6.5,3 z" fill="#475569"/></marker></defs>
+        <rect x="104" y="4" width="510" height="110" rx="8" fill="#f0fdf4" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4"/>
+        <text x="359" y="17" text-anchor="middle" fill="#64748b" font-size="8" font-weight="600" font-family="sans-serif">Sistema AgendaU</text>
+        <rect x="36" y="14" width="30" height="36" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+        <line x1="36" y1="24" x2="66" y2="24" stroke="#16a34a" stroke-width="1"/>
+        <rect x="41" y="28" width="5" height="4" rx="1" fill="#16a34a"/><rect x="49" y="28" width="5" height="4" rx="1" fill="#16a34a"/><rect x="41" y="35" width="13" height="3" rx="1" fill="#16a34a" opacity="0.5"/>
+        <text x="51" y="62" text-anchor="middle" fill="#14532d" font-size="8" font-weight="600" font-family="sans-serif">Sistema</text>
+        <line x1="67" y1="32" x2="162" y2="56" stroke="#64748b" stroke-width="1.2"/>
+        <ellipse cx="258" cy="62" rx="94" ry="27" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8"/>
+        <text x="258" y="57" text-anchor="middle" fill="#14532d" font-size="9" font-weight="700" font-family="sans-serif">CU-08</text>
+        <text x="258" y="70" text-anchor="middle" fill="#15803d" font-size="7.5" font-family="sans-serif">Act. Disponibilidad</text>
+        <ellipse cx="488" cy="62" rx="92" ry="27" fill="#dbeafe" stroke="#2563eb" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <text x="488" y="57" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="700" font-family="sans-serif">CU-07</text>
+        <text x="488" y="70" text-anchor="middle" fill="#1e40af" font-size="7.5" font-family="sans-serif">Cancelación Reserva</text>
+        <line x1="396" y1="62" x2="354" y2="62" stroke="#475569" stroke-width="1.3" marker-end="url(#m08)"/>
+        <text x="375" y="56" text-anchor="middle" fill="#475569" font-size="7.5" font-family="sans-serif">dispara</text>
+      </svg>
     </div>
   </div>
 </div>
