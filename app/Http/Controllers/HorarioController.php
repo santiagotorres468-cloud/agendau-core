@@ -238,6 +238,9 @@ class HorarioController extends Controller
             'aula'           => 'nullable|string|max:100',
         ]);
 
+        // La columna 'lugar' es NOT NULL en BD; evitar que null cause SQL error en clases virtuales
+        $validated['lugar'] = $validated['lugar'] ?? '';
+
         $horario->update($validated);
 
         return redirect()->route('dashboard')->with('exito', 'Clase actualizada correctamente.');
@@ -332,6 +335,7 @@ class HorarioController extends Controller
         $reserva = Seguimiento::with(['estudiante', 'horario'])->findOrFail($id);
         $this->autorizarSeguimiento($reserva);
 
+        $request->validate(['evolucion' => 'nullable|string|max:1000']);
         $reserva->update(['evolucion' => $request->input('evolucion')]);
 
         if ($request->input('accion') === 'guardar') {
@@ -354,8 +358,8 @@ class HorarioController extends Controller
     {
         $user     = auth()->user();
         $horarios = $user->rol === 'admin'
-            ? HorarioAsesoria::orderBy('curso_nombre')->withCount('seguimientos')->get()
-            : HorarioAsesoria::where('user_id', $user->id)->orderBy('curso_nombre')->withCount('seguimientos')->get();
+            ? HorarioAsesoria::orderBy('curso_nombre')->withCount(['seguimientos as estudiantes_count' => fn($q) => $q->distinct('estudiante_id')])->get()
+            : HorarioAsesoria::where('user_id', $user->id)->orderBy('curso_nombre')->withCount(['seguimientos as estudiantes_count' => fn($q) => $q->distinct('estudiante_id')])->get();
 
         return view('profesor.seguimiento', compact('horarios'));
     }
@@ -366,8 +370,8 @@ class HorarioController extends Controller
 
         $user     = auth()->user();
         $horarios = $user->rol === 'admin'
-            ? HorarioAsesoria::orderBy('curso_nombre')->withCount('seguimientos')->get()
-            : HorarioAsesoria::where('user_id', $user->id)->orderBy('curso_nombre')->withCount('seguimientos')->get();
+            ? HorarioAsesoria::orderBy('curso_nombre')->withCount(['seguimientos as estudiantes_count' => fn($q) => $q->distinct('estudiante_id')])->get()
+            : HorarioAsesoria::where('user_id', $user->id)->orderBy('curso_nombre')->withCount(['seguimientos as estudiantes_count' => fn($q) => $q->distinct('estudiante_id')])->get();
 
         $estudiante = Estudiante::where('cedula', $request->cedula)->first();
 
@@ -467,27 +471,7 @@ class HorarioController extends Controller
         $estudiante_id = session('estudiante_id');
 
         if (!$estudiante_id) {
-            if (!session('correo_pendiente')) {
-                return back()->with('error', 'Debes iniciar sesión primero.');
-            }
-
-            $request->validate(['cedula' => 'required|string|max:20']);
-            $estudiante = Estudiante::where('cedula', $request->cedula)->first();
-
-            if (!$estudiante) {
-                return back()->with('error', 'Cédula no encontrada.');
-            }
-            if ($estudiante->correo && $estudiante->correo !== session('correo_pendiente')) {
-                return back()->with('error', 'Esta cédula ya está vinculada a otro correo.');
-            }
-
-            if (empty($estudiante->correo)) {
-                $estudiante->update(['correo' => session('correo_pendiente')]);
-            }
-
-            session(['estudiante_id' => $estudiante->id, 'estudiante_nombre' => $estudiante->nombre_completo]);
-            session()->forget(['correo_pendiente', 'google_nombre']);
-            $estudiante_id = $estudiante->id;
+            return back()->with('error', 'Debes iniciar sesión primero.');
         }
 
         $encuestaPendiente = Seguimiento::where('estudiante_id', $estudiante_id)

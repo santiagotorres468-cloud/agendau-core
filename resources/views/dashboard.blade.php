@@ -14,9 +14,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style> body { font-family: 'Manrope', sans-serif; } </style>
 </head>
-<body class="bg-gray-50 text-gray-800 flex h-screen overflow-hidden">
+<body class="bg-gray-50 text-gray-800 flex h-screen overflow-hidden" x-data="{ sidebarOpen: false }">
 
-    <aside class="w-64 bg-[#002845] text-white flex flex-col hidden md:flex shadow-2xl z-20">
+    {{-- Overlay mobile --}}
+    <div x-show="sidebarOpen" @click="sidebarOpen = false"
+         class="fixed inset-0 bg-black/50 z-30 md:hidden" style="display:none;"></div>
+
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
+           class="w-64 bg-[#002845] text-white flex flex-col fixed md:relative inset-y-0 left-0 z-40 shadow-2xl transition-transform duration-300 md:translate-x-0 flex-shrink-0">
         <div class="p-6 flex items-center space-x-3 border-b border-blue-900/50">
             <div class="w-9 h-9 rounded-lg bg-[#C9A227] text-[#002845] font-extrabold text-sm flex items-center justify-center flex-shrink-0 tracking-tight">AU</div>
             <div>
@@ -28,7 +33,7 @@
         <div class="p-6">
             <p class="text-xs text-blue-300 font-bold uppercase tracking-wider mb-2">Mi Cuenta</p>
             <div class="flex items-center space-x-3 mb-6">
-                <div class="w-10 h-10 rounded-full bg-[#C9A227] flex items-center justify-center text-[#002845] text-sm font-bold shadow-inner uppercase">
+                <div class="w-10 h-10 rounded-full bg-sky-500 flex items-center justify-center text-white text-sm font-bold shadow-inner uppercase">
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                 </div>
                 <div>
@@ -67,12 +72,17 @@
     <main class="flex-1 flex flex-col h-screen overflow-y-auto">
         
         <header class="bg-white p-6 shadow-sm border-b border-gray-200 flex justify-between items-center z-10 sticky top-0">
-            <div>
-                <h2 class="text-2xl font-black text-[#002845] flex items-center">
-                    <svg class="w-8 h-8 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                    Centro de Control
-                </h2>
-                <p class="text-gray-500 text-sm mt-1 font-medium">Gestión de cursos y opciones de administración.</p>
+            <div class="flex items-center gap-3">
+                <button @click="sidebarOpen = !sidebarOpen" class="md:hidden p-2 rounded-lg text-[#002845] hover:bg-gray-100 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <div>
+                    <h2 class="text-2xl font-black text-[#002845] flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-blue-600 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        Centro de Control
+                    </h2>
+                    <p class="text-gray-500 text-sm mt-1 font-medium">Gestión de cursos y opciones de administración.</p>
+                </div>
             </div>
             
             @if(session('exito'))
@@ -149,6 +159,10 @@
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                                     Control de roles
                                 </button>
+                                <button @click="tab = 'estudiantes'" :class="tab === 'estudiantes' ? 'bg-[#002845] text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100'" class="px-5 py-2.5 rounded-xl font-semibold text-sm transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer border border-transparent">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+                                    Estudiantes
+                                </button>
                             @endif
                         </div>
 
@@ -183,7 +197,7 @@
                                             
                                             <p class="flex items-center mt-3 pt-2 border-t border-gray-100">
                                                 <span class="font-bold text-gray-800 w-20">👥 Inscritos:</span> 
-                                                <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-black border border-green-200">{{ $clase->seguimientos_count ?? 0 }} estudiantes</span>
+                                                <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-black border border-green-200">{{ $clase->estudiantes_count ?? 0 }} estudiantes</span>
                                             </p>
                                             @if(strtolower(trim($clase->modalidad)) !== 'virtual')
                                                 <div class="mt-3 pt-3 border-t border-gray-100 bg-gray-50 rounded-lg p-3 text-xs">
@@ -350,7 +364,51 @@
                         </div>
 
                         <div x-show="tab === 'usuarios'" class="transition-all duration-300" style="{{ $activeTab !== 'usuarios' ? 'display:none' : '' }}">
-                            
+
+                            {{-- Botón crear usuario --}}
+                            <div x-data="{ modalCrear: false }" class="mb-6">
+                                <button @click="modalCrear = true" class="inline-flex items-center gap-2 bg-[#002845] hover:bg-[#001a2e] text-white font-bold px-5 py-2.5 rounded-xl shadow-md transition text-sm">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                                    Crear Docente / Administrador
+                                </button>
+
+                                <div x-show="modalCrear" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" style="display:none;">
+                                    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
+                                        <div class="bg-[#002845] px-6 py-5 flex justify-between items-center">
+                                            <h3 class="text-lg font-black text-white">Nuevo Docente o Administrador</h3>
+                                            <button @click="modalCrear = false" class="text-white/70 hover:text-white transition">
+                                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                                            </button>
+                                        </div>
+                                        <form action="{{ route('usuarios.crear') }}" method="POST" class="p-6 space-y-4">
+                                            @csrf
+                                            <div>
+                                                <label class="block text-xs font-black text-gray-500 uppercase tracking-wider mb-1">Nombre Completo *</label>
+                                                <input type="text" name="name" required maxlength="255" class="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-bold focus:border-[#002845] outline-none transition" placeholder="Ej: María García López">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-black text-gray-500 uppercase tracking-wider mb-1">Correo Electrónico *</label>
+                                                <input type="email" name="email" required maxlength="255" class="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-bold focus:border-[#002845] outline-none transition" placeholder="Ej: maria.garcia@pascualbravo.edu.co">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-black text-gray-500 uppercase tracking-wider mb-1">Rol *</label>
+                                                <select name="rol" class="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-bold focus:border-[#002845] outline-none transition">
+                                                    <option value="profesor">Docente</option>
+                                                    <option value="admin">Administrador</option>
+                                                </select>
+                                            </div>
+                                            <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-xs text-blue-700 font-semibold">
+                                                Se generará una contraseña temporal. El usuario deberá cambiarla al iniciar sesión por primera vez.
+                                            </div>
+                                            <div class="flex gap-3 pt-2">
+                                                <button type="button" @click="modalCrear = false" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-xl transition text-sm">Cancelar</button>
+                                                <button type="submit" class="flex-1 bg-[#002845] hover:bg-[#001a2e] text-white font-bold py-3 rounded-xl shadow-md transition text-sm">Crear Usuario</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="mb-10 bg-white rounded-3xl shadow-md border border-gray-200 overflow-hidden">
                                 <div class="bg-purple-50 px-6 py-4 border-b border-purple-100 flex justify-between items-center">
                                     <h3 class="text-xl font-extrabold text-purple-900 flex items-center gap-2">
@@ -406,6 +464,14 @@
                                                                         Desactivar
                                                                     </button>
                                                                 </form>
+
+                                                                <form action="{{ route('usuarios.resetPassword', $admin->id) }}" method="POST" class="m-0">
+                                                                    @csrf
+                                                                    <button type="button" onclick="confirmarAccion(this, '¿Cambiar contraseña?', 'Se generará una contraseña temporal. La nueva clave se mostrará en pantalla.', 'Sí, cambiar', '#002845')" class="bg-[#002845] hover:bg-[#001a2e] text-white font-semibold py-2 w-32 text-center rounded-lg transition text-xs shadow-md flex items-center justify-center gap-1">
+                                                                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                                                                        Cambio de Clave
+                                                                    </button>
+                                                                </form>
                                                             @endif
 
                                                         </div>
@@ -456,6 +522,14 @@
                                                                 <button type="button" onclick="confirmarAccion(this, '¿Desactivar a este docente?', 'Su cuenta pasará a estado inactivo.', 'Sí, desactivar', '#dc2626')" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 w-32 text-center rounded-lg transition text-xs shadow-md flex items-center justify-center gap-1">
                                                                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
                                                                     Desactivar
+                                                                </button>
+                                                            </form>
+
+                                                            <form action="{{ route('usuarios.resetPassword', $docente->id) }}" method="POST" class="m-0">
+                                                                @csrf
+                                                                <button type="button" onclick="confirmarAccion(this, '¿Cambiar contraseña?', 'Se generará una contraseña temporal. La nueva clave se mostrará en pantalla.', 'Sí, cambiar', '#002845')" class="bg-[#002845] hover:bg-[#001a2e] text-white font-semibold py-2 w-32 text-center rounded-lg transition text-xs shadow-md flex items-center justify-center gap-1">
+                                                                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                                                                    Cambio de Clave
                                                                 </button>
                                                             </form>
                                                         </div>
@@ -514,6 +588,149 @@
                                             @if($usuarios->where('rol', 'inactivo')->isEmpty())
                                                 <tr><td colspan="2" class="px-6 py-8 text-center text-sm font-bold text-gray-400">No hay usuarios inactivos.</td></tr>
                                             @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        {{-- TAB: ESTUDIANTES --}}
+                        <div x-show="tab === 'estudiantes'" class="transition-all duration-300" style="{{ $activeTab !== 'estudiantes' ? 'display:none' : '' }}">
+
+                            {{-- Botón agregar + modal --}}
+                            <div x-data="{ modalAgregar: false }" class="mb-6">
+                                <button @click="modalAgregar = true" class="inline-flex items-center gap-2 bg-[#002845] hover:bg-[#001a2e] text-white font-bold px-5 py-2.5 rounded-xl shadow-md transition text-sm">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                                    Agregar Estudiante
+                                </button>
+
+                                <div x-show="modalAgregar" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center" style="display:none;">
+                                    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
+                                        <div class="bg-[#002845] px-6 py-5 flex justify-between items-center">
+                                            <h3 class="text-lg font-black text-white">Registrar Nuevo Estudiante</h3>
+                                            <button @click="modalAgregar = false" class="text-white/70 hover:text-white transition">
+                                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                                            </button>
+                                        </div>
+                                        <form action="{{ route('estudiantes.crear') }}" method="POST" class="p-6 space-y-4">
+                                            @csrf
+                                            <div>
+                                                <label class="block text-xs font-black text-gray-500 uppercase tracking-wider mb-1">Nombre Completo *</label>
+                                                <input type="text" name="nombre_completo" required maxlength="255" class="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-bold focus:border-[#002845] outline-none transition" placeholder="Ej: Juan Pérez García">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-black text-gray-500 uppercase tracking-wider mb-1">Cédula *</label>
+                                                <input type="text" name="cedula" required maxlength="20" class="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-bold focus:border-[#002845] outline-none transition" placeholder="Ej: 1001234567">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-black text-gray-500 uppercase tracking-wider mb-1">Correo Institucional</label>
+                                                <input type="email" name="correo" maxlength="255" class="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-bold focus:border-[#002845] outline-none transition" placeholder="Ej: juan.perez@pascualbravo.edu.co">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-black text-gray-500 uppercase tracking-wider mb-1">Programa Académico</label>
+                                                <input type="text" name="programa_academico" maxlength="255" class="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-bold focus:border-[#002845] outline-none transition" placeholder="Ej: Ingeniería de Sistemas">
+                                            </div>
+                                            <div class="flex gap-3 pt-2">
+                                                <button type="button" @click="modalAgregar = false" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-xl transition text-sm">Cancelar</button>
+                                                <button type="submit" class="flex-1 bg-[#002845] hover:bg-[#001a2e] text-white font-bold py-3 rounded-xl shadow-md transition text-sm">Guardar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-3xl shadow-md border border-gray-200 overflow-hidden">
+                                <div class="bg-blue-50 px-6 py-4 border-b border-blue-100 flex justify-between items-center">
+                                    <h3 class="text-xl font-extrabold text-[#002845] flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/></svg>
+                                        Estudiantes Registrados ({{ $estudiantes->count() }})
+                                    </h3>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th class="px-6 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Estudiante</th>
+                                                <th class="px-6 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider hidden md:table-cell">Cédula</th>
+                                                <th class="px-6 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider hidden lg:table-cell">Programa</th>
+                                                <th class="px-6 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider">Estado</th>
+                                                <th class="px-6 py-3 text-right text-xs font-black text-gray-500 uppercase tracking-wider">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-100">
+                                            @forelse($estudiantes as $est)
+                                                <tr class="hover:bg-gray-50 transition">
+                                                    <td class="px-6 py-4">
+                                                        <div class="font-bold text-gray-900 text-sm">{{ $est->nombre_completo }}</div>
+                                                        <div class="text-xs text-gray-400 font-medium mt-0.5">{{ $est->correo ?: 'Sin correo registrado' }}</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 text-sm font-mono text-gray-600 hidden md:table-cell">{{ $est->cedula }}</td>
+                                                    <td class="px-6 py-4 text-sm text-gray-600 hidden lg:table-cell">{{ $est->programa_academico ?: '—' }}</td>
+                                                    <td class="px-6 py-4">
+                                                        @if($est->esta_activo)
+                                                            <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full border border-emerald-200">Activo</span>
+                                                        @else
+                                                            <span class="bg-red-50 text-red-600 text-xs font-bold px-3 py-1 rounded-full border border-red-200">Inactivo</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="px-6 py-4 text-right">
+                                                        <div x-data="{ modalEditar: false }" class="inline-flex gap-2 items-center">
+
+                                                            {{-- Editar --}}
+                                                            <button @click="modalEditar = true" class="bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 font-semibold py-2 px-4 rounded-lg transition text-xs">
+                                                                Editar
+                                                            </button>
+
+                                                            <div x-show="modalEditar" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" style="display:none;">
+                                                                <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden" @click.stop>
+                                                                    <div class="bg-[#002845] px-6 py-4 flex justify-between items-center">
+                                                                        <h3 class="text-base font-black text-white">Editar Estudiante</h3>
+                                                                        <button @click="modalEditar = false" class="text-white/70 hover:text-white">
+                                                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                                                                        </button>
+                                                                    </div>
+                                                                    <form action="{{ route('estudiantes.actualizar', $est->id) }}" method="POST" class="p-6 space-y-4">
+                                                                        @csrf @method('PUT')
+                                                                        <div>
+                                                                            <label class="block text-xs font-black text-gray-500 uppercase tracking-wider mb-1">Nombre Completo *</label>
+                                                                            <input type="text" name="nombre_completo" value="{{ $est->nombre_completo }}" required maxlength="255" class="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-bold focus:border-[#002845] outline-none transition">
+                                                                        </div>
+                                                                        <div>
+                                                                            <label class="block text-xs font-black text-gray-500 uppercase tracking-wider mb-1">Cédula *</label>
+                                                                            <input type="text" name="cedula" value="{{ $est->cedula }}" required maxlength="20" class="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-bold focus:border-[#002845] outline-none transition">
+                                                                        </div>
+                                                                        <div>
+                                                                            <label class="block text-xs font-black text-gray-500 uppercase tracking-wider mb-1">Correo Institucional</label>
+                                                                            <input type="email" name="correo" value="{{ $est->correo }}" maxlength="255" class="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-bold focus:border-[#002845] outline-none transition">
+                                                                        </div>
+                                                                        <div>
+                                                                            <label class="block text-xs font-black text-gray-500 uppercase tracking-wider mb-1">Programa Académico</label>
+                                                                            <input type="text" name="programa_academico" value="{{ $est->programa_academico }}" maxlength="255" class="w-full border-2 border-gray-200 rounded-xl p-3 text-sm font-bold focus:border-[#002845] outline-none transition">
+                                                                        </div>
+                                                                        <div class="flex gap-3 pt-2">
+                                                                            <button type="button" @click="modalEditar = false" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-xl transition text-sm">Cancelar</button>
+                                                                            <button type="submit" class="flex-1 bg-[#002845] hover:bg-[#001a2e] text-white font-bold py-3 rounded-xl shadow-md transition text-sm">Guardar</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+
+                                                            {{-- Activar / Inactivar --}}
+                                                            <form action="{{ route('estudiantes.estado', $est->id) }}" method="POST" class="inline">
+                                                                @csrf @method('PUT')
+                                                                <button type="button"
+                                                                    onclick="confirmarAccion(this, '{{ $est->esta_activo ? '¿Inactivar estudiante?' : '¿Activar estudiante?' }}', '{{ $est->esta_activo ? 'El estudiante no podrá acceder al sistema.' : 'El estudiante podrá volver a acceder.' }}', '{{ $est->esta_activo ? 'Sí, inactivar' : 'Sí, activar' }}', '{{ $est->esta_activo ? '#dc2626' : '#10b981' }}')"
+                                                                    class="{{ $est->esta_activo ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100' : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100' }} font-semibold py-2 px-4 rounded-lg transition text-xs border">
+                                                                    {{ $est->esta_activo ? 'Inactivar' : 'Activar' }}
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr><td colspan="5" class="px-6 py-10 text-center text-sm font-bold text-gray-400">No hay estudiantes registrados aún.</td></tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>

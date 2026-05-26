@@ -20,28 +20,31 @@ class GoogleAuthController extends Controller
             
             // 🛡️ Validar que sea del Pascual Bravo
             if (!str_ends_with($googleUser->email, '@pascualbravo.edu.co')) {
-                return redirect('/')->with('error', '⛔ Acceso denegado. Solo puedes ingresar con tu correo institucional (@pascualbravo.edu.co).');
+                return redirect('/')->with('error', 'Acceso denegado. Solo puedes ingresar con tu correo institucional (@pascualbravo.edu.co).');
             }
 
             $estudiante = Estudiante::where('correo', $googleUser->email)->first();
 
-            // Si es su primera vez, lo dejamos en espera
+            // Si no existe, se crea automáticamente con los datos de Google
             if (!$estudiante) {
-                session([
-                    'correo_pendiente' => $googleUser->email, 
-                    'google_nombre' => $googleUser->name
+                $estudiante = Estudiante::create([
+                    'nombre_completo' => $googleUser->name,
+                    'correo'          => $googleUser->email,
+                    'cedula'          => 'GOOGLE-' . uniqid(),
+                    'esta_activo'     => true,
                 ]);
-                
-                return redirect('/')->with('exito', '¡Hola ' . $googleUser->name . '! Solo falta un paso: Haz clic en el botón amarillo de arriba para vincular tu cédula.');
             }
 
-            // Si ya está registrado, entra directo
+            if (!$estudiante->esta_activo) {
+                return redirect('/')->with('error', 'Tu cuenta está inactiva. Contacta al administrador.');
+            }
+
             session([
-                'estudiante_id' => $estudiante->id, 
-                'estudiante_nombre' => $estudiante->nombre_completo
+                'estudiante_id'     => $estudiante->id,
+                'estudiante_nombre' => $estudiante->nombre_completo,
             ]);
-            
-            return redirect('/estudiante')->with('exito', '✅ Sesión iniciada correctamente. ¡Bienvenido a tu panel!');
+
+            return redirect('/estudiante')->with('exito', 'Sesión iniciada correctamente. ¡Bienvenido a tu panel!');
 
         } catch (\Exception $e) {
             return redirect('/')->with('error', 'Ocurrió un error al conectar con Google.');
@@ -63,7 +66,7 @@ class GoogleAuthController extends Controller
 
         // 🛡️ SEGURIDAD: Si el estudiante no existe, se rechaza
         if (!$estudiante) {
-            return back()->with('error', '⛔ Cédula no encontrada. Debes estar registrado en la base de datos de la institución.');
+            return back()->with('error', 'Cédula no encontrada. Debes estar registrado en la base de datos de la institución.');
         }
 
         // Si existe, lo vinculamos
@@ -76,12 +79,12 @@ class GoogleAuthController extends Controller
         ]);
         session()->forget(['correo_pendiente', 'google_nombre']);
 
-        return redirect('/estudiante')->with('exito', '✅ Identidad verificada. ¡Tu cuenta ha sido vinculada para siempre!');
+        return redirect('/estudiante')->with('exito', 'Identidad verificada. Tu cuenta ha sido vinculada correctamente.');
     }
 
     public function logout(Request $request)
     {
         $request->session()->forget(['estudiante_id', 'estudiante_nombre', 'correo_pendiente', 'google_nombre']);
-        return redirect('/')->with('exito', '👋 Has cerrado sesión correctamente. ¡Vuelve pronto!');
+        return redirect('/')->with('exito', 'Has cerrado sesión correctamente.');
     }
 }

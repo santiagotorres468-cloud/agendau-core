@@ -89,14 +89,18 @@ Route::middleware([
     Route::get('/dashboard', function () {
         $user = auth()->user();
 
+        $subquery = \App\Models\Seguimiento::selectRaw('COUNT(DISTINCT estudiante_id)')
+            ->whereColumn('horario_id', 'horarios_asesoria.id');
+
         if ($user->rol === 'admin') {
-            $horarios = \App\Models\HorarioAsesoria::withCount('seguimientos')->orderBy('curso_nombre')->get();
+            $horarios = \App\Models\HorarioAsesoria::addSelect(['*', 'estudiantes_count' => $subquery])->orderBy('curso_nombre')->get();
             $usuarios = \App\Models\User::all();
-            return view('dashboard', compact('horarios', 'usuarios'));
+            $estudiantes = \App\Models\Estudiante::orderBy('nombre_completo')->get();
+            return view('dashboard', compact('horarios', 'usuarios', 'estudiantes'));
         }
 
         $horarios = \App\Models\HorarioAsesoria::where('user_id', $user->id)
-                        ->withCount('seguimientos')
+                        ->addSelect(['*', 'estudiantes_count' => $subquery])
                         ->orderBy('curso_nombre')
                         ->get();
         $usuarios = collect();
@@ -140,8 +144,17 @@ Route::middleware([
     Route::controller(UsuarioController::class)->group(function () {
         Route::get('/usuarios', 'index')->name('usuarios.index');
         Route::put('/usuarios/{id}/rol', 'actualizarRol')->name('usuarios.actualizarRol');
-        Route::delete('/usuarios/{id}', 'eliminarUsuario')->name('usuarios.eliminar'); 
+        Route::delete('/usuarios/{id}', 'eliminarUsuario')->name('usuarios.eliminar');
         Route::put('/usuarios/{id}/reactivar', 'reactivar')->name('usuarios.reactivar');
+        Route::post('/usuarios/{id}/reset-password', 'resetPassword')->name('usuarios.resetPassword');
+
+        // Gestión de docentes/admins
+        Route::post('/usuarios/crear', 'crearUsuario')->name('usuarios.crear');
+
+        // Gestión de estudiantes
+        Route::post('/estudiantes', 'crearEstudiante')->name('estudiantes.crear');
+        Route::put('/estudiantes/{id}/estado', 'toggleEstudiante')->name('estudiantes.estado');
+        Route::put('/estudiantes/{id}', 'actualizarEstudiante')->name('estudiantes.actualizar');
     });
 
 });

@@ -101,13 +101,15 @@
 
         /* Sidebar */
         .au-sidebar {
-            width: 260px;
+            width: 256px;
             background: var(--ink-800);
             color: white;
             display: flex;
             flex-direction: column;
             box-shadow: var(--shadow-lg);
             flex-shrink: 0;
+            height: 100vh;
+            overflow-y: auto;
         }
 
         .au-sidebar-brand {
@@ -492,97 +494,107 @@
         }
 
         @media (max-width: 768px) {
-            .au-sidebar { display: none; }
             .au-content { padding: 20px; }
-            .au-pageheader { padding: 18px 20px; }
+            .au-pageheader { padding: 14px 16px; }
         }
     </style>
 
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @stack('styles')
 </head>
-<body>
+<body class="flex h-screen overflow-hidden bg-gray-50 text-gray-800" x-data="{ sidebarOpen: false }">
 
-<div class="au-shell">
+    {{-- Overlay mobile --}}
+    <div x-show="sidebarOpen" @click="sidebarOpen = false"
+         class="fixed inset-0 bg-black/50 z-30 md:hidden" style="display:none;"></div>
 
-    {{-- ═══════════════════════════════════════════
-         SIDEBAR
-    ═══════════════════════════════════════════ --}}
-    <aside class="au-sidebar">
-        <div class="au-sidebar-brand">
-            <div class="au-sidebar-brand-logo">A</div>
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
+           class="w-64 bg-[#002845] text-white flex flex-col fixed md:relative inset-y-0 left-0 z-40 shadow-2xl transition-transform duration-300 md:translate-x-0 flex-shrink-0">
+
+        {{-- Logo --}}
+        <div class="p-6 flex items-center space-x-3 border-b border-blue-900/50">
+            <div class="w-9 h-9 rounded-lg bg-[#C9A227] text-[#002845] font-extrabold text-sm flex items-center justify-center flex-shrink-0 tracking-tight">AU</div>
             <div>
-                <div class="au-sidebar-brand-name">Agenda U</div>
-                <div class="au-sidebar-brand-tag">Sistema de asesorías</div>
+                <p class="text-base font-bold text-white tracking-tight leading-tight">Agenda U</p>
+                <p class="text-xs text-white/50 font-medium">Sistema de Asesorías</p>
             </div>
         </div>
 
-        <nav style="padding-bottom: 16px;">
-            <div class="au-sidebar-section-title">Principal</div>
+        {{-- Usuario --}}
+        @auth
+        <div class="p-6 pb-2">
+            <p class="text-xs text-blue-300 font-bold uppercase tracking-wider mb-2">Mi Cuenta</p>
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="w-10 h-10 rounded-full bg-sky-500 flex items-center justify-center text-white text-sm font-bold shadow-inner uppercase flex-shrink-0">
+                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                </div>
+                <div class="overflow-hidden">
+                    <p class="font-bold text-sm text-white truncate" title="{{ auth()->user()->name }}">{{ auth()->user()->name }}</p>
+                    <p class="text-xs text-blue-200 flex items-center font-medium">
+                        <span class="w-2 h-2 bg-green-400 rounded-full mr-1 animate-pulse"></span>
+                        {{ auth()->user()->rol === 'admin' ? 'Administrador' : 'Docente' }}
+                    </p>
+                </div>
+            </div>
 
-            <a href="{{ route('dashboard') }}" class="au-sidebar-link {{ request()->routeIs('dashboard') ? 'is-active' : '' }}">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                Panel principal
-            </a>
+            {{-- Nav principal --}}
+            <nav class="space-y-1">
+                <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 bg-blue-800 text-white px-4 py-3 rounded-xl font-bold transition shadow-md">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span>Centro de Control</span>
+                </a>
 
-            <a href="{{ route('seguimiento.index') }}" class="au-sidebar-link {{ request()->routeIs('seguimiento.*') ? 'is-active' : '' }}">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                Seguimiento
-            </a>
-
-            <a href="/" class="au-sidebar-link">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                Calendario público
-            </a>
-
-            @auth
                 @if(auth()->user()->rol === 'admin')
-                    <div class="au-sidebar-section-title">Administración</div>
-
-                    <a href="{{ route('usuarios.index') }}" class="au-sidebar-link {{ request()->routeIs('usuarios.*') ? 'is-active' : '' }}">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 100-8 4 4 0 000 8z"/></svg>
-                        Usuarios
+                    <a href="{{ route('admin.encuestas') }}" class="flex items-center space-x-3 text-blue-200 hover:bg-blue-800 hover:text-white px-4 py-3 rounded-xl font-bold transition">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                        <span>Satisfacción</span>
                     </a>
-
-                    <a href="{{ route('admin.encuestas') }}" class="au-sidebar-link {{ request()->routeIs('admin.encuestas') ? 'is-active' : '' }}">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                        Encuestas e informes
+                @else
+                    <a href="{{ route('seguimiento.index') }}" class="flex items-center space-x-3 text-blue-200 hover:bg-blue-800 hover:text-white px-4 py-3 rounded-xl font-bold transition">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <span>Seguimiento</span>
                     </a>
                 @endif
-            @endauth
-        </nav>
 
+                <a href="/" class="flex items-center space-x-3 text-blue-200 hover:bg-blue-800 hover:text-white px-4 py-3 rounded-xl font-bold transition">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <span>Calendario Público</span>
+                </a>
+            </nav>
+        </div>
+        @endauth
+
+        {{-- Cerrar sesión --}}
         @auth
-            <div class="au-sidebar-user">
-                <div class="au-sidebar-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
-                <div style="flex: 1; min-width: 0;">
-                    <div class="au-sidebar-user-name" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                        {{ auth()->user()->name }}
-                    </div>
-                    <div class="au-sidebar-user-role">
-                        {{ auth()->user()->rol === 'admin' ? 'Administrador' : 'Docente' }}
-                    </div>
-                </div>
-                <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
-                    @csrf
-                    <button type="submit" title="Cerrar sesión" style="background: none; border: none; cursor: pointer; color: rgba(255,255,255,0.5); padding: 4px;">
-                        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                    </button>
-                </form>
-            </div>
+        <div class="mt-auto p-6 border-t border-blue-900/50">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="flex items-center space-x-3 text-red-400 hover:text-red-300 font-bold transition w-full text-left">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </form>
+        </div>
         @endauth
     </aside>
 
     {{-- ═══════════════════════════════════════════
          MAIN CONTENT
     ═══════════════════════════════════════════ --}}
-    <main class="au-main">
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
 
         <header class="au-pageheader">
-            <div>
-                <h1 class="au-pageheader-title">{{ $pageTitle ?? 'Panel principal' }}</h1>
-                @isset($pageSubtitle)
-                    <p class="au-pageheader-subtitle">{{ $pageSubtitle }}</p>
-                @endisset
+            <div style="display:flex; align-items:center; gap:12px;">
+                <button @click="sidebarOpen = !sidebarOpen"
+                        class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="#002845" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <div>
+                    <h1 class="au-pageheader-title">{{ $pageTitle ?? 'Panel principal' }}</h1>
+                    @isset($pageSubtitle)
+                        <p class="au-pageheader-subtitle">{{ $pageSubtitle }}</p>
+                    @endisset
+                </div>
             </div>
             @isset($pageActions)
                 <div style="display: flex; gap: 10px;">{{ $pageActions }}</div>
@@ -607,7 +619,6 @@
             {{ $slot }}
         </div>
     </main>
-</div>
 
 @stack('scripts')
 </body>

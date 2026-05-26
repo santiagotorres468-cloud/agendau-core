@@ -121,6 +121,7 @@
     <a href="#rutas"         class="sb-link"><span class="dot"></span>Rutas y middleware</a>
     <a href="#importacion"   class="sb-link"><span class="dot"></span>Módulo de importación</a>
     <a href="#autenticacion" class="sb-link"><span class="dot"></span>Autenticación</a>
+    <a href="#email"         class="sb-link"><span class="dot"></span>Email / SMTP</a>
     <a href="#vistas"        class="sb-link"><span class="dot"></span>Vistas y frontend</a>
     <a href="#instalacion"   class="sb-link"><span class="dot"></span>Instalación y despliegue</a>
     <a href="#seguridad"     class="sb-link"><span class="dot"></span>Consideraciones de seguridad</a>
@@ -310,7 +311,8 @@ public function horarios(): HasMany       // horarios_asesoria vinculados al doc
 public function user(): BelongsTo         // docente propietario
 public function seguimientos(): HasMany   // reservas de estudiantes
 
-// withCount('seguimientos') para mostrar inscritos en las tarjetas
+// Subquery con COUNT(DISTINCT) para inscritos únicos por curso:
+// addSelect(['estudiantes_count' => Seguimiento::selectRaw('COUNT(DISTINCT estudiante_id)')->whereColumn('horario_id','horarios_asesoria.id')])
 </code></pre>
 
       <h3>Seguimiento</h3>
@@ -348,8 +350,8 @@ public static function calcularPromedio(array $data): float
         <tbody>
           <tr><td><code>HorarioController</code></td><td>CRUD de horarios, importación Excel, asistencia, API JSON para calendarios, PDFs de lista, seguimiento.</td></tr>
           <tr><td><code>EncuestaController</code></td><td>Mostrar y guardar encuesta (lado estudiante). Dashboard de satisfacción, reportes PDF por docente y por curso (lado admin).</td></tr>
-          <tr><td><code>UsuarioController</code></td><td>Listar usuarios, actualizar rol, desactivar, reactivar.</td></tr>
-          <tr><td><code>GoogleAuthController</code></td><td>Redirección OAuth, callback de Google, vinculación cédula–correo, logout de sesión de estudiante.</td></tr>
+          <tr><td><code>UsuarioController</code></td><td>Listar usuarios, actualizar rol, desactivar, reactivar, restablecer contraseña (genera clave temporal sin email), crear docente/admin, crear/editar/activar-desactivar estudiantes.</td></tr>
+          <tr><td><code>GoogleAuthController</code></td><td>Redirección OAuth, callback de Google (auto-crea cuenta de estudiante en primer ingreso si el correo es <code>@pascualbravo.edu.co</code>), logout de sesión de estudiante.</td></tr>
           <tr><td><code>CambiarPasswordController</code></td><td>Mostrar y procesar el formulario de cambio de contraseña obligatorio.</td></tr>
         </tbody>
       </table>
@@ -488,12 +490,103 @@ DB_PASSWORD=
 
 APP_KEY=base64:...   # php artisan key:generate
 APP_URL=https://tudominio.com
+
+# Email (ver sección 10 — SMTP)
+MAIL_MAILER=smtp
+MAIL_HOST=smtp-relay.sendinblue.com
+MAIL_PORT=587
+MAIL_USERNAME=tu_usuario@smtp-brevo.com
+MAIL_PASSWORD=xsmtpsib-...   # SMTP key (no la API key)
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="no-reply@agendau.edu.co"
+MAIL_FROM_NAME="${APP_NAME}"
+QUEUE_CONNECTION=sync       # sync = envío inmediato; database = cola
 </code></pre>
+
+      <h3>Flujo de recuperación de contraseña</h3>
+      <p>Docentes y administradores usan el sistema de password reset nativo de Laravel Fortify/Jetstream. El flujo completo es:</p>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-box">GET /forgot-password</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-note">Vista <code>auth/forgot-password.blade.php</code> — formulario de email</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box">POST /forgot-password</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-note">Fortify genera token → Brevo SMTP envía email con enlace</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box">GET /reset-password/{token}</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-note">Vista <code>auth/reset-password.blade.php</code> — nuevos campos de contraseña</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-box">POST /reset-password</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-note">Fortify valida token + actualiza contraseña → redirect al login</div>
+        </div>
+      </div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div><strong>Rate limiter en forgot-password</strong>Fortify aplica rate limiting al endpoint <code>POST /forgot-password</code>. Si el usuario envía múltiples solicitudes en poco tiempo verá el mensaje "Por favor espere antes de intentar de nuevo". Se limpia con <code>php artisan cache:clear</code>.</div>
+      </div>
     </section>
 
-    <!-- 10. Vistas -->
+    <!-- Email / SMTP -->
+    <section id="email">
+      <h2><span class="sec-num">10</span>Email / SMTP</h2>
+
+      <h3>Proveedor configurado — Brevo (Sendinblue)</h3>
+      <p>El sistema usa el relay SMTP de Brevo para el envío de correos transaccionales (recuperación de contraseña). La configuración está en <code>.env</code>:</p>
+      <pre><code>MAIL_MAILER=smtp
+MAIL_HOST=smtp-relay.sendinblue.com   # host alternativo con cert válido
+MAIL_PORT=587
+MAIL_USERNAME=ab17a1001@smtp-brevo.com
+MAIL_PASSWORD=xsmtpsib-...            # SMTP key (distinta de la API key xkeysib-)
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="no-reply@agendau.edu.co"
+MAIL_FROM_NAME="AgendaU"
+QUEUE_CONNECTION=sync</code></pre>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>API key vs SMTP key</strong>Brevo tiene dos tipos de credenciales. La <em>API key</em> empieza con <code>xkeysib-</code> y sirve para la REST API HTTP. La <em>SMTP key</em> empieza con <code>xsmtpsib-</code> y es la que debe ir en <code>MAIL_PASSWORD</code>. Usar la API key en el campo SMTP provoca error 535 de autenticación.</div>
+      </div>
+
+      <h3>Verificación de TLS (SSL peer)</h3>
+      <p>El servidor <code>smtp-relay.brevo.com</code> puede retornar un certificado CN distinto al hostname, causando error de verificación TLS en Symfony Mailer. Por eso se usa <code>smtp-relay.sendinblue.com</code> (mismo relay, CN coherente) o bien se deshabilita la verificación en <code>config/mail.php</code>:</p>
+      <pre><code>'smtp' => [
+    // ...opciones existentes...
+    'stream' => [
+        'ssl' => [
+            'verify_peer'      => false,
+            'verify_peer_name' => false,
+        ],
+    ],
+],</code></pre>
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div><strong>Nota de seguridad</strong>Deshabilitar <code>verify_peer</code> solo es aceptable para entornos de desarrollo local (XAMPP). En producción, usa siempre un host con certificado verificable.</div>
+      </div>
+
+      <h3>Autorización de IP en Brevo</h3>
+      <p>El relay SMTP de Brevo restringe el envío por IP. El servidor debe estar autorizado en <strong>app.brevo.com → Senders &amp; IP → Authorized IPs</strong>. Para desarrollo local, agrega la IP pública del equipo. La IP actual del entorno de desarrollo es <code>181.51.32.225</code>.</p>
+
+      <h3>Cola de correos</h3>
+      <p>Con <code>QUEUE_CONNECTION=sync</code> los correos se envían de forma inmediata durante el ciclo de la petición HTTP — apropiado para desarrollo. En producción con alta carga, cambia a <code>database</code> y ejecuta un worker:</p>
+      <pre><code># Worker en producción
+php artisan queue:work --sleep=3 --tries=3 --max-time=3600</code></pre>
+
+      <h3>Probar el envío desde tinker</h3>
+      <pre><code>php artisan tinker
+>>> Mail::raw('Test AgendaU', fn($m) => $m->to('test@dominio.com')->subject('Test'));
+// Si no lanza excepción → ENVIADO OK</code></pre>
+    </section>
+
+    <!-- 11. Vistas -->
     <section id="vistas">
-      <h2><span class="sec-num">10</span>Vistas y frontend</h2>
+      <h2><span class="sec-num">11</span>Vistas y frontend</h2>
 
       <h3>Tecnologías frontend</h3>
       <table>
@@ -535,9 +628,9 @@ GET /api/mis-horarios  → solo las reservas del estudiante autenticado
 </code></pre>
     </section>
 
-    <!-- 11. Instalación -->
+    <!-- 12. Instalación -->
     <section id="instalacion">
-      <h2><span class="sec-num">11</span>Instalación y despliegue</h2>
+      <h2><span class="sec-num">12</span>Instalación y despliegue</h2>
 
       <h3>Requisitos del servidor</h3>
       <table>
@@ -562,7 +655,9 @@ composer install --no-dev --optimize-autoloader
 # 3. Configurar variables de entorno
 cp .env.example .env
 php artisan key:generate
-# Editar .env: DB_*, GOOGLE_*, APP_URL, MAIL_*
+# Editar .env: DB_*, GOOGLE_*, APP_URL
+# MAIL_*: usar credenciales SMTP de Brevo (ver sección 10)
+# QUEUE_CONNECTION=sync  (para envío inmediato en desarrollo)
 
 # 4. Crear base de datos y ejecutar migraciones
 php artisan migrate --force
@@ -602,13 +697,14 @@ RewriteRule ^ index.php [L]
       </div>
     </section>
 
-    <!-- 12. Seguridad -->
+    <!-- 13. Seguridad -->
     <section id="seguridad">
-      <h2><span class="sec-num">12</span>Consideraciones de seguridad</h2>
+      <h2><span class="sec-num">13</span>Consideraciones de seguridad</h2>
 
       <table>
         <thead><tr><th>Mecanismo</th><th>Implementación</th></tr></thead>
         <tbody>
+          <tr><td>Content-Security-Policy</td><td>Middleware <code>AddSecurityHeaders</code> (registrado en <code>bootstrap/app.php</code>) inyecta cabeceras CSP en cada respuesta: <code>script-src 'self' 'unsafe-inline' 'unsafe-eval'</code> (Alpine.js requiere <code>unsafe-eval</code> por su uso de <code>new Function()</code>), más whitelist de CDN para Tailwind, FullCalendar y SweetAlert2. También agrega <code>X-Content-Type-Options: nosniff</code>, <code>X-Frame-Options: SAMEORIGIN</code> y <code>Referrer-Policy</code>.</td></tr>
           <tr><td>CSRF</td><td>Blade <code>@csrf</code> en todos los formularios POST/PUT/DELETE. Jetstream incluye verificación automática.</td></tr>
           <tr><td>Rate limiting</td><td><code>Limit::perMinute(5)</code> por email + IP en el endpoint de login.</td></tr>
           <tr><td>Autorización por rol</td><td>Comprobaciones explícitas <code>auth()->user()->rol !== 'admin'</code> + <code>abort(403)</code>.</td></tr>
@@ -622,9 +718,9 @@ RewriteRule ^ index.php [L]
       </table>
     </section>
 
-    <!-- 13. Mantenimiento -->
+    <!-- 14. Mantenimiento -->
     <section id="mantenimiento">
-      <h2><span class="sec-num">13</span>Mantenimiento</h2>
+      <h2><span class="sec-num">14</span>Mantenimiento</h2>
 
       <h3>Comandos útiles</h3>
       <pre><code># Limpiar caché de configuración / rutas / vistas

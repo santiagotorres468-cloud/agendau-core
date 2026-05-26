@@ -104,76 +104,175 @@
         <span class="callout-icon">⚠️</span>
         <div><strong>5 intentos máximos</strong>Tras 5 intentos fallidos en un minuto el sistema bloquea temporalmente el acceso para proteger la cuenta.</div>
       </div>
+      <div class="callout tip">
+        <span class="callout-icon">🔑</span>
+        <div><strong>Recuperar contraseña olvidada</strong>Si olvidaste tu contraseña, haz clic en <strong>"¿Olvidaste tu contraseña?"</strong> en la pantalla de inicio de sesión. Ingresa tu correo institucional y el sistema enviará un enlace de recuperación automáticamente a tu bandeja. El enlace tiene validez de 60 minutos. No es necesario contactar a otro administrador para restablecer el acceso.</div>
+      </div>
     </section>
 
     <section id="panel">
       <h2><span class="n">2</span>Panel de control</h2>
-      <p>El panel está organizado en <strong>cuatro pestañas</strong> principales:</p>
+      <p>El panel está organizado en <strong>cinco pestañas</strong> principales:</p>
       <table>
         <thead><tr><th>Pestaña</th><th>Función</th></tr></thead>
         <tbody>
           <tr><td><strong>Gestión de cursos</strong></td><td>Ver, editar y eliminar todos los horarios del sistema.</td></tr>
           <tr><td><strong>Carga masiva</strong></td><td>Importar horarios desde Excel. Descarga de plantilla.</td></tr>
           <tr><td><strong>Informes</strong></td><td>Generar PDFs de asistencia por docente o por curso.</td></tr>
-          <tr><td><strong>Control de roles</strong></td><td>Gestionar usuarios: roles, activación y desactivación.</td></tr>
+          <tr><td><strong>Control de roles</strong></td><td>Gestionar docentes y admins: roles, activación, clave temporal y creación de cuentas.</td></tr>
+          <tr><td><strong>Estudiantes</strong></td><td>Ver, crear, editar y activar/desactivar cuentas de estudiantes.</td></tr>
         </tbody>
       </table>
       <p>Adicionalmente, en el menú lateral encontrarás el acceso directo a <strong>Satisfacción estudiantil</strong>.</p>
 
       <figure class="ui-fig">
-        <svg viewBox="0 0 620 230" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
-          <rect width="620" height="230" fill="#f1f5f9"/>
-          <!-- Sidebar -->
-          <rect width="150" height="230" fill="#002845"/>
-          <rect x="13" y="14" width="30" height="30" rx="8" fill="#C9A227"/>
-          <text x="28" y="35" font-size="11" font-weight="bold" fill="#002845" text-anchor="middle">AU</text>
-          <text x="53" y="27" font-size="12" font-weight="bold" fill="white">Agenda U</text>
-          <text x="53" y="41" font-size="9" fill="rgba(255,255,255,0.4)">Admin</text>
-          <text x="20" y="78" font-size="10" fill="rgba(255,255,255,0.9)">📊  Dashboard</text>
-          <text x="20" y="102" font-size="10" fill="rgba(255,255,255,0.5)">⭐  Satisfacción</text>
-          <text x="20" y="126" font-size="10" fill="rgba(255,255,255,0.5)">🚪  Salir</text>
-          <!-- Main panel background -->
-          <rect x="160" y="10" width="450" height="210" rx="12" fill="white" stroke="#e2e8f0"/>
-          <!-- Tab bar -->
-          <rect x="160" y="10" width="450" height="42" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
-          <!-- Tab 1 active -->
-          <rect x="170" y="18" width="100" height="26" rx="7" fill="#002845"/>
-          <text x="220" y="35" font-size="9" font-weight="bold" fill="white" text-anchor="middle">Gestión cursos</text>
-          <!-- Tab 2 -->
-          <rect x="278" y="18" width="92" height="26" rx="7" fill="transparent"/>
-          <text x="324" y="35" font-size="9" fill="#475569" text-anchor="middle">Carga masiva</text>
-          <!-- Tab 3 -->
-          <rect x="378" y="18" width="68" height="26" rx="7" fill="transparent"/>
-          <text x="412" y="35" font-size="9" fill="#475569" text-anchor="middle">Informes</text>
-          <!-- Tab 4 -->
-          <rect x="454" y="18" width="96" height="26" rx="7" fill="transparent"/>
-          <text x="502" y="35" font-size="9" fill="#475569" text-anchor="middle">Control roles</text>
-          <!-- Panel content: course card rows -->
-          <rect x="172" y="62" width="426" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-          <text x="186" y="83" font-size="11" fill="#334155">Cálculo I</text>
-          <text x="320" y="83" font-size="10" fill="#64748b">Lunes · 08:00–10:00</text>
-          <rect x="488" y="70" width="50" height="18" rx="6" fill="#dbeafe"/>
-          <text x="513" y="83" font-size="9" font-weight="bold" fill="#1e40af" text-anchor="middle">✏ Editar</text>
-          <rect x="544" y="70" width="44" height="18" rx="6" fill="#fee2e2"/>
-          <text x="566" y="83" font-size="9" font-weight="bold" fill="#991b1b" text-anchor="middle">🗑</text>
-          <rect x="172" y="104" width="426" height="34" rx="8" fill="white" stroke="#e2e8f0"/>
-          <text x="186" y="125" font-size="11" fill="#334155">Física II</text>
-          <text x="320" y="125" font-size="10" fill="#64748b">Miércoles · 14:00–16:00</text>
-          <rect x="488" y="112" width="50" height="18" rx="6" fill="#dbeafe"/>
-          <text x="513" y="125" font-size="9" font-weight="bold" fill="#1e40af" text-anchor="middle">✏ Editar</text>
-          <rect x="544" y="112" width="44" height="18" rx="6" fill="#fee2e2"/>
-          <text x="566" y="125" font-size="9" font-weight="bold" fill="#991b1b" text-anchor="middle">🗑</text>
-          <!-- Highlights on tabs -->
-          <rect x="166" y="14" width="108" height="34" rx="9" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="220" cy="8" r="11" fill="#f97316"/><text x="220" y="13" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
-          <rect x="274" y="14" width="100" height="34" rx="9" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="324" cy="8" r="11" fill="#f97316"/><text x="324" y="13" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
-          <rect x="374" y="14" width="76" height="34" rx="9" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="412" cy="8" r="11" fill="#f97316"/><text x="412" y="13" font-size="11" font-weight="bold" fill="white" text-anchor="middle">3</text>
-          <rect x="450" y="14" width="104" height="34" rx="9" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="502" cy="8" r="11" fill="#f97316"/><text x="502" y="13" font-size="11" font-weight="bold" fill="white" text-anchor="middle">4</text>
+        <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" font-family="'Manrope',sans-serif">
+          <defs>
+            <linearGradient id="cardGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#002845"/>
+              <stop offset="100%" stop-color="#1e40af"/>
+            </linearGradient>
+          </defs>
+          <!-- Fondo general bg-slate-50 -->
+          <rect width="700" height="420" fill="#f8fafc"/>
+
+          <!-- ── SIDEBAR w-64 bg-[#002845] ── -->
+          <rect x="0" y="0" width="168" height="420" fill="#002845"/>
+          <!-- Logo dorado -->
+          <rect x="12" y="14" width="32" height="32" rx="8" fill="#C9A227"/>
+          <text x="28" y="35" fill="#002845" font-size="11" font-weight="900" text-anchor="middle">AU</text>
+          <text x="54" y="26" fill="white" font-size="10" font-weight="800">Agenda U</text>
+          <text x="54" y="40" fill="rgba(255,255,255,0.4)" font-size="8">Sistema de Asesorías</text>
+          <line x1="0" y1="56" x2="168" y2="56" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <!-- MI CUENTA -->
+          <text x="14" y="74" fill="#93c5fd" font-size="8" font-weight="800" letter-spacing="0.06em">MI CUENTA</text>
+          <!-- Avatar bg-sky-500 rounded-full -->
+          <circle cx="28" cy="98" r="15" fill="#0ea5e9"/>
+          <text x="28" y="104" fill="white" font-size="12" font-weight="800" text-anchor="middle">S</text>
+          <text x="50" y="94" fill="white" font-size="9.5" font-weight="700">Santiago Torres</text>
+          <circle cx="50" cy="106" r="3.5" fill="#4ade80"/>
+          <text x="58" y="110" fill="#bfdbfe" font-size="8">Administrador</text>
+
+          <!-- Nav: Centro de Control ACTIVO bg-blue-800 rounded-xl px-4 py-3 -->
+          <rect x="8" y="120" width="152" height="34" rx="10" fill="#1e3a8a"/>
+          <!-- calendar SVG icon -->
+          <rect x="18" y="128" width="14" height="14" rx="2" fill="none" stroke="white" stroke-width="1.5"/>
+          <line x1="22" y1="126" x2="22" y2="132" stroke="white" stroke-width="1.5"/>
+          <line x1="28" y1="126" x2="28" y2="132" stroke="white" stroke-width="1.5"/>
+          <line x1="16" y1="135" x2="34" y2="135" stroke="white" stroke-width="1"/>
+          <text x="40" y="141" fill="white" font-size="9" font-weight="800">Centro de Control</text>
+
+          <!-- Nav: Calendario Público text-blue-200 -->
+          <!-- search icon -->
+          <circle cx="24" cy="168" r="5" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+          <line x1="28" y1="172" x2="33" y2="177" stroke="#bfdbfe" stroke-width="1.5"/>
+          <text x="40" y="172" fill="#bfdbfe" font-size="9" font-weight="600">Calendario Público</text>
+
+          <!-- Cerrar sesión bottom -->
+          <line x1="0" y1="396" x2="168" y2="396" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <path d="M18 412 L14 408 L18 404 M14 408 H26" stroke="#f87171" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <text x="32" y="412" fill="#f87171" font-size="9" font-weight="700">Cerrar Sesión</text>
+
+          <!-- ── HEADER bg-white shadow-sm border-b ── -->
+          <rect x="168" y="0" width="532" height="58" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+          <text x="186" y="26" fill="#002845" font-size="14" font-weight="900">Centro de Control</text>
+          <text x="186" y="44" fill="#64748b" font-size="9">Gestión de cursos y opciones de administración.</text>
+
+          <!-- ── CONTENT bg-slate-50 ── -->
+          <rect x="168" y="58" width="532" height="362" fill="#f8fafc"/>
+
+          <!-- TABS: bg-white rounded-xl shadow-sm p-1 inline-flex -->
+          <!-- Tab container bg-white rounded-xl -->
+          <rect x="180" y="68" width="502" height="36" rx="10" fill="white" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Tab activo: Gestión de cursos bg-[#002845] text-white rounded-lg -->
+          <rect x="184" y="72" width="112" height="28" rx="8" fill="#002845"/>
+          <text x="240" y="90" fill="white" font-size="8" font-weight="800" text-anchor="middle">Gestión de cursos</text>
+          <!-- Tabs inactivos: text-slate-500 px-4 py-2 -->
+          <text x="316" y="90" fill="#64748b" font-size="8" text-anchor="middle">Carga masiva</text>
+          <text x="404" y="90" fill="#64748b" font-size="8" text-anchor="middle">Informes</text>
+          <text x="490" y="90" fill="#64748b" font-size="8" text-anchor="middle">Control de roles</text>
+          <text x="572" y="90" fill="#64748b" font-size="8" text-anchor="middle">Estudiantes</text>
+          <!-- separator line below tabs -->
+          <line x1="180" y1="116" x2="682" y2="116" stroke="#e5e7eb" stroke-width="1"/>
+
+          <!-- Search bar -->
+          <rect x="490" y="124" width="192" height="26" rx="8" fill="white" stroke="#e5e7eb" stroke-width="1.5"/>
+          <text x="502" y="141" fill="#94a3b8" font-size="8">🔍 Buscar por curso o docente...</text>
+
+          <!-- ── COURSE CARD 1: Base De Datos 3 (Presencial) ── -->
+          <rect x="182" y="160" width="160" height="208" rx="14" fill="white" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Card gradient header -->
+          <rect x="182" y="160" width="160" height="44" rx="14" fill="url(#cardGrad)"/>
+          <rect x="182" y="186" width="160" height="18" fill="#002845"/>
+          <!-- Badge PRESENCIAL top-right rounded-pill -->
+          <rect x="282" y="163" width="56" height="16" rx="8" fill="#C9A227"/>
+          <text x="310" y="175" fill="#002845" font-size="6.5" font-weight="800" text-anchor="middle">PRESENCIAL</text>
+          <text x="194" y="182" fill="white" font-size="9" font-weight="900">Base De Datos 3</text>
+          <!-- Body -->
+          <text x="194" y="222" fill="#374151" font-size="8"><tspan font-weight="700">Docente:</tspan> Juan Torres</text>
+          <text x="194" y="238" fill="#374151" font-size="8" font-weight="700">📅 Día: </text>
+          <rect x="222" y="228" width="40" height="13" rx="5" fill="#eff6ff"/>
+          <text x="242" y="238" fill="#1d4ed8" font-size="7" font-weight="700" text-anchor="middle">Jueves</text>
+          <text x="194" y="254" fill="#374151" font-size="8">⏰ 18:00 – 20:00</text>
+          <line x1="194" y1="260" x2="334" y2="260" stroke="#f1f5f9" stroke-width="1"/>
+          <text x="194" y="274" fill="#374151" font-size="8" font-weight="700">👥 Inscritos:</text>
+          <rect x="248" y="265" width="60" height="14" rx="5" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+          <text x="278" y="275" fill="#15803d" font-size="7" font-weight="900" text-anchor="middle">2 estudiantes</text>
+          <!-- Ver estudiantes button -->
+          <rect x="194" y="288" width="134" height="22" rx="8" fill="#002845"/>
+          <text x="261" y="303" fill="white" font-size="8" font-weight="700" text-anchor="middle">📋 Ver estudiantes</text>
+          <!-- Editar / Borrar -->
+          <rect x="194" y="316" width="60" height="20" rx="6" fill="#FBF6E6"/>
+          <text x="224" y="330" fill="#A87E1A" font-size="7.5" font-weight="700" text-anchor="middle">✏ Editar</text>
+          <rect x="260" y="316" width="56" height="20" rx="6" fill="#fef2f2"/>
+          <text x="288" y="330" fill="#dc2626" font-size="7.5" font-weight="700" text-anchor="middle">🗑 Borrar</text>
+
+          <!-- ── COURSE CARD 2: Estadística Para Analítica (Virtual) ── -->
+          <rect x="356" y="160" width="160" height="208" rx="14" fill="white" stroke="#f1f5f9" stroke-width="1"/>
+          <rect x="356" y="160" width="160" height="44" rx="14" fill="url(#cardGrad)"/>
+          <rect x="356" y="186" width="160" height="18" fill="#002845"/>
+          <!-- Badge VIRTUAL -->
+          <rect x="456" y="163" width="56" height="16" rx="8" fill="#3b82f6"/>
+          <text x="484" y="175" fill="white" font-size="6.5" font-weight="800" text-anchor="middle">VIRTUAL</text>
+          <text x="368" y="182" fill="white" font-size="9" font-weight="900">Est. Para Analítica</text>
+          <text x="368" y="222" fill="#374151" font-size="8"><tspan font-weight="700">Docente:</tspan> Ana Gómez</text>
+          <text x="368" y="238" fill="#374151" font-size="8" font-weight="700">📅 Día: </text>
+          <rect x="396" y="228" width="54" height="13" rx="5" fill="#eff6ff"/>
+          <text x="423" y="238" fill="#1d4ed8" font-size="7" font-weight="700" text-anchor="middle">Miércoles</text>
+          <text x="368" y="254" fill="#374151" font-size="8">⏰ 16:00 – 18:00</text>
+          <line x1="368" y1="260" x2="508" y2="260" stroke="#f1f5f9" stroke-width="1"/>
+          <text x="368" y="274" fill="#374151" font-size="8" font-weight="700">👥 Inscritos:</text>
+          <rect x="422" y="265" width="60" height="14" rx="5" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+          <text x="452" y="275" fill="#15803d" font-size="7" font-weight="900" text-anchor="middle">0 estudiantes</text>
+          <rect x="368" y="288" width="134" height="22" rx="8" fill="#002845"/>
+          <text x="435" y="303" fill="white" font-size="8" font-weight="700" text-anchor="middle">📋 Ver estudiantes</text>
+          <rect x="368" y="316" width="60" height="20" rx="6" fill="#FBF6E6"/>
+          <text x="398" y="330" fill="#A87E1A" font-size="7.5" font-weight="700" text-anchor="middle">✏ Editar</text>
+          <rect x="434" y="316" width="56" height="20" rx="6" fill="#fef2f2"/>
+          <text x="462" y="330" fill="#dc2626" font-size="7.5" font-weight="700" text-anchor="middle">🗑 Borrar</text>
+
+          <!-- ── HIGHLIGHTS — 5 tabs ── -->
+          <!-- ① Gestión de cursos (activo) -->
+          <rect x="180" y="64" width="120" height="44" rx="12" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="226" cy="58" r="11" fill="#f97316"/><text x="226" y="63" fill="white" font-size="11" font-weight="bold" text-anchor="middle">1</text>
+
+          <!-- ② Carga masiva -->
+          <rect x="274" y="64" width="86" height="44" rx="12" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="300" cy="58" r="11" fill="#f97316"/><text x="300" y="63" fill="white" font-size="11" font-weight="bold" text-anchor="middle">2</text>
+
+          <!-- ③ Informes -->
+          <rect x="363" y="64" width="78" height="44" rx="12" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="385" cy="58" r="11" fill="#f97316"/><text x="385" y="63" fill="white" font-size="11" font-weight="bold" text-anchor="middle">3</text>
+
+          <!-- ④ Control de roles -->
+          <rect x="444" y="64" width="88" height="44" rx="12" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="468" cy="58" r="11" fill="#f97316"/><text x="468" y="63" fill="white" font-size="11" font-weight="bold" text-anchor="middle">4</text>
+
+          <!-- ⑤ Estudiantes -->
+          <rect x="535" y="64" width="80" height="44" rx="12" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="555" cy="58" r="11" fill="#f97316"/><text x="555" y="63" fill="white" font-size="11" font-weight="bold" text-anchor="middle">5</text>
         </svg>
-        <figcaption><strong>①</strong> Gestión de cursos &nbsp;·&nbsp; <strong>②</strong> Carga masiva (importar Excel) &nbsp;·&nbsp; <strong>③</strong> Informes PDF &nbsp;·&nbsp; <strong>④</strong> Control de roles y usuarios</figcaption>
+        <figcaption><strong>①</strong> Gestión de cursos (tab activo, bg navy) &nbsp;·&nbsp; <strong>②</strong> Carga masiva (importar Excel) &nbsp;·&nbsp; <strong>③</strong> Informes PDF &nbsp;·&nbsp; <strong>④</strong> Control de roles y usuarios &nbsp;·&nbsp; <strong>⑤</strong> Gestión de estudiantes</figcaption>
       </figure>
     </section>
 
@@ -234,49 +333,86 @@
       </div>
 
       <figure class="ui-fig">
-        <svg viewBox="0 0 620 264" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
-          <rect width="620" height="264" fill="#f1f5f9"/>
-          <!-- Panel chrome -->
-          <rect x="10" y="10" width="600" height="244" rx="12" fill="white" stroke="#e2e8f0"/>
-          <!-- Tab bar -->
-          <rect x="10" y="10" width="600" height="40" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
-          <rect x="18" y="16" width="94" height="26" rx="7" fill="transparent"/>
-          <text x="65" y="33" font-size="9" fill="#64748b" text-anchor="middle">Gestión cursos</text>
-          <rect x="120" y="16" width="90" height="26" rx="7" fill="#002845"/>
-          <text x="165" y="33" font-size="9" font-weight="bold" fill="white" text-anchor="middle">Carga masiva</text>
-          <rect x="218" y="16" width="68" height="26" rx="7" fill="transparent"/>
-          <text x="252" y="33" font-size="9" fill="#64748b" text-anchor="middle">Informes</text>
-          <rect x="294" y="16" width="94" height="26" rx="7" fill="transparent"/>
-          <text x="341" y="33" font-size="9" fill="#64748b" text-anchor="middle">Control roles</text>
-          <!-- Download template button -->
-          <rect x="26" y="62" width="250" height="32" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-          <text x="148" y="82" font-size="10" fill="#334155" text-anchor="middle">⬇  Descargar plantilla (.xlsx)</text>
-          <!-- Upload dropzone -->
-          <rect x="26" y="106" width="568" height="90" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="6 4"/>
-          <text x="310" y="140" font-size="24" text-anchor="middle">📂</text>
-          <text x="310" y="162" font-size="11" fill="#64748b" text-anchor="middle">Haz clic o arrastra tu archivo Excel aquí</text>
-          <text x="310" y="178" font-size="9" fill="#94a3b8" text-anchor="middle">.xlsx — máximo 10 MB</text>
-          <!-- Submit button -->
-          <rect x="26" y="208" width="568" height="32" rx="8" fill="#002845"/>
-          <text x="310" y="229" font-size="11" font-weight="bold" fill="white" text-anchor="middle">Subir e importar datos</text>
-          <!-- Highlights -->
-          <rect x="22" y="58" width="258" height="40" rx="10" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <line x1="22" y1="78" x2="8" y2="78" stroke="#f97316" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <circle cx="620" cy="78" r="0"/>
-          <circle cx="609" cy="78" r="0"/>
-          <circle cx="609" cy="78" r="0"/>
-          <!-- badge ① left -->
-          <circle cx="11" cy="78" r="11" fill="#f97316"/><text x="11" y="83" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
-          <rect x="22" y="102" width="576" height="98" rx="12" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <!-- badge ② right of dropzone -->
-          <line x1="598" y1="151" x2="609" y2="151" stroke="#f97316" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <circle cx="609" cy="151" r="11" fill="#f97316"/><text x="609" y="156" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
-          <rect x="22" y="204" width="576" height="40" rx="10" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <!-- badge ③ right of submit -->
-          <line x1="598" y1="224" x2="609" y2="224" stroke="#f97316" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <circle cx="609" cy="224" r="11" fill="#f97316"/><text x="609" y="229" font-size="11" font-weight="bold" fill="white" text-anchor="middle">3</text>
+        <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" font-family="'Manrope',sans-serif">
+          <!-- bg-slate-50 -->
+          <rect width="700" height="360" fill="#f8fafc"/>
+
+          <!-- ── SIDEBAR ── -->
+          <rect x="0" y="0" width="168" height="360" fill="#002845"/>
+          <rect x="12" y="14" width="32" height="32" rx="8" fill="#C9A227"/>
+          <text x="28" y="35" fill="#002845" font-size="11" font-weight="900" text-anchor="middle">AU</text>
+          <text x="54" y="26" fill="white" font-size="10" font-weight="800">Agenda U</text>
+          <text x="54" y="40" fill="rgba(255,255,255,0.4)" font-size="8">Sistema de Asesorías</text>
+          <line x1="0" y1="56" x2="168" y2="56" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <text x="14" y="74" fill="#93c5fd" font-size="8" font-weight="800" letter-spacing="0.06em">MI CUENTA</text>
+          <circle cx="28" cy="98" r="15" fill="#0ea5e9"/>
+          <text x="28" y="104" fill="white" font-size="12" font-weight="800" text-anchor="middle">S</text>
+          <text x="50" y="94" fill="white" font-size="9.5" font-weight="700">Santiago Torres</text>
+          <circle cx="50" cy="106" r="3.5" fill="#4ade80"/>
+          <text x="58" y="110" fill="#bfdbfe" font-size="8">Administrador</text>
+          <!-- Nav: Centro de Control ACTIVO -->
+          <rect x="8" y="120" width="152" height="32" rx="10" fill="#1e3a8a"/>
+          <text x="40" y="140" fill="white" font-size="9" font-weight="800">Centro de Control</text>
+          <text x="40" y="162" fill="#bfdbfe" font-size="9" font-weight="600">Calendario Público</text>
+          <line x1="0" y1="336" x2="168" y2="336" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <text x="32" y="352" fill="#f87171" font-size="9" font-weight="700">Cerrar Sesión</text>
+
+          <!-- ── HEADER ── -->
+          <rect x="168" y="0" width="532" height="58" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+          <text x="186" y="26" fill="#002845" font-size="14" font-weight="900">Centro de Control</text>
+          <text x="186" y="44" fill="#64748b" font-size="9">Gestión de cursos y opciones de administración.</text>
+
+          <!-- ── CONTENT bg-slate-50 ── -->
+          <rect x="168" y="58" width="532" height="302" fill="#f8fafc"/>
+
+          <!-- TABS bg-white rounded-xl shadow-sm inline-flex p-1 -->
+          <rect x="180" y="68" width="502" height="34" rx="10" fill="white" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Gestión cursos — inactivo -->
+          <text x="234" y="88" fill="#64748b" font-size="8" text-anchor="middle">Gestión de cursos</text>
+          <!-- Carga masiva — ACTIVO bg-[#002845] rounded-lg -->
+          <rect x="296" y="72" width="96" height="26" rx="8" fill="#002845"/>
+          <text x="344" y="88" fill="white" font-size="8" font-weight="800" text-anchor="middle">Carga masiva</text>
+          <text x="415" y="88" fill="#64748b" font-size="8" text-anchor="middle">Informes</text>
+          <text x="488" y="88" fill="#64748b" font-size="8" text-anchor="middle">Control de roles</text>
+          <text x="567" y="88" fill="#64748b" font-size="8" text-anchor="middle">Estudiantes</text>
+          <line x1="180" y1="114" x2="682" y2="114" stroke="#e5e7eb" stroke-width="1"/>
+
+          <!-- Tab "Carga masiva" content area (bg-white rounded-2xl card) -->
+          <rect x="180" y="122" width="502" height="228" rx="14" fill="white" stroke="#f1f5f9" stroke-width="1"/>
+
+          <!-- Descargar plantilla button (border border-gray-200 rounded-lg) -->
+          <rect x="196" y="136" width="242" height="36" rx="9" fill="#f8fafc" stroke="#e5e7eb" stroke-width="1.5"/>
+          <!-- download icon -->
+          <path d="M210 150 L210 158 M207 155 L210 159 L213 155" stroke="#334155" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="316" y="158" fill="#334155" font-size="10" text-anchor="middle">Descargar plantilla (.xlsx)</text>
+
+          <!-- Dropzone: border-dashed rounded-xl bg-gray-50 -->
+          <rect x="196" y="182" width="470" height="100" rx="12" fill="#f9fafb" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="8,4"/>
+          <!-- 📂 emoji -->
+          <text x="431" y="222" font-size="28" text-anchor="middle">📂</text>
+          <text x="431" y="248" font-size="10.5" fill="#64748b" text-anchor="middle">Haz clic o arrastra tu archivo Excel aquí</text>
+          <text x="431" y="264" font-size="8.5" fill="#94a3b8" text-anchor="middle">.xlsx · máximo 10 MB</text>
+
+          <!-- Subir e importar datos button bg-[#002845] rounded-xl -->
+          <rect x="196" y="294" width="470" height="42" rx="11" fill="#002845"/>
+          <!-- upload icon -->
+          <path d="M228 311 L228 319 M225 313 L228 310 L231 313" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="431" y="320" font-size="10.5" font-weight="900" fill="white" text-anchor="middle">Subir e importar datos</text>
+
+          <!-- ── HIGHLIGHTS ── -->
+          <!-- ① Descargar plantilla -->
+          <rect x="192" y="132" width="250" height="44" rx="11" fill="rgba(249,115,22,0.05)" stroke="#f97316" stroke-width="2" stroke-dasharray="6,3"/>
+          <circle cx="198" cy="128" r="12" fill="#f97316"/><text x="198" y="133" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
+
+          <!-- ② Dropzone -->
+          <rect x="192" y="178" width="478" height="108" rx="14" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="6,3"/>
+          <circle cx="670" cy="174" r="12" fill="#f97316"/><text x="670" y="179" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
+
+          <!-- ③ Subir e importar -->
+          <rect x="192" y="290" width="478" height="50" rx="13" fill="rgba(249,115,22,0.04)" stroke="#f97316" stroke-width="2" stroke-dasharray="6,3"/>
+          <circle cx="670" cy="286" r="12" fill="#f97316"/><text x="670" y="291" font-size="11" font-weight="bold" fill="white" text-anchor="middle">3</text>
         </svg>
-        <figcaption><strong>①</strong> <em>"Descargar plantilla"</em> — obtén el Excel con los encabezados correctos &nbsp;·&nbsp; <strong>②</strong> Zona de carga — arrastra o selecciona el archivo &nbsp;·&nbsp; <strong>③</strong> <em>"Subir e importar datos"</em> — inicia el procesamiento</figcaption>
+        <figcaption><strong>①</strong> <em>"Descargar plantilla"</em> — obtén el Excel con los encabezados correctos &nbsp;·&nbsp; <strong>②</strong> Zona de carga (dropzone punteada) — arrastra o selecciona el archivo &nbsp;·&nbsp; <strong>③</strong> <em>"Subir e importar datos"</em> (navy) — inicia el procesamiento</figcaption>
       </figure>
     </section>
 
@@ -305,41 +441,65 @@
       </div>
 
       <figure class="ui-fig">
-        <svg viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
-          <rect width="620" height="300" fill="rgba(0,0,0,0.35)"/>
-          <!-- Modal card -->
-          <rect x="90" y="20" width="440" height="262" rx="18" fill="white" stroke="#e2e8f0"/>
+        <svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" font-family="'Manrope',sans-serif">
+          <!-- Fondo oscuro (backdrop blur) -->
+          <rect width="700" height="340" fill="#0f172a" opacity="0.7"/>
+          <rect width="700" height="340" fill="rgba(15,23,42,0.6)"/>
+
+          <!-- Modal card bg-white rounded-2xl shadow-2xl -->
+          <rect x="100" y="18" width="500" height="304" rx="20" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+
           <!-- Modal header -->
-          <text x="180" y="56" font-size="14" font-weight="bold" fill="#002845">Resultado de importación</text>
-          <text x="510" y="54" font-size="18" fill="#94a3b8" text-anchor="middle">✕</text>
-          <line x1="110" y1="66" x2="510" y2="66" stroke="#e2e8f0"/>
-          <!-- Green counter -->
-          <rect x="110" y="76" width="188" height="56" rx="10" fill="#f0fdf4" stroke="#bbf7d0"/>
-          <text x="204" y="102" font-size="26" font-weight="bold" fill="#059669" text-anchor="middle">18</text>
-          <text x="204" y="122" font-size="10" fill="#166534" text-anchor="middle">Registros guardados</text>
-          <!-- Amber counter -->
-          <rect x="312" y="76" width="188" height="56" rx="10" fill="#fffbeb" stroke="#fde68a"/>
-          <text x="406" y="102" font-size="26" font-weight="bold" fill="#D97706" text-anchor="middle">3</text>
-          <text x="406" y="122" font-size="10" fill="#92400e" text-anchor="middle">Omitidos</text>
-          <!-- Omitted details -->
-          <text x="110" y="152" font-size="10" font-weight="bold" fill="#c2410c">⚠ Fuera de horario institucional (1)</text>
-          <text x="118" y="168" font-size="9" fill="#64748b">· Cálculo I con Juan Torres el Lunes — inicio a las 05:30</text>
-          <text x="110" y="188" font-size="10" font-weight="bold" fill="#991b1b">✕ Conflictos de horario (1)</text>
-          <text x="118" y="204" font-size="9" fill="#64748b">· Conflicto: Física II con Ana Gómez el Martes 08:00–10:00</text>
-          <text x="110" y="224" font-size="10" font-weight="bold" fill="#475569">· Otros (1)</text>
-          <text x="118" y="240" font-size="9" fill="#64748b">· Fila 7: columna DOCENTE vacía</text>
-          <!-- Close button -->
-          <rect x="180" y="254" width="260" height="20" rx="6" fill="#002845"/>
-          <text x="310" y="268" font-size="10" font-weight="bold" fill="white" text-anchor="middle">Entendido</text>
-          <!-- Highlights -->
-          <rect x="106" y="72" width="196" height="64" rx="12" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="106" cy="72" r="11" fill="#f97316"/><text x="106" y="77" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
-          <rect x="308" y="72" width="196" height="64" rx="12" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="308" cy="72" r="11" fill="#f97316"/><text x="308" y="77" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
-          <rect x="106" y="144" width="398" height="104" rx="10" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="504" cy="144" r="11" fill="#f97316"/><text x="504" y="149" font-size="11" font-weight="bold" fill="white" text-anchor="middle">3</text>
+          <text x="130" y="56" font-size="15" font-weight="900" fill="#002845">Resultado de importación</text>
+          <!-- X button -->
+          <circle cx="580" cy="50" r="14" fill="#f1f5f9"/>
+          <text x="580" y="56" font-size="14" fill="#94a3b8" font-weight="700" text-anchor="middle">✕</text>
+          <line x1="120" y1="68" x2="580" y2="68" stroke="#e5e7eb" stroke-width="1"/>
+
+          <!-- ── Contadores ── -->
+          <!-- Verde: Registros guardados bg-f0fdf4 border-green -->
+          <rect x="120" y="80" width="210" height="62" rx="12" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5"/>
+          <text x="225" y="112" font-size="30" font-weight="900" fill="#059669" text-anchor="middle">18</text>
+          <text x="225" y="132" font-size="10" fill="#166534" text-anchor="middle">Registros guardados</text>
+
+          <!-- Ámbar: Omitidos bg-fffbeb border-yellow -->
+          <rect x="370" y="80" width="210" height="62" rx="12" fill="#fffbeb" stroke="#fde68a" stroke-width="1.5"/>
+          <text x="475" y="112" font-size="30" font-weight="900" fill="#D97706" text-anchor="middle">3</text>
+          <text x="475" y="132" font-size="10" fill="#92400e" text-anchor="middle">Omitidos</text>
+
+          <!-- Detalle de omitidos -->
+          <!-- Fuera de horario (orange) -->
+          <text x="120" y="166" font-size="9.5" font-weight="800" fill="#c2410c">⚠ Fuera de horario institucional (1)</text>
+          <text x="130" y="182" font-size="8.5" fill="#64748b">· Cálculo I con Juan Torres el Lunes — inicio a las 05:30</text>
+          <line x1="120" y1="192" x2="580" y2="192" stroke="#f3f4f6" stroke-width="1"/>
+
+          <!-- Conflictos (rojo) -->
+          <text x="120" y="208" font-size="9.5" font-weight="800" fill="#991b1b">✕ Conflictos de horario (1)</text>
+          <text x="130" y="224" font-size="8.5" fill="#64748b">· Conflicto: Física II con Ana Gómez el Martes 08:00–10:00</text>
+          <line x1="120" y1="234" x2="580" y2="234" stroke="#f3f4f6" stroke-width="1"/>
+
+          <!-- Otros (gris) -->
+          <text x="120" y="250" font-size="9.5" font-weight="800" fill="#475569">· Otros (1)</text>
+          <text x="130" y="266" font-size="8.5" fill="#64748b">· Fila 7: columna DOCENTE vacía</text>
+
+          <!-- Botón Entendido bg-[#002845] -->
+          <rect x="220" y="280" width="260" height="36" rx="10" fill="#002845"/>
+          <text x="350" y="302" font-size="11" font-weight="900" fill="white" text-anchor="middle">Entendido</text>
+
+          <!-- ── HIGHLIGHTS ── -->
+          <!-- ① Registros guardados -->
+          <rect x="116" y="76" width="218" height="70" rx="14" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="122" cy="72" r="12" fill="#f97316"/><text x="122" y="77" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
+
+          <!-- ② Omitidos -->
+          <rect x="366" y="76" width="218" height="70" rx="14" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="372" cy="72" r="12" fill="#f97316"/><text x="372" y="77" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
+
+          <!-- ③ Listado de causas -->
+          <rect x="116" y="158" width="468" height="116" rx="12" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="584" cy="158" r="12" fill="#f97316"/><text x="584" y="163" font-size="11" font-weight="bold" fill="white" text-anchor="middle">3</text>
         </svg>
-        <figcaption><strong>①</strong> Registros guardados exitosamente (verde) &nbsp;·&nbsp; <strong>②</strong> Filas omitidas con su total (ámbar) &nbsp;·&nbsp; <strong>③</strong> Listado categorizado de causas de omisión</figcaption>
+        <figcaption><strong>①</strong> Registros guardados exitosamente (verde con contador grande) &nbsp;·&nbsp; <strong>②</strong> Filas omitidas con total (ámbar) &nbsp;·&nbsp; <strong>③</strong> Listado categorizado de causas: fuera de horario, conflictos y otros errores</figcaption>
       </figure>
     </section>
 
@@ -389,6 +549,17 @@
         <li><p>Haz clic en <strong>"Actualizar"</strong>.</p></li>
       </ol>
 
+      <h3>Restablecer contraseña (Cambio de Clave)</h3>
+      <ol class="steps">
+        <li><p>En la fila del usuario, haz clic en <strong>"Cambio de Clave"</strong>.</p></li>
+        <li><p>Confirma la acción. El sistema genera automáticamente una contraseña temporal del tipo <code>Pascual1234!</code> y la muestra en pantalla.</p></li>
+        <li><p>Comparte esa contraseña con el docente. El sistema le pedirá cambiarla en su próximo ingreso.</p></li>
+      </ol>
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div><strong>"Cambio de Clave" no envía correo</strong>Esta acción genera una contraseña temporal que se muestra en pantalla — el administrador debe comunicarla al docente de forma directa. Es distinto al flujo de <em>"¿Olvidaste tu contraseña?"</em> que sí envía un correo automático cuando el propio usuario lo solicita desde la pantalla de login.</div>
+      </div>
+
       <h3>Desactivar una cuenta</h3>
       <ol class="steps">
         <li><p>Haz clic en <strong>"Desactivar"</strong> en la fila del usuario.</p></li>
@@ -404,58 +575,98 @@
       </div>
 
       <figure class="ui-fig">
-        <svg viewBox="0 0 620 234" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
-          <rect width="620" height="234" fill="#f1f5f9"/>
-          <rect x="10" y="10" width="600" height="214" rx="10" fill="white" stroke="#e2e8f0"/>
-          <!-- Table header -->
-          <rect x="10" y="10" width="600" height="36" rx="10" fill="#002845"/>
-          <text x="28" y="33" font-size="11" font-weight="bold" fill="white">Nombre</text>
-          <text x="196" y="33" font-size="11" font-weight="bold" fill="white">Correo</text>
-          <text x="380" y="33" font-size="11" font-weight="bold" fill="white">Rol</text>
-          <text x="490" y="33" font-size="11" font-weight="bold" fill="white">Acciones</text>
-          <!-- Row 1 -->
-          <rect x="10" y="46" width="600" height="40" fill="white"/>
-          <text x="28" y="70" font-size="11" fill="#334155">Juan Torres Ruiz</text>
-          <text x="196" y="70" font-size="10" fill="#64748b">j.torres@pascualbravo.edu.co</text>
-          <rect x="372" y="54" width="88" height="22" rx="6" fill="#f8fafc" stroke="#e2e8f0"/>
-          <text x="416" y="69" font-size="9" fill="#334155" text-anchor="middle">Docente ▾</text>
-          <rect x="468" y="54" width="64" height="22" rx="6" fill="#7c3aed"/>
-          <text x="500" y="69" font-size="9" font-weight="bold" fill="white" text-anchor="middle">Actualizar</text>
-          <rect x="540" y="54" width="58" height="22" rx="6" fill="#fee2e2"/>
-          <text x="569" y="69" font-size="9" font-weight="bold" fill="#991b1b" text-anchor="middle">Desactivar</text>
-          <!-- Row 2 -->
-          <rect x="10" y="86" width="600" height="40" fill="#f8fafc"/>
-          <text x="28" y="110" font-size="11" fill="#334155">Ana Gómez Pinto</text>
-          <text x="196" y="110" font-size="10" fill="#64748b">a.gomez@pascualbravo.edu.co</text>
-          <rect x="372" y="94" width="88" height="22" rx="6" fill="#f8fafc" stroke="#e2e8f0"/>
-          <text x="416" y="109" font-size="9" fill="#334155" text-anchor="middle">Docente ▾</text>
-          <rect x="468" y="94" width="64" height="22" rx="6" fill="#7c3aed"/>
-          <text x="500" y="109" font-size="9" font-weight="bold" fill="white" text-anchor="middle">Actualizar</text>
-          <rect x="540" y="94" width="58" height="22" rx="6" fill="#fee2e2"/>
-          <text x="569" y="109" font-size="9" font-weight="bold" fill="#991b1b" text-anchor="middle">Desactivar</text>
-          <!-- Row 3 -->
-          <rect x="10" y="126" width="600" height="40" fill="white"/>
-          <text x="28" y="150" font-size="11" fill="#334155">Carlos Duque</text>
-          <text x="196" y="150" font-size="10" fill="#64748b">c.duque@pascualbravo.edu.co</text>
-          <rect x="372" y="134" width="88" height="22" rx="6" fill="#f8fafc" stroke="#e2e8f0"/>
-          <text x="416" y="149" font-size="9" fill="#334155" text-anchor="middle">Admin ▾</text>
-          <rect x="468" y="134" width="64" height="22" rx="6" fill="#7c3aed"/>
-          <text x="500" y="149" font-size="9" font-weight="bold" fill="white" text-anchor="middle">Actualizar</text>
-          <rect x="540" y="134" width="58" height="22" rx="6" fill="#f1f5f9"/>
-          <text x="569" y="149" font-size="9" fill="#94a3b8" text-anchor="middle">Protegido</text>
-          <!-- Highlights -->
-          <rect x="368" y="50" width="96" height="30" rx="8" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="416" cy="40" r="11" fill="#f97316"/><text x="416" y="45" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
-          <rect x="464" y="50" width="72" height="30" rx="8" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="500" cy="40" r="11" fill="#f97316"/><text x="500" y="45" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
-          <rect x="536" y="50" width="66" height="30" rx="8" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="569" cy="40" r="11" fill="#f97316"/><text x="569" y="45" font-size="11" font-weight="bold" fill="white" text-anchor="middle">3</text>
+        <svg viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" font-family="'Manrope',sans-serif">
+          <rect width="700" height="310" fill="#f8fafc"/>
+
+          <!-- Botón crear usuario -->
+          <rect x="10" y="10" width="210" height="30" rx="10" fill="#002845"/>
+          <text x="115" y="30" fill="white" font-size="9" font-weight="800" text-anchor="middle">+ Crear Docente / Administrador</text>
+
+          <!-- ── Sección Administradores ── -->
+          <rect x="10" y="54" width="680" height="32" rx="10" fill="#f3e8ff"/>
+          <text x="28" y="76" fill="#581c87" font-size="11" font-weight="900">Administradores</text>
+          <rect x="560" y="60" width="120" height="20" rx="10" fill="#e9d5ff"/>
+          <text x="620" y="74" fill="#581c87" font-size="8" font-weight="800" text-anchor="middle">SEGURIDAD</text>
+
+          <!-- Row admin: Carlos Duque (único admin → protegido) -->
+          <rect x="10" y="86" width="680" height="46" fill="white"/>
+          <circle cx="36" cy="109" r="16" fill="#002845"/>
+          <text x="36" y="114" fill="#C9A227" font-size="13" font-weight="800" text-anchor="middle">C</text>
+          <text x="58" y="104" fill="#111827" font-size="10" font-weight="700">Carlos Duque</text>
+          <text x="58" y="118" fill="#9ca3af" font-size="8">c.duque@pascualbravo.edu.co</text>
+          <!-- Único admin → solo muestra badge protegido -->
+          <rect x="430" y="97" width="148" height="24" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="504" y="113" fill="#94a3b8" font-size="8.5" font-weight="600" text-anchor="middle">🔒 Único administrador</text>
+
+          <!-- ── Sección Docentes ── -->
+          <rect x="10" y="146" width="680" height="32" rx="10" fill="#eff6ff"/>
+          <text x="28" y="168" fill="#1e3a8a" font-size="11" font-weight="900">Docentes</text>
+
+          <!-- Row docente 1: Juan Torres -->
+          <rect x="10" y="178" width="680" height="46" fill="white"/>
+          <circle cx="36" cy="201" r="16" fill="#002845"/>
+          <text x="36" y="206" fill="#C9A227" font-size="13" font-weight="800" text-anchor="middle">J</text>
+          <text x="58" y="196" fill="#111827" font-size="10" font-weight="700">Juan Torres Ruiz</text>
+          <text x="58" y="210" fill="#9ca3af" font-size="8">j.torres@pascualbravo.edu.co</text>
+          <!-- Role dropdown -->
+          <rect x="330" y="189" width="80" height="22" rx="6" fill="#f8fafc" stroke="#d1d5db" stroke-width="1.5"/>
+          <text x="370" y="204" fill="#334155" font-size="8.5" font-weight="700" text-anchor="middle">Docente ▾</text>
+          <!-- Actualizar (dorado C9A227) -->
+          <rect x="418" y="189" width="72" height="22" rx="6" fill="#C9A227"/>
+          <text x="454" y="204" fill="#002845" font-size="8.5" font-weight="800" text-anchor="middle">Actualizar</text>
+          <!-- Desactivar (rojo) -->
+          <rect x="498" y="189" width="72" height="22" rx="6" fill="#dc2626"/>
+          <text x="534" y="204" fill="white" font-size="8.5" font-weight="700" text-anchor="middle">Desactivar</text>
+          <!-- Cambio de Clave (navy) -->
+          <rect x="578" y="189" width="100" height="22" rx="6" fill="#002845"/>
+          <text x="628" y="204" fill="white" font-size="8.5" font-weight="700" text-anchor="middle">Cambio de Clave</text>
+
+          <!-- Row docente 2: Ana Gómez -->
+          <rect x="10" y="224" width="680" height="46" fill="#f8fafc"/>
+          <circle cx="36" cy="247" r="16" fill="#002845"/>
+          <text x="36" y="252" fill="#C9A227" font-size="13" font-weight="800" text-anchor="middle">A</text>
+          <text x="58" y="242" fill="#111827" font-size="10" font-weight="700">Ana Gómez Pinto</text>
+          <text x="58" y="256" fill="#9ca3af" font-size="8">a.gomez@pascualbravo.edu.co</text>
+          <rect x="330" y="235" width="80" height="22" rx="6" fill="#f8fafc" stroke="#d1d5db" stroke-width="1.5"/>
+          <text x="370" y="250" fill="#334155" font-size="8.5" font-weight="700" text-anchor="middle">Docente ▾</text>
+          <rect x="418" y="235" width="72" height="22" rx="6" fill="#C9A227"/>
+          <text x="454" y="250" fill="#002845" font-size="8.5" font-weight="800" text-anchor="middle">Actualizar</text>
+          <rect x="498" y="235" width="72" height="22" rx="6" fill="#dc2626"/>
+          <text x="534" y="250" fill="white" font-size="8.5" font-weight="700" text-anchor="middle">Desactivar</text>
+          <rect x="578" y="235" width="100" height="22" rx="6" fill="#002845"/>
+          <text x="628" y="250" fill="white" font-size="8.5" font-weight="700" text-anchor="middle">Cambio de Clave</text>
+
+          <!-- ── HIGHLIGHTS ── -->
+          <rect x="326" y="185" width="88" height="30" rx="8" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
+          <circle cx="370" cy="176" r="11" fill="#f97316"/><text x="370" y="181" fill="white" font-size="11" font-weight="bold" text-anchor="middle">1</text>
+          <rect x="414" y="185" width="80" height="30" rx="8" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
+          <circle cx="454" cy="176" r="11" fill="#f97316"/><text x="454" y="181" fill="white" font-size="11" font-weight="bold" text-anchor="middle">2</text>
+          <rect x="494" y="185" width="80" height="30" rx="8" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
+          <circle cx="534" cy="176" r="11" fill="#f97316"/><text x="534" y="181" fill="white" font-size="11" font-weight="bold" text-anchor="middle">3</text>
+          <rect x="574" y="185" width="108" height="30" rx="8" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
+          <circle cx="628" cy="176" r="11" fill="#f97316"/><text x="628" y="181" fill="white" font-size="11" font-weight="bold" text-anchor="middle">4</text>
         </svg>
-        <figcaption><strong>①</strong> Selector de rol (<em>Docente / Admin</em>) &nbsp;·&nbsp; <strong>②</strong> Botón <em>"Actualizar"</em> — confirma el cambio de rol &nbsp;·&nbsp; <strong>③</strong> Botón <em>"Desactivar"</em> — suspende el acceso sin borrar datos</figcaption>
+        <figcaption><strong>①</strong> Selector de rol (<em>Docente / Admin</em>) &nbsp;·&nbsp; <strong>②</strong> <em>"Actualizar"</em> — confirma el cambio de rol &nbsp;·&nbsp; <strong>③</strong> <em>"Desactivar"</em> — suspende acceso sin borrar datos &nbsp;·&nbsp; <strong>④</strong> <em>"Cambio de Clave"</em> — genera contraseña temporal sin email</figcaption>
       </figure>
 
-      <h3>Crear un docente nuevo</h3>
-      <p>Los docentes se crean automáticamente al importar el Excel. También puedes ir a <strong>Configuración de usuarios</strong> (panel de Jetstream) para crear cuentas manualmente. La contraseña inicial es <code>Pascual2026</code>.</p>
+      <h3>Crear un docente o administrador nuevo</h3>
+      <p>Desde la pestaña <strong>"Control de roles"</strong>, haz clic en el botón <strong>"+ Crear docente / administrador"</strong>. Completa el formulario con nombre, correo y rol. El sistema asigna automáticamente una contraseña temporal y el docente deberá cambiarla en su primer ingreso.</p>
+      <div class="callout tip">
+        <span class="callout-icon">✅</span>
+        <div><strong>Alternativa: carga masiva</strong>Si necesitas crear varios docentes a la vez, usa la importación por Excel — el sistema crea la cuenta de cada docente si el correo no existe en el sistema.</div>
+      </div>
+
+      <h3>Gestión de estudiantes</h3>
+      <p>La pestaña <strong>"Estudiantes"</strong> permite administrar directamente los registros de estudiantes sin depender del acceso por Google:</p>
+      <ol class="steps">
+        <li><p>Haz clic en <strong>"+ Nuevo Estudiante"</strong> para registrar manualmente un estudiante (nombre, cédula, correo).</p></li>
+        <li><p>Usa el botón <strong>"Editar"</strong> en la fila de un estudiante para modificar sus datos.</p></li>
+        <li><p>Usa el toggle <strong>"Activo / Inactivo"</strong> para bloquear o desbloquear el acceso de un estudiante al portal.</p></li>
+      </ol>
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div><strong>Auto-registro por Google</strong>Si un estudiante inicia sesión con Google por primera vez usando un correo <code>@pascualbravo.edu.co</code>, el sistema crea su cuenta automáticamente. El administrador puede luego editar o desactivar esa cuenta desde esta pestaña.</div>
+      </div>
     </section>
 
     <section id="satisfaccion">
@@ -477,60 +688,110 @@
       </ul>
 
       <figure class="ui-fig">
-        <svg viewBox="0 0 620 268" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
-          <rect width="620" height="268" fill="#f1f5f9"/>
-          <!-- Page heading -->
-          <text x="16" y="28" font-size="15" font-weight="bold" fill="#002845">Satisfacción Estudiantil</text>
-          <!-- Search bar -->
-          <rect x="16" y="38" width="380" height="32" rx="8" fill="white" stroke="#cbd5e1"/>
-          <text x="32" y="58" font-size="10" fill="#94a3b8">🔍  Buscar docente por nombre...</text>
-          <!-- Docentes table -->
-          <rect x="16" y="80" width="588" height="34" rx="8" fill="#002845"/>
-          <text x="30" y="102" font-size="10" font-weight="bold" fill="white">Docente</text>
-          <text x="230" y="102" font-size="10" font-weight="bold" fill="white">Encuestas</text>
-          <text x="320" y="102" font-size="10" font-weight="bold" fill="white">Promedio</text>
-          <text x="420" y="102" font-size="10" font-weight="bold" fill="white">Nivel</text>
-          <text x="516" y="102" font-size="10" font-weight="bold" fill="white">Reporte</text>
-          <!-- Row 1 -->
-          <rect x="16" y="114" width="588" height="36" fill="white" stroke="#e2e8f0"/>
-          <text x="30" y="136" font-size="11" fill="#334155">Ana Gómez Pinto</text>
-          <text x="254" y="136" font-size="11" fill="#334155" text-anchor="middle">24</text>
-          <text x="354" y="136" font-size="11" font-weight="bold" fill="#059669" text-anchor="middle">4.7 / 5</text>
-          <rect x="410" y="122" width="72" height="18" rx="9" fill="#d1fae5"/>
-          <text x="446" y="135" font-size="9" font-weight="bold" fill="#065f46" text-anchor="middle">Excelente</text>
-          <rect x="502" y="122" width="88" height="18" rx="6" fill="#002845"/>
-          <text x="546" y="135" font-size="9" font-weight="bold" fill="white" text-anchor="middle">⬇ Descargar PDF</text>
-          <!-- Row 2 -->
-          <rect x="16" y="150" width="588" height="36" fill="#f8fafc" stroke="#e2e8f0"/>
-          <text x="30" y="172" font-size="11" fill="#334155">Carlos Duque Salazar</text>
-          <text x="254" y="172" font-size="11" fill="#334155" text-anchor="middle">16</text>
-          <text x="354" y="172" font-size="11" font-weight="bold" fill="#D97706" text-anchor="middle">3.9 / 5</text>
-          <rect x="410" y="158" width="50" height="18" rx="9" fill="#fef3c7"/>
-          <text x="435" y="171" font-size="9" font-weight="bold" fill="#92400e" text-anchor="middle">Bueno</text>
-          <rect x="502" y="158" width="88" height="18" rx="6" fill="#002845"/>
-          <text x="546" y="171" font-size="9" font-weight="bold" fill="white" text-anchor="middle">⬇ Descargar PDF</text>
-          <!-- Row 3 -->
-          <rect x="16" y="186" width="588" height="36" fill="white" stroke="#e2e8f0"/>
-          <text x="30" y="208" font-size="11" fill="#334155">Juan Torres Ruiz</text>
-          <text x="254" y="208" font-size="11" fill="#334155" text-anchor="middle">9</text>
-          <text x="354" y="208" font-size="11" font-weight="bold" fill="#D97706" text-anchor="middle">4.1 / 5</text>
-          <rect x="410" y="194" width="50" height="18" rx="9" fill="#fef3c7"/>
-          <text x="435" y="207" font-size="9" font-weight="bold" fill="#92400e" text-anchor="middle">Bueno</text>
-          <rect x="502" y="194" width="88" height="18" rx="6" fill="#002845"/>
-          <text x="546" y="207" font-size="9" font-weight="bold" fill="white" text-anchor="middle">⬇ Descargar PDF</text>
+        <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" font-family="'Manrope',sans-serif">
+          <!-- bg-slate-50 -->
+          <rect width="700" height="380" fill="#f8fafc"/>
+
+          <!-- ── SIDEBAR ── -->
+          <rect x="0" y="0" width="168" height="380" fill="#002845"/>
+          <rect x="12" y="14" width="32" height="32" rx="8" fill="#C9A227"/>
+          <text x="28" y="35" fill="#002845" font-size="11" font-weight="900" text-anchor="middle">AU</text>
+          <text x="54" y="26" fill="white" font-size="10" font-weight="800">Agenda U</text>
+          <text x="54" y="40" fill="rgba(255,255,255,0.4)" font-size="8">Sistema de Asesorías</text>
+          <line x1="0" y1="56" x2="168" y2="56" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <text x="14" y="74" fill="#93c5fd" font-size="8" font-weight="800" letter-spacing="0.06em">MI CUENTA</text>
+          <circle cx="28" cy="98" r="15" fill="#0ea5e9"/>
+          <text x="28" y="104" fill="white" font-size="12" font-weight="800" text-anchor="middle">S</text>
+          <text x="50" y="94" fill="white" font-size="9.5" font-weight="700">Santiago Torres</text>
+          <circle cx="50" cy="106" r="3.5" fill="#4ade80"/>
+          <text x="58" y="110" fill="#bfdbfe" font-size="8">Administrador</text>
+          <!-- Nav: Centro de Control inactive -->
+          <text x="40" y="136" fill="#bfdbfe" font-size="9" font-weight="600">Centro de Control</text>
+          <!-- Nav: Satisfacción ACTIVO bg-blue-800 rounded-xl -->
+          <rect x="8" y="144" width="152" height="30" rx="10" fill="#1e3a8a"/>
+          <!-- star icon -->
+          <text x="24" y="162" fill="white" font-size="12">⭐</text>
+          <text x="40" y="163" fill="white" font-size="9" font-weight="800">Satisfacción</text>
+          <text x="40" y="190" fill="#bfdbfe" font-size="9" font-weight="600">Calendario Público</text>
+          <line x1="0" y1="356" x2="168" y2="356" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <text x="32" y="372" fill="#f87171" font-size="9" font-weight="700">Cerrar Sesión</text>
+
+          <!-- ── HEADER bg-white ── -->
+          <rect x="168" y="0" width="532" height="58" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+          <text x="186" y="26" fill="#002845" font-size="14" font-weight="900">Satisfacción Estudiantil</text>
+          <text x="186" y="44" fill="#64748b" font-size="9">Análisis de encuestas por docente y por curso.</text>
+
+          <!-- ── CONTENT ── -->
+          <rect x="168" y="58" width="532" height="322" fill="#f8fafc"/>
+
+          <!-- Buscador bg-white rounded-xl border shadow-sm -->
+          <rect x="178" y="68" width="380" height="36" rx="9" fill="white" stroke="#e5e7eb" stroke-width="1.5"/>
+          <text x="196" y="90" font-size="10" fill="#94a3b8">🔍  Buscar docente por nombre...</text>
+
+          <!-- ── Tabla de docentes ── -->
+          <!-- Header navy -->
+          <rect x="178" y="114" width="512" height="34" rx="10" fill="#002845"/>
+          <rect x="178" y="130" width="512" height="18" fill="#002845"/>
+          <text x="196" y="136" font-size="9.5" font-weight="700" fill="white">Docente</text>
+          <text x="400" y="136" font-size="9.5" font-weight="700" fill="white" text-anchor="middle">Encuestas</text>
+          <text x="470" y="136" font-size="9.5" font-weight="700" fill="white" text-anchor="middle">Promedio</text>
+          <text x="540" y="136" font-size="9.5" font-weight="700" fill="white" text-anchor="middle">Nivel</text>
+          <text x="638" y="136" font-size="9.5" font-weight="700" fill="white" text-anchor="middle">Reporte</text>
+
+          <!-- Row 1 — Ana Gómez: Excelente -->
+          <rect x="178" y="148" width="512" height="40" fill="white" stroke="#e5e7eb" stroke-width="0.5"/>
+          <text x="196" y="172" font-size="10.5" fill="#334155">Ana Gómez Pinto</text>
+          <text x="400" y="172" font-size="10.5" fill="#334155" text-anchor="middle">24</text>
+          <text x="470" y="172" font-size="10.5" font-weight="700" fill="#059669" text-anchor="middle">4.7 / 5</text>
+          <rect x="510" y="157" width="64" height="18" rx="9" fill="#d1fae5"/>
+          <text x="542" y="170" font-size="8.5" font-weight="700" fill="#065f46" text-anchor="middle">Excelente</text>
+          <rect x="592" y="156" width="90" height="20" rx="7" fill="#002845"/>
+          <text x="637" y="170" font-size="8.5" font-weight="700" fill="white" text-anchor="middle">⬇ Descargar PDF</text>
+
+          <!-- Row 2 — Carlos Duque: Bueno -->
+          <rect x="178" y="188" width="512" height="40" fill="#f8fafc" stroke="#e5e7eb" stroke-width="0.5"/>
+          <text x="196" y="212" font-size="10.5" fill="#334155">Carlos Duque Salazar</text>
+          <text x="400" y="212" font-size="10.5" fill="#334155" text-anchor="middle">16</text>
+          <text x="470" y="212" font-size="10.5" font-weight="700" fill="#D97706" text-anchor="middle">3.9 / 5</text>
+          <rect x="510" y="197" width="50" height="18" rx="9" fill="#fef3c7"/>
+          <text x="535" y="210" font-size="8.5" font-weight="700" fill="#92400e" text-anchor="middle">Bueno</text>
+          <rect x="592" y="196" width="90" height="20" rx="7" fill="#002845"/>
+          <text x="637" y="210" font-size="8.5" font-weight="700" fill="white" text-anchor="middle">⬇ Descargar PDF</text>
+
+          <!-- Row 3 — Juan Torres: Bueno -->
+          <rect x="178" y="228" width="512" height="40" fill="white" stroke="#e5e7eb" stroke-width="0.5"/>
+          <text x="196" y="252" font-size="10.5" fill="#334155">Juan Torres Ruiz</text>
+          <text x="400" y="252" font-size="10.5" fill="#334155" text-anchor="middle">9</text>
+          <text x="470" y="252" font-size="10.5" font-weight="700" fill="#D97706" text-anchor="middle">4.1 / 5</text>
+          <rect x="510" y="237" width="50" height="18" rx="9" fill="#fef3c7"/>
+          <text x="535" y="250" font-size="8.5" font-weight="700" fill="#92400e" text-anchor="middle">Bueno</text>
+          <rect x="592" y="236" width="90" height="20" rx="7" fill="#002845"/>
+          <text x="637" y="250" font-size="8.5" font-weight="700" fill="white" text-anchor="middle">⬇ Descargar PDF</text>
+
+          <!-- Row 4 — María Vargas: Regular -->
+          <rect x="178" y="268" width="512" height="40" fill="#f8fafc" stroke="#e5e7eb" stroke-width="0.5"/>
+          <text x="196" y="292" font-size="10.5" fill="#334155">María Vargas Parra</text>
+          <text x="400" y="292" font-size="10.5" fill="#334155" text-anchor="middle">5</text>
+          <text x="470" y="292" font-size="10.5" font-weight="700" fill="#dc2626" text-anchor="middle">2.8 / 5</text>
+          <rect x="510" y="277" width="60" height="18" rx="9" fill="#fee2e2"/>
+          <text x="540" y="290" font-size="8.5" font-weight="700" fill="#991b1b" text-anchor="middle">Por mejorar</text>
+          <rect x="592" y="276" width="90" height="20" rx="7" fill="#002845"/>
+          <text x="637" y="290" font-size="8.5" font-weight="700" fill="white" text-anchor="middle">⬇ Descargar PDF</text>
+
           <!-- Scrollbar indicator -->
-          <rect x="600" y="80" width="6" height="142" rx="3" fill="#e2e8f0"/>
-          <rect x="600" y="80" width="6" height="48" rx="3" fill="#94a3b8"/>
-          <!-- Highlights -->
-          <rect x="12" y="34" width="388" height="40" rx="10" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <line x1="12" y1="54" x2="0" y2="54" stroke="#f97316" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <circle cx="610" cy="54" r="0"/>
-          <!-- badge ① left -->
-          <circle cx="11" cy="54" r="11" fill="#f97316"/><text x="11" y="59" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
-          <rect x="498" y="118" width="96" height="30" rx="8" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="594" cy="108" r="11" fill="#f97316"/><text x="594" y="113" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
+          <rect x="688" y="148" width="6" height="160" rx="3" fill="#e5e7eb"/>
+          <rect x="688" y="148" width="6" height="60" rx="3" fill="#94a3b8"/>
+
+          <!-- ── HIGHLIGHTS ── -->
+          <!-- ① Buscador -->
+          <rect x="174" y="64" width="388" height="44" rx="11" fill="rgba(249,115,22,0.05)" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="180" cy="60" r="12" fill="#f97316"/><text x="180" y="65" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
+
+          <!-- ② Descargar PDF row 1 -->
+          <rect x="588" y="152" width="98" height="32" rx="9" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="594" cy="146" r="12" fill="#f97316"/><text x="594" y="151" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
         </svg>
-        <figcaption><strong>①</strong> Buscador de docente con coincidencia parcial de nombre &nbsp;·&nbsp; <strong>②</strong> Botón <em>"Descargar PDF"</em> — genera el informe detallado de satisfacción del docente</figcaption>
+        <figcaption><strong>①</strong> Buscador de docente con coincidencia parcial de nombre &nbsp;·&nbsp; <strong>②</strong> Botón <em>"Descargar PDF"</em> (navy) — genera el informe detallado de satisfacción del docente con promedios y dimensiones</figcaption>
       </figure>
     </section>
 

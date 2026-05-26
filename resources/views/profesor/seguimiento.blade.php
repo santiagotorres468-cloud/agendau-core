@@ -13,9 +13,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style> body { font-family: 'Manrope', sans-serif; } </style>
 </head>
-<body class="bg-gray-50 text-gray-800 flex h-screen overflow-hidden">
+<body class="bg-gray-50 text-gray-800 flex h-screen overflow-hidden" x-data="{ sidebarOpen: false }">
 
-    <aside class="w-64 bg-[#002845] text-white flex flex-col shadow-2xl z-20 flex-shrink-0">
+    <div x-show="sidebarOpen" @click="sidebarOpen = false"
+         class="fixed inset-0 bg-black/50 z-30 md:hidden" style="display:none;"></div>
+
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
+           class="w-64 bg-[#002845] text-white flex flex-col fixed md:relative inset-y-0 left-0 z-40 shadow-2xl transition-transform duration-300 md:translate-x-0 flex-shrink-0">
         <div class="p-6 flex items-center space-x-3 border-b border-blue-900/50">
             <div class="w-9 h-9 rounded-lg bg-[#C9A227] text-[#002845] font-extrabold text-sm flex items-center justify-center flex-shrink-0 tracking-tight">AU</div>
             <div>
@@ -27,7 +31,7 @@
         <div class="p-6">
             <p class="text-xs text-blue-300 font-bold uppercase tracking-wider mb-2">Mi Cuenta</p>
             <div class="flex items-center space-x-3 mb-6">
-                <div class="w-10 h-10 rounded-full bg-[#C9A227] flex items-center justify-center text-[#002845] text-sm font-bold shadow-inner uppercase">
+                <div class="w-10 h-10 rounded-full bg-sky-500 flex items-center justify-center text-white text-sm font-bold shadow-inner uppercase">
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                 </div>
                 <div class="overflow-hidden">
@@ -41,14 +45,21 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <span>Centro de Control</span>
                 </a>
-                
+
                 <a href="{{ route('seguimiento.index') }}" class="flex items-center space-x-3 bg-blue-800 text-white px-4 py-3 rounded-xl font-bold shadow-md transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     <span>Seguimiento</span>
                 </a>
 
+                @if(auth()->user()->rol === 'admin')
+                <a href="{{ route('admin.encuestas') }}" class="flex items-center space-x-3 text-blue-200 hover:bg-blue-800 hover:text-white px-4 py-3 rounded-xl font-bold transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                    <span>Satisfacción</span>
+                </a>
+                @endif
+
                 <a href="/" class="flex items-center space-x-3 text-blue-200 hover:bg-blue-800 hover:text-white px-4 py-3 rounded-xl font-bold transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <span>Calendario Público</span>
                 </a>
             </nav>
@@ -68,12 +79,14 @@
     <main class="flex-1 flex flex-col h-screen overflow-y-auto bg-slate-50">
         
         <header class="bg-white p-6 shadow-sm border-b border-gray-200 flex justify-between items-center z-10 sticky top-0 flex-wrap gap-4">
-            <div>
-                <h2 class="text-2xl font-black text-[#002845] flex items-center gap-3">
-                    <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    Seguimiento estudiantil
-                </h2>
-                <p class="text-gray-500 text-sm mt-1 font-medium">Busca un estudiante o navega por materia.</p>
+            <div class="flex items-center gap-3">
+                <button @click="sidebarOpen = !sidebarOpen" class="md:hidden p-2 rounded-lg text-[#002845] hover:bg-gray-100 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <div>
+                    <h2 class="text-2xl font-black text-[#002845]">Seguimiento estudiantil</h2>
+                    <p class="text-gray-500 text-sm mt-1 font-medium">Busca un estudiante o navega por materia.</p>
+                </div>
             </div>
             
             <a href="{{ route('dashboard') }}" class="bg-gray-100 hover:bg-gray-200 text-[#002845] px-5 py-2.5 rounded-xl font-bold transition flex items-center border border-gray-300 shadow-sm text-sm">
@@ -107,8 +120,8 @@
                                class="mt-auto inline-flex items-center justify-center gap-1.5 w-full bg-[#002845] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-blue-900 transition">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 Ver inscritos
-                                @if(isset($clase->seguimientos_count))
-                                <span class="bg-white/20 text-[10px] font-bold px-1.5 py-0.5 rounded-full">{{ $clase->seguimientos_count }}</span>
+                                @if(isset($clase->estudiantes_count))
+                                <span class="bg-white/20 text-[10px] font-bold px-1.5 py-0.5 rounded-full">{{ $clase->estudiantes_count }}</span>
                                 @endif
                             </a>
                         </div>

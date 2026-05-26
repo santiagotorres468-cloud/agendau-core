@@ -14,9 +14,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style> body { font-family: 'Manrope', sans-serif; } </style>
 </head>
-<body class="bg-gray-50 text-gray-800 flex h-screen overflow-hidden">
+<body class="bg-gray-50 text-gray-800 flex h-screen overflow-hidden" x-data="{ sidebarOpen: false }">
 
-    <aside class="w-64 bg-[#002845] text-white flex flex-col hidden md:flex shadow-2xl z-20 flex-shrink-0">
+    <div x-show="sidebarOpen" @click="sidebarOpen = false"
+         class="fixed inset-0 bg-black/50 z-30 md:hidden" style="display:none;"></div>
+
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
+           class="w-64 bg-[#002845] text-white flex flex-col fixed md:relative inset-y-0 left-0 z-40 shadow-2xl transition-transform duration-300 md:translate-x-0 flex-shrink-0">
         <div class="p-6 flex items-center space-x-3 border-b border-blue-900/50">
             <div class="w-9 h-9 rounded-lg bg-[#C9A227] text-[#002845] font-extrabold text-sm flex items-center justify-center flex-shrink-0 tracking-tight">AU</div>
             <div>
@@ -38,16 +42,22 @@
             </div>
 
             <nav class="space-y-2">
-                <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 bg-blue-800 text-white px-4 py-3 rounded-xl font-bold transition shadow-md">
+                <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 text-blue-200 hover:bg-blue-800 hover:text-white px-4 py-3 rounded-xl font-bold transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <span>Centro de Control</span>
                 </a>
                 <a href="{{ route('seguimiento.index') }}" class="flex items-center space-x-3 text-blue-200 hover:bg-blue-800 hover:text-white px-4 py-3 rounded-xl font-bold transition">
-                    <span class="text-lg">🔎</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     <span>Seguimiento</span>
                 </a>
+                @if(auth()->user()->rol === 'admin')
+                <a href="{{ route('admin.encuestas') }}" class="flex items-center space-x-3 text-blue-200 hover:bg-blue-800 hover:text-white px-4 py-3 rounded-xl font-bold transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                    <span>Satisfacción</span>
+                </a>
+                @endif
                 <a href="/" class="flex items-center space-x-3 text-blue-200 hover:bg-blue-800 hover:text-white px-4 py-3 rounded-xl font-bold transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <span>Calendario Público</span>
                 </a>
             </nav>
@@ -67,11 +77,14 @@
     <main class="flex-1 flex flex-col h-screen overflow-y-auto bg-slate-50">
         
         <header class="bg-white p-6 shadow-sm border-b border-gray-200 flex flex-wrap justify-between items-center gap-4 z-10 sticky top-0">
-            <div>
-                <h2 class="text-2xl font-black text-[#002845] flex items-center">
-                    <span class="text-3xl mr-3">📋</span> Gestión de Asistencia
-                </h2>
-                <p class="text-gray-500 text-sm mt-1 font-medium">Estudiantes registrados en {{ $horario->curso_nombre }}</p>
+            <div class="flex items-center gap-3">
+                <button @click="sidebarOpen = !sidebarOpen" class="md:hidden p-2 rounded-lg text-[#002845] hover:bg-gray-100 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <div>
+                    <h2 class="text-2xl font-black text-[#002845]">Gestión de Asistencia</h2>
+                    <p class="text-gray-500 text-sm mt-1 font-medium">Estudiantes registrados en {{ $horario->curso_nombre }}</p>
+                </div>
             </div>
             
             <a href="{{ route('dashboard') }}" class="bg-gray-100 hover:bg-gray-200 text-[#002845] px-5 py-2.5 rounded-xl font-bold transition flex items-center border border-gray-300 shadow-sm text-sm">
@@ -149,6 +162,11 @@
                                                     {{ str_repeat('⭐', $reserva->calificacion) }}
                                                 </span>
                                             @endif
+                                            @if($reserva->encuesta_respondida)
+                                                <span class="ml-2 bg-emerald-50 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-bold border border-emerald-200 whitespace-nowrap" title="El estudiante respondió la encuesta de satisfacción">
+                                                    Encuesta respondida
+                                                </span>
+                                            @endif
                                         </td>
                                         <td class="px-6 py-5 whitespace-nowrap text-sm text-gray-500 font-medium">{{ \Carbon\Carbon::parse($reserva->fecha)->format('d/m/Y') }}</td>
                                         
@@ -180,7 +198,7 @@
                                             @else
                                                 <div class="flex flex-col items-center space-y-1.5 w-full max-w-[140px] mx-auto">
                                                     <span class="w-full text-center px-4 py-1.5 rounded-lg font-black text-xs shadow-sm border {{ $reserva->asistencia ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200' }}">
-                                                        {{ $reserva->asistencia ? '✔️ PRESENTE' : '✖️ AUSENTE' }}
+                                                        {{ $reserva->asistencia ? '✔️ ASISTIÓ' : '✖️ FALTÓ' }}
                                                     </span>
                                                     
                                                     <button onclick="document.getElementById('modal-{{ $reserva->id }}').classList.remove('hidden')" class="w-full justify-center bg-[#002845] text-white px-4 py-1.5 rounded-lg hover:bg-blue-900 font-bold shadow flex items-center text-xs transition-colors">
@@ -210,7 +228,8 @@
                                                                         <p class="text-sm font-bold text-gray-500 mb-4 border-b pb-2">Estudiante: <span class="text-gray-800">{{ $reserva->estudiante->nombre_completo }}</span></p>
                                                                         <div class="mt-2 text-left">
                                                                             <label class="block text-sm text-[#002845] mb-2 font-black">Escribe el progreso u observaciones:</label>
-                                                                            <textarea name="evolucion" rows="4" required class="shadow-sm focus:ring-[#002845] focus:border-[#002845] block w-full sm:text-sm border-2 border-gray-200 rounded-xl p-4 transition-all outline-none" placeholder="Ej: El estudiante dominó los temas vistos en clase...">{{ $reserva->evolucion }}</textarea>
+                                                                            <textarea name="evolucion" rows="4" maxlength="1000" required class="shadow-sm focus:ring-[#002845] focus:border-[#002845] block w-full sm:text-sm border-2 border-gray-200 rounded-xl p-4 transition-all outline-none" placeholder="Ej: El estudiante dominó los temas vistos en clase...">{{ $reserva->evolucion }}</textarea>
+                                                                <p class="text-xs text-gray-400 mt-1 text-right" id="char-count-{{ $reserva->id }}">0 / 1000</p>
                                                                         </div>
                                                                     </div>
                                                                     
@@ -253,6 +272,15 @@
     </main>
 
     <script>
+        document.querySelectorAll('textarea[name="evolucion"]').forEach(function(ta) {
+            var modal = ta.closest('[id^="modal-"]');
+            var id = modal ? modal.id.replace('modal-', '') : null;
+            var counter = id ? document.getElementById('char-count-' + id) : null;
+            var update = function() { if (counter) counter.textContent = ta.value.length + ' / 1000'; };
+            ta.addEventListener('input', update);
+            update();
+        });
+
         function confirmarAccion(buttonElement, titulo, texto, textoBotonConfirmar, colorBoton) {
             Swal.fire({
                 title: titulo,

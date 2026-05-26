@@ -6,15 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    
 public function up(): void
     {
         Schema::create('estudiantes', function (Blueprint $table) {
             $table->id();
             
-            // Aquí van los campos personalizados para tu sistema:
+            
             $table->string('cedula')->unique(); // Unique asegura que no haya dos estudiantes con la misma cédula
             $table->string('nombre_completo')->nullable(); // Nullable permite dejarlo vacío temporalmente si solo tienes las cédulas al principio
             $table->string('programa_academico')->nullable();
@@ -24,9 +22,7 @@ public function up(): void
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+  
     public function down(): void
     {
         Schema::dropIfExists('estudiantes');

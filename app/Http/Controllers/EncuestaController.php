@@ -23,7 +23,7 @@ class EncuestaController extends Controller
     public function mostrar($seguimientoId)
     {
         if (!session('estudiante_id')) {
-            return redirect('/')->with('error', '⛔ Debes iniciar sesión para responder la encuesta.');
+            return redirect('/')->with('error', 'Debes iniciar sesión para responder la encuesta.');
         }
 
         $reserva = Seguimiento::with(['horario', 'estudiante'])
@@ -33,7 +33,7 @@ class EncuestaController extends Controller
 
         // Validar que la sesión fue evaluada y que asistió
         if (!$reserva->puedeResponderEncuesta()) {
-            return redirect('/estudiante')->with('error', '⚠️ Esta encuesta no está disponible o ya fue respondida.');
+            return redirect('/estudiante')->with('error', 'Esta encuesta no está disponible o ya fue respondida.');
         }
 
         return view('encuesta.formulario', compact('reserva'));
@@ -46,7 +46,7 @@ class EncuestaController extends Controller
     public function guardar(Request $request, $seguimientoId)
     {
         if (!session('estudiante_id')) {
-            return redirect('/')->with('error', '⛔ Debes iniciar sesión.');
+            return redirect('/')->with('error', 'Debes iniciar sesión.');
         }
 
         $request->validate([
@@ -69,7 +69,7 @@ class EncuestaController extends Controller
             ->firstOrFail();
 
         if (!$reserva->puedeResponderEncuesta()) {
-            return redirect('/estudiante')->with('error', '⚠️ Esta encuesta ya fue respondida o no está disponible.');
+            return redirect('/estudiante')->with('error', 'Esta encuesta ya fue respondida o no está disponible.');
         }
 
         $data = $request->only([

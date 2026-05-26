@@ -68,6 +68,7 @@
     <div class="sb-section">Contenido</div>
     <a href="#acceso"       class="sb-link"><span class="dot"></span>Acceso al sistema</a>
     <a href="#password"     class="sb-link"><span class="dot"></span>Cambio de contraseña</a>
+    <a href="#recuperar"    class="sb-link"><span class="dot"></span>Recuperar contraseña</a>
     <a href="#panel"        class="sb-link"><span class="dot"></span>Panel principal</a>
     <a href="#asistencia"   class="sb-link"><span class="dot"></span>Registrar asistencia</a>
     <a href="#corregir"     class="sb-link"><span class="dot"></span>Corregir asistencia</a>
@@ -104,33 +105,89 @@
       </div>
 
       <figure class="ui-fig">
-        <svg viewBox="0 0 620 286" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
-          <rect width="620" height="286" fill="#f1f5f9"/>
-          <rect width="620" height="36" fill="#e2e8f0"/>
-          <circle cx="18" cy="18" r="5" fill="#ef4444"/><circle cx="32" cy="18" r="5" fill="#f59e0b"/><circle cx="46" cy="18" r="5" fill="#22c55e"/>
-          <rect x="70" y="10" width="340" height="16" rx="8" fill="#cbd5e1"/>
-          <rect x="185" y="50" width="250" height="222" rx="16" fill="white" stroke="#e2e8f0"/>
-          <rect x="275" y="68" width="40" height="40" rx="10" fill="#C9A227"/>
-          <text x="295" y="94" font-size="12" font-weight="bold" fill="#002845" text-anchor="middle">AU</text>
-          <text x="310" y="130" font-size="13" font-weight="bold" fill="#002845" text-anchor="middle">AgendaU</text>
-          <text x="310" y="148" font-size="10" fill="#64748b" text-anchor="middle">Inicia sesión con tu cuenta</text>
-          <rect x="207" y="160" width="206" height="28" rx="7" fill="#f8fafc" stroke="#cbd5e1"/>
-          <text x="220" y="178" font-size="9" fill="#94a3b8">Correo institucional</text>
-          <rect x="207" y="197" width="206" height="28" rx="7" fill="#f8fafc" stroke="#cbd5e1"/>
-          <text x="220" y="215" font-size="9" fill="#94a3b8">Contraseña</text>
-          <rect x="207" y="236" width="206" height="28" rx="8" fill="#002845"/>
-          <text x="310" y="255" font-size="11" font-weight="bold" fill="white" text-anchor="middle">Ingresar</text>
-          <rect x="202" y="156" width="216" height="37" rx="9" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <rect x="202" y="193" width="216" height="37" rx="9" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <rect x="202" y="231" width="216" height="37" rx="9" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <line x1="164" y1="174" x2="202" y2="174" stroke="#f97316" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <line x1="164" y1="211" x2="202" y2="211" stroke="#f97316" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <line x1="164" y1="249" x2="202" y2="249" stroke="#f97316" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <circle cx="153" cy="174" r="11" fill="#f97316"/><text x="153" y="179" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
-          <circle cx="153" cy="211" r="11" fill="#f97316"/><text x="153" y="216" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
-          <circle cx="153" cy="249" r="11" fill="#f97316"/><text x="153" y="254" font-size="11" font-weight="bold" fill="white" text-anchor="middle">3</text>
+        <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" font-family="'Manrope',sans-serif">
+          <defs>
+            <linearGradient id="loginHdr" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#002845"/>
+              <stop offset="100%" stop-color="#1e3a8a"/>
+            </linearGradient>
+          </defs>
+
+          <!-- bg-slate-50 full screen -->
+          <rect width="700" height="400" fill="#f8fafc"/>
+
+          <!-- Blobs de fondo -->
+          <circle cx="680" cy="30" r="130" fill="#dbeafe" opacity="0.4"/>
+          <circle cx="20" cy="390" r="130" fill="#ede9fe" opacity="0.4"/>
+
+          <!-- Card: sm:max-w-md rounded-3xl bg-white shadow-xl border-gray-100 -->
+          <rect x="130" y="20" width="440" height="358" rx="24" fill="white" stroke="#f3f4f6" stroke-width="1"/>
+
+          <!-- Header: gradient navy→blue-900 rounded-top -->
+          <rect x="130" y="20" width="440" height="128" rx="24" fill="url(#loginHdr)"/>
+          <rect x="130" y="116" width="440" height="32" fill="#1e3a8a"/>
+
+          <!-- "🎓" emoji grande centrado -->
+          <text x="350" y="82" font-size="44" text-anchor="middle">🎓</text>
+
+          <!-- "AgendaU" text-3xl font-black text-white -->
+          <text x="350" y="116" font-size="22" font-weight="900" fill="white" text-anchor="middle" letter-spacing="0.5">AgendaU</text>
+
+          <!-- Subtítulo text-blue-200 text-sm -->
+          <text x="350" y="140" font-size="10" fill="#bfdbfe" text-anchor="middle">Inicia sesión con tu cuenta institucional</text>
+
+          <!-- Body px-8 pt-6 pb-8 -->
+          <!-- Label "Correo Electrónico" -->
+          <text x="162" y="178" font-size="10.5" font-weight="700" fill="#002845">Correo Electrónico</text>
+
+          <!-- Email input rounded-xl border-gray-300 -->
+          <rect x="162" y="186" width="376" height="42" rx="11" fill="white" stroke="#d1d5db" stroke-width="1.5"/>
+          <text x="178" y="211" font-size="10.5" fill="#9ca3af">correo@pascualbravo.edu.co</text>
+
+          <!-- Label "Contraseña" -->
+          <text x="162" y="248" font-size="10.5" font-weight="700" fill="#002845">Contraseña</text>
+
+          <!-- Password input rounded-xl border-gray-300 -->
+          <rect x="162" y="256" width="376" height="42" rx="11" fill="white" stroke="#d1d5db" stroke-width="1.5"/>
+          <circle cx="178" cy="277" r="3" fill="#9ca3af"/>
+          <circle cx="190" cy="277" r="3" fill="#9ca3af"/>
+          <circle cx="202" cy="277" r="3" fill="#9ca3af"/>
+          <circle cx="214" cy="277" r="3" fill="#9ca3af"/>
+          <circle cx="226" cy="277" r="3" fill="#9ca3af"/>
+          <circle cx="238" cy="277" r="3" fill="#9ca3af"/>
+
+          <!-- "¿Olvidaste tu contraseña?" link text-sm text-gray-500 -->
+          <text x="162" y="314" font-size="9.5" fill="#6b7280" font-weight="600">¿Olvidaste tu contraseña?</text>
+
+          <!-- border-t mt-2 -->
+          <line x1="162" y1="326" x2="538" y2="326" stroke="#f3f4f6" stroke-width="1"/>
+
+          <!-- Botón "Ingresar" bg-[#002845] rounded-xl py-3 font-black -->
+          <rect x="162" y="334" width="376" height="44" rx="11" fill="#002845"/>
+          <text x="350" y="361" font-size="11" font-weight="900" fill="white" text-anchor="middle">Ingresar</text>
+          <!-- arrow icon derecho -->
+          <path d="M492 357 L498 361 L492 365" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- Footer -->
+          <text x="350" y="392" font-size="9" fill="#9ca3af" text-anchor="middle">© 2026 Agenda U — I.U. Pascual Bravo</text>
+
+          <!-- ── HIGHLIGHTS ── -->
+          <!-- ① email input -->
+          <rect x="158" y="182" width="384" height="50" rx="13" fill="rgba(249,115,22,0.05)" stroke="#f97316" stroke-width="2" stroke-dasharray="6,3"/>
+          <circle cx="164" cy="178" r="12" fill="#f97316"/>
+          <text x="164" y="183" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
+
+          <!-- ② password input -->
+          <rect x="158" y="252" width="384" height="50" rx="13" fill="rgba(249,115,22,0.05)" stroke="#f97316" stroke-width="2" stroke-dasharray="6,3"/>
+          <circle cx="164" cy="248" r="12" fill="#f97316"/>
+          <text x="164" y="253" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
+
+          <!-- ③ botón Ingresar -->
+          <rect x="158" y="330" width="384" height="52" rx="13" fill="rgba(249,115,22,0.04)" stroke="#f97316" stroke-width="2" stroke-dasharray="6,3"/>
+          <circle cx="164" cy="326" r="12" fill="#f97316"/>
+          <text x="164" y="331" font-size="11" font-weight="bold" fill="white" text-anchor="middle">3</text>
         </svg>
-        <figcaption><strong>①</strong> Campo de correo institucional &nbsp;·&nbsp; <strong>②</strong> Campo de contraseña &nbsp;·&nbsp; <strong>③</strong> Botón <em>"Ingresar"</em></figcaption>
+        <figcaption><strong>①</strong> Campo de correo institucional &nbsp;·&nbsp; <strong>②</strong> Campo de contraseña &nbsp;·&nbsp; <strong>③</strong> Botón <em>"Ingresar"</em> — el fondo slate-50 con la card centrada es la pantalla real de login</figcaption>
       </figure>
     </section>
 
@@ -148,8 +205,156 @@
       </div>
     </section>
 
+    <section id="recuperar">
+      <h2><span class="n">3</span>Recuperar contraseña olvidada</h2>
+      <p>Si olvidaste tu contraseña puedes restablecerla por tu cuenta sin contactar al administrador. El sistema envía un enlace de recuperación a tu correo institucional en segundos.</p>
+      <ol class="steps">
+        <li><p>En la pantalla de inicio de sesión, haz clic en el enlace <strong>"¿Olvidaste tu contraseña?"</strong> que aparece debajo del botón Ingresar.</p></li>
+        <li><p>Ingresa tu <strong>correo institucional</strong> registrado en el sistema — campo marcado con <strong>①</strong> en la imagen.</p></li>
+        <li><p>Haz clic en <strong>"Enviar enlace de recuperación"</strong> — marcado con <strong>②</strong>. Llegarás un correo con un enlace en pocos minutos.</p></li>
+        <li><p>Abre el correo y haz clic en el enlace. Serás redirigido a la pantalla <em>"Nueva contraseña"</em>.</p></li>
+        <li><p>Escribe tu nueva contraseña (mínimo 8 caracteres) — campo <strong>①</strong> de la segunda imagen — confírmala en el campo <strong>②</strong> y haz clic en <strong>"Guardar nueva contraseña"</strong>.</p></li>
+      </ol>
+
+      <figure class="ui-fig">
+        <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" font-family="'Manrope',sans-serif">
+          <defs>
+            <linearGradient id="fpHdr" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#002845"/>
+              <stop offset="100%" stop-color="#1e3a8a"/>
+            </linearGradient>
+          </defs>
+          <!-- bg-slate-50 -->
+          <rect width="700" height="380" fill="#f8fafc"/>
+          <!-- blur blobs -->
+          <circle cx="680" cy="30" r="120" fill="#dbeafe" opacity="0.35"/>
+          <circle cx="20" cy="360" r="120" fill="#ede9fe" opacity="0.35"/>
+          <!-- Card: sm:max-w-md rounded-3xl bg-white shadow-xl border-gray-100 -->
+          <rect x="120" y="16" width="460" height="342" rx="24" fill="white" stroke="#f3f4f6" stroke-width="1"/>
+          <!-- Header: from-[#002845] to-blue-900 px-8 py-8 -->
+          <rect x="120" y="16" width="460" height="120" rx="24" fill="url(#fpHdr)"/>
+          <rect x="120" y="108" width="460" height="28" fill="#1e3a8a"/>
+          <!-- dot pattern (white 1px dots) -->
+          <rect x="120" y="16" width="460" height="120" rx="24" fill="url(#dotPat)" opacity="0.08"/>
+          <!-- 🔑 text-6xl -->
+          <text x="350" y="72" font-size="42" text-anchor="middle">🔑</text>
+          <!-- "Recuperar acceso" text-3xl font-black text-white -->
+          <text x="350" y="110" font-size="20" font-weight="900" fill="white" text-anchor="middle" letter-spacing="0.5">Recuperar acceso</text>
+          <!-- subtitle text-blue-200 text-sm -->
+          <text x="350" y="130" font-size="9.5" fill="#bfdbfe" text-anchor="middle">Te enviaremos un enlace para restablecer tu contraseña</text>
+          <!-- Body p-8 -->
+          <!-- Label "Correo Electrónico" -->
+          <text x="152" y="168" font-size="10.5" font-weight="700" fill="#002845">Correo Electrónico</text>
+          <!-- Email input: border-gray-300 rounded-xl px-4 py-3 -->
+          <rect x="152" y="176" width="396" height="40" rx="11" fill="white" stroke="#d1d5db" stroke-width="1.5"/>
+          <text x="168" y="201" font-size="10" fill="#9ca3af">tu@correo.com</text>
+          <!-- helper text text-xs text-gray-400 -->
+          <text x="152" y="228" font-size="8.5" fill="#9ca3af">Ingresa el correo con el que accedes al sistema.</text>
+          <!-- pt-4 mt-2 border-t border-gray-100 -->
+          <line x1="152" y1="244" x2="548" y2="244" stroke="#f3f4f6" stroke-width="1"/>
+          <!-- Submit: bg-[#002845] hover:bg-blue-900 rounded-xl py-4 font-black -->
+          <rect x="152" y="252" width="396" height="46" rx="12" fill="#002845"/>
+          <text x="325" y="280" font-size="10.5" font-weight="900" fill="white" text-anchor="middle">Enviar enlace de recuperación</text>
+          <!-- mail SVG icon (simplified) -->
+          <rect x="490" y="265" width="16" height="12" rx="2" fill="none" stroke="white" stroke-width="1.5"/>
+          <polyline points="490,265 498,272 506,265" fill="none" stroke="white" stroke-width="1.5"/>
+          <!-- Back link: text-sm text-gray-500 font-bold -->
+          <text x="350" y="316" font-size="9.5" fill="#9ca3af" font-weight="700" text-anchor="middle">← Volver al inicio de sesión</text>
+          <!-- Footer -->
+          <text x="350" y="370" font-size="9" fill="#9ca3af" text-anchor="middle">© 2026 Agenda U. Todos los derechos reservados.</text>
+          <!-- ── HIGHLIGHTS ── -->
+          <!-- ① email input -->
+          <rect x="148" y="172" width="404" height="48" rx="13" fill="rgba(249,115,22,0.05)" stroke="#f97316" stroke-width="2" stroke-dasharray="6,3"/>
+          <circle cx="154" cy="168" r="12" fill="#f97316"/>
+          <text x="154" y="173" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
+          <!-- ② submit button -->
+          <rect x="148" y="248" width="404" height="54" rx="14" fill="rgba(249,115,22,0.04)" stroke="#f97316" stroke-width="2" stroke-dasharray="6,3"/>
+          <circle cx="154" cy="244" r="12" fill="#f97316"/>
+          <text x="154" y="249" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
+        </svg>
+        <figcaption><strong>①</strong> Campo de correo institucional — debe ser el mismo con el que accedes al sistema &nbsp;·&nbsp; <strong>②</strong> Botón <em>"Enviar enlace de recuperación"</em> — recibirás el correo en segundos</figcaption>
+      </figure>
+
+      <figure class="ui-fig">
+        <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" font-family="'Manrope',sans-serif">
+          <defs>
+            <linearGradient id="rpHdr" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#002845"/>
+              <stop offset="100%" stop-color="#1e3a8a"/>
+            </linearGradient>
+          </defs>
+          <!-- bg-slate-50 -->
+          <rect width="700" height="420" fill="#f8fafc"/>
+          <!-- blur blobs -->
+          <circle cx="680" cy="30" r="120" fill="#dbeafe" opacity="0.35"/>
+          <circle cx="20" cy="400" r="120" fill="#ede9fe" opacity="0.35"/>
+          <!-- Card -->
+          <rect x="120" y="16" width="460" height="386" rx="24" fill="white" stroke="#f3f4f6" stroke-width="1"/>
+          <!-- Header -->
+          <rect x="120" y="16" width="460" height="120" rx="24" fill="url(#rpHdr)"/>
+          <rect x="120" y="108" width="460" height="28" fill="#1e3a8a"/>
+          <!-- 🔐 text-6xl -->
+          <text x="350" y="72" font-size="42" text-anchor="middle">🔐</text>
+          <!-- "Nueva contraseña" text-3xl font-black text-white -->
+          <text x="350" y="110" font-size="20" font-weight="900" fill="white" text-anchor="middle">Nueva contraseña</text>
+          <!-- subtitle -->
+          <text x="350" y="130" font-size="9.5" fill="#bfdbfe" text-anchor="middle">Elige una contraseña segura para tu cuenta</text>
+          <!-- Body -->
+          <!-- Email label -->
+          <text x="152" y="168" font-size="10.5" font-weight="700" fill="#002845">Correo Electrónico</text>
+          <!-- Email readonly: bg-gray-50, text-gray-500, cursor-not-allowed -->
+          <rect x="152" y="176" width="396" height="40" rx="11" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1.5"/>
+          <text x="168" y="201" font-size="10" fill="#9ca3af">osantiago026@gmail.com</text>
+          <text x="524" y="202" font-size="11" fill="#9ca3af">🔒</text>
+          <!-- Password label -->
+          <text x="152" y="232" font-size="10.5" font-weight="700" fill="#002845">Nueva contraseña</text>
+          <!-- Password input -->
+          <rect x="152" y="240" width="396" height="40" rx="11" fill="white" stroke="#d1d5db" stroke-width="1.5"/>
+          <text x="168" y="265" font-size="10" fill="#9ca3af">Mínimo 8 caracteres</text>
+          <!-- dots (password visual hint) -->
+          <circle cx="430" cy="260" r="3" fill="#d1d5db"/>
+          <circle cx="442" cy="260" r="3" fill="#d1d5db"/>
+          <circle cx="454" cy="260" r="3" fill="#d1d5db"/>
+          <!-- Confirm label -->
+          <text x="152" y="294" font-size="10.5" font-weight="700" fill="#002845">Confirmar contraseña</text>
+          <!-- Confirm input -->
+          <rect x="152" y="302" width="396" height="40" rx="11" fill="white" stroke="#d1d5db" stroke-width="1.5"/>
+          <text x="168" y="327" font-size="10" fill="#9ca3af">Repite la contraseña</text>
+          <!-- border-t -->
+          <line x1="152" y1="356" x2="548" y2="356" stroke="#f3f4f6" stroke-width="1"/>
+          <!-- Submit button -->
+          <rect x="152" y="364" width="396" height="46" rx="12" fill="#002845"/>
+          <text x="318" y="392" font-size="10.5" font-weight="900" fill="white" text-anchor="middle">Guardar nueva contraseña</text>
+          <!-- checkmark SVG path (simplified) -->
+          <polyline points="494,381 499,387 511,375" fill="none" stroke="white" stroke-width="2.5"/>
+          <!-- Footer -->
+          <text x="350" y="410" font-size="9" fill="#9ca3af" text-anchor="middle">© 2026 Agenda U. Todos los derechos reservados.</text>
+          <!-- ── HIGHLIGHTS ── -->
+          <!-- ① new + confirm password fields -->
+          <rect x="148" y="228" width="404" height="122" rx="13" fill="rgba(249,115,22,0.04)" stroke="#f97316" stroke-width="2" stroke-dasharray="6,3"/>
+          <circle cx="154" cy="224" r="12" fill="#f97316"/>
+          <text x="154" y="229" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
+          <!-- ② submit button -->
+          <rect x="148" y="360" width="404" height="54" rx="14" fill="rgba(249,115,22,0.04)" stroke="#f97316" stroke-width="2" stroke-dasharray="6,3"/>
+          <circle cx="154" cy="356" r="12" fill="#f97316"/>
+          <text x="154" y="361" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
+        </svg>
+        <figcaption><strong>①</strong> Campos de nueva contraseña y confirmación — deben coincidir (mínimo 8 caracteres) &nbsp;·&nbsp; <strong>②</strong> Botón <em>"Guardar nueva contraseña"</em> — completa el proceso y accede al sistema</figcaption>
+      </figure>
+
+      <div class="callout tip">
+        <span class="callout-icon">✉️</span>
+        <div><strong>¿No llegó el correo?</strong>Revisa la carpeta de spam o correo no deseado. El enlace de recuperación tiene validez de 60 minutos. Si el problema persiste, verifica que el correo coincida exactamente con el registrado en el sistema.</div>
+      </div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div><strong>Límite de intentos</strong>Si solicitas el enlace varias veces seguidas, el sistema activa un límite temporal. Espera unos minutos antes de intentarlo nuevamente.</div>
+      </div>
+    </section>
+
     <section id="panel">
-      <h2><span class="n">3</span>Panel principal</h2>
+      <h2><span class="n">4</span>Panel principal</h2>
+
       <p>Al ingresar verás tus <strong>asesorías programadas</strong> organizadas como tarjetas. Cada tarjeta muestra:</p>
       <table>
         <thead><tr><th>Elemento</th><th>Descripción</th></tr></thead>
@@ -157,61 +362,151 @@
           <tr><td>Nombre del curso</td><td>Asignatura o monitoria asignada</td></tr>
           <tr><td>Día y horario</td><td>Cuándo se realiza la sesión semanal</td></tr>
           <tr><td>Modalidad</td><td><span class="badge green">Presencial</span> o <span class="badge gray">Virtual</span></td></tr>
-          <tr><td>Inscritos</td><td>Número de estudiantes con reserva activa</td></tr>
+          <tr><td>Inscritos</td><td>Número de estudiantes <em>únicos</em> con reserva activa (si un mismo estudiante tiene dos reservas, cuenta como uno)</td></tr>
           <tr><td>Sede / Bloque / Aula</td><td>Ubicación física (si aplica)</td></tr>
         </tbody>
       </table>
 
       <figure class="ui-fig">
-        <svg viewBox="0 0 620 248" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
-          <rect width="620" height="248" fill="#f1f5f9"/>
-          <!-- Sidebar -->
-          <rect width="148" height="248" fill="#002845"/>
-          <rect x="14" y="14" width="30" height="30" rx="8" fill="#C9A227"/>
-          <text x="29" y="35" font-size="11" font-weight="bold" fill="#002845" text-anchor="middle">AU</text>
-          <text x="54" y="27" font-size="12" font-weight="bold" fill="white">Agenda U</text>
-          <text x="54" y="42" font-size="9" fill="rgba(255,255,255,0.4)">Docente</text>
-          <rect x="10" y="68" width="128" height="27" rx="7" fill="rgba(255,255,255,0.15)"/>
-          <text x="24" y="86" font-size="11" fill="white">📋  Mis asesorías</text>
-          <text x="24" y="115" font-size="11" fill="rgba(255,255,255,0.45)">👥  Seguimiento</text>
-          <text x="24" y="143" font-size="11" fill="rgba(255,255,255,0.45)">🚪  Salir</text>
-          <!-- Card 1 -->
-          <rect x="164" y="20" width="196" height="190" rx="13" fill="white" stroke="#e2e8f0"/>
-          <text x="184" y="50" font-size="13" font-weight="bold" fill="#002845">Cálculo I</text>
-          <rect x="184" y="58" width="66" height="17" rx="8" fill="#d1fae5"/>
-          <text x="217" y="71" font-size="9" font-weight="bold" fill="#065f46" text-anchor="middle">Presencial</text>
-          <text x="184" y="100" font-size="10" fill="#64748b">Lunes · 08:00 – 10:00</text>
-          <text x="184" y="118" font-size="10" fill="#94a3b8">3 inscritos</text>
-          <line x1="184" y1="132" x2="345" y2="132" stroke="#e2e8f0"/>
-          <rect x="184" y="142" width="156" height="27" rx="8" fill="#002845"/>
-          <text x="262" y="160" font-size="10" font-weight="bold" fill="white" text-anchor="middle">Ver estudiantes</text>
-          <!-- Card 2 -->
-          <rect x="380" y="20" width="196" height="190" rx="13" fill="white" stroke="#e2e8f0"/>
-          <text x="400" y="50" font-size="13" font-weight="bold" fill="#002845">Física II</text>
-          <rect x="400" y="58" width="50" height="17" rx="8" fill="#f1f5f9"/>
-          <text x="425" y="71" font-size="9" font-weight="bold" fill="#475569" text-anchor="middle">Virtual</text>
-          <text x="400" y="100" font-size="10" fill="#64748b">Miércoles · 14:00 – 16:00</text>
-          <text x="400" y="118" font-size="10" fill="#94a3b8">5 inscritos</text>
-          <line x1="400" y1="132" x2="561" y2="132" stroke="#e2e8f0"/>
-          <rect x="400" y="142" width="156" height="27" rx="8" fill="#002845"/>
-          <text x="478" y="160" font-size="10" font-weight="bold" fill="white" text-anchor="middle">Ver estudiantes</text>
-          <!-- Highlight ① Ver estudiantes (card 1) -->
-          <rect x="180" y="138" width="164" height="35" rx="10" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <line x1="344" y1="155" x2="362" y2="155" stroke="#f97316" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <circle cx="373" cy="155" r="11" fill="#f97316"/>
-          <text x="373" y="160" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
+        <svg viewBox="0 0 700 390" xmlns="http://www.w3.org/2000/svg" font-family="'Manrope',sans-serif">
+          <defs>
+            <linearGradient id="dCardGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#002845"/>
+              <stop offset="100%" stop-color="#1e40af"/>
+            </linearGradient>
+          </defs>
+          <!-- bg-slate-50 -->
+          <rect width="700" height="390" fill="#f8fafc"/>
+
+          <!-- ── SIDEBAR (w-64 = 168px) bg-[#002845] ── -->
+          <rect x="0" y="0" width="168" height="390" fill="#002845"/>
+
+          <!-- Logo AU dorado + Agenda U -->
+          <rect x="12" y="14" width="32" height="32" rx="8" fill="#C9A227"/>
+          <text x="28" y="35" fill="#002845" font-size="11" font-weight="900" text-anchor="middle">AU</text>
+          <text x="54" y="26" fill="white" font-size="10" font-weight="800">Agenda U</text>
+          <text x="54" y="40" fill="rgba(255,255,255,0.4)" font-size="8">Sistema de Asesorías</text>
+          <line x1="0" y1="56" x2="168" y2="56" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+          <!-- MI CUENTA text-blue-300 uppercase -->
+          <text x="14" y="74" fill="#93c5fd" font-size="8" font-weight="800" letter-spacing="0.06em">MI CUENTA</text>
+
+          <!-- Avatar bg-sky-500 rounded-full -->
+          <circle cx="28" cy="98" r="15" fill="#0ea5e9"/>
+          <text x="28" y="104" fill="white" font-size="12" font-weight="800" text-anchor="middle">M</text>
+          <text x="50" y="94" fill="white" font-size="9.5" font-weight="700">María García</text>
+          <circle cx="50" cy="106" r="3.5" fill="#4ade80"/>
+          <text x="58" y="110" fill="#bfdbfe" font-size="8">Docente</text>
+
+          <!-- Nav: Centro de Control ACTIVO bg-blue-800 rounded-xl px-4 py-3 -->
+          <rect x="8" y="120" width="152" height="34" rx="10" fill="#1e3a8a"/>
+          <!-- calendar icon -->
+          <rect x="18" y="128" width="14" height="14" rx="2" fill="none" stroke="white" stroke-width="1.5"/>
+          <line x1="22" y1="126" x2="22" y2="132" stroke="white" stroke-width="1.5"/>
+          <line x1="28" y1="126" x2="28" y2="132" stroke="white" stroke-width="1.5"/>
+          <line x1="16" y1="135" x2="34" y2="135" stroke="white" stroke-width="1"/>
+          <text x="40" y="141" fill="white" font-size="9" font-weight="800">Centro de Control</text>
+
+          <!-- Nav: Seguimiento text-blue-200 (visible en sidebar de estudiantes.blade) -->
+          <circle cx="24" cy="168" r="6" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+          <line x1="28" y1="172" x2="34" y2="178" stroke="#bfdbfe" stroke-width="1.5"/>
+          <text x="40" y="173" fill="#bfdbfe" font-size="9" font-weight="600">Seguimiento</text>
+
+          <!-- Nav: Calendario Público -->
+          <text x="40" y="198" fill="#bfdbfe" font-size="9" font-weight="600">Calendario Público</text>
+
+          <!-- Cerrar sesión bottom -->
+          <line x1="0" y1="366" x2="168" y2="366" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <path d="M18 382 L14 378 L18 374 M14 378 H26" stroke="#f87171" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <text x="32" y="382" fill="#f87171" font-size="9" font-weight="700">Cerrar Sesión</text>
+
+          <!-- ── HEADER bg-white ── -->
+          <rect x="168" y="0" width="532" height="58" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+          <text x="186" y="26" fill="#002845" font-size="14" font-weight="900">Centro de Control</text>
+          <text x="186" y="44" fill="#64748b" font-size="9">Gestión de cursos y opciones de administración.</text>
+
+          <!-- ── CONTENT bg-slate-50 ── -->
+          <rect x="168" y="58" width="532" height="332" fill="#f8fafc"/>
+
+          <!-- Section label -->
+          <text x="182" y="84" fill="#64748b" font-size="8.5" font-weight="800" letter-spacing="0.05em">MIS MATERIAS — VER INSCRITOS POR CURSO</text>
+
+          <!-- ── CARD 1: Cálculo Diferencial (Presencial) ── -->
+          <rect x="182" y="94" width="168" height="214" rx="14" fill="white" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Card header gradient -->
+          <rect x="182" y="94" width="168" height="44" rx="14" fill="url(#dCardGrad)"/>
+          <rect x="182" y="120" width="168" height="18" fill="#002845"/>
+          <!-- Presencial badge top-right rounded pill -->
+          <rect x="282" y="98" width="64" height="16" rx="8" fill="#C9A227"/>
+          <text x="314" y="110" fill="#002845" font-size="6.5" font-weight="800" text-anchor="middle">PRESENCIAL</text>
+          <text x="194" y="116" fill="white" font-size="9.5" font-weight="900">Cálculo Diferencial</text>
+          <!-- Body -->
+          <text x="194" y="154" fill="#374151" font-size="8"><tspan font-weight="700">Docente:</tspan> J. Torres</text>
+          <!-- Día badge -->
+          <text x="194" y="170" fill="#374151" font-size="8" font-weight="700">📅 Día: </text>
+          <rect x="224" y="161" width="42" height="13" rx="5" fill="#eff6ff"/>
+          <text x="245" y="171" fill="#1d4ed8" font-size="7" font-weight="700" text-anchor="middle">Lunes</text>
+          <text x="194" y="187" fill="#374151" font-size="8">⏰ 08:00 – 10:00</text>
+          <line x1="194" y1="193" x2="340" y2="193" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Inscritos badge verde -->
+          <text x="194" y="207" fill="#374151" font-size="8" font-weight="700">👥 Inscritos:</text>
+          <rect x="252" y="198" width="64" height="14" rx="5" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+          <text x="284" y="208" fill="#15803d" font-size="7" font-weight="900" text-anchor="middle">3 estudiantes</text>
+          <!-- Ver estudiantes button navy -->
+          <rect x="194" y="218" width="143" height="26" rx="8" fill="#002845"/>
+          <text x="265" y="234" fill="white" font-size="8" font-weight="700" text-anchor="middle">📋 Ver estudiantes 3</text>
+          <!-- Editar / Borrar (solo admin) -->
+          <rect x="194" y="250" width="66" height="20" rx="6" fill="#FBF6E6"/>
+          <text x="227" y="263" fill="#A87E1A" font-size="7.5" font-weight="700" text-anchor="middle">✏ Editar</text>
+          <rect x="266" y="250" width="66" height="20" rx="6" fill="#fef2f2"/>
+          <text x="299" y="263" fill="#dc2626" font-size="7.5" font-weight="700" text-anchor="middle">🗑 Borrar</text>
+
+          <!-- ── CARD 2: Estadística (Virtual) ── -->
+          <rect x="362" y="94" width="168" height="214" rx="14" fill="white" stroke="#f1f5f9" stroke-width="1"/>
+          <rect x="362" y="94" width="168" height="44" rx="14" fill="url(#dCardGrad)"/>
+          <rect x="362" y="120" width="168" height="18" fill="#002845"/>
+          <!-- Virtual badge -->
+          <rect x="462" y="98" width="64" height="16" rx="8" fill="#3b82f6"/>
+          <text x="494" y="110" fill="white" font-size="6.5" font-weight="800" text-anchor="middle">VIRTUAL</text>
+          <text x="374" y="116" fill="white" font-size="9.5" font-weight="900">Física II</text>
+          <text x="374" y="154" fill="#374151" font-size="8"><tspan font-weight="700">Docente:</tspan> A. Gómez</text>
+          <text x="374" y="170" fill="#374151" font-size="8" font-weight="700">📅 Día: </text>
+          <rect x="404" y="161" width="54" height="13" rx="5" fill="#eff6ff"/>
+          <text x="431" y="171" fill="#1d4ed8" font-size="7" font-weight="700" text-anchor="middle">Miércoles</text>
+          <text x="374" y="187" fill="#374151" font-size="8">⏰ 14:00 – 16:00</text>
+          <line x1="374" y1="193" x2="520" y2="193" stroke="#f1f5f9" stroke-width="1"/>
+          <text x="374" y="207" fill="#374151" font-size="8" font-weight="700">👥 Inscritos:</text>
+          <rect x="432" y="198" width="64" height="14" rx="5" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+          <text x="464" y="208" fill="#15803d" font-size="7" font-weight="900" text-anchor="middle">5 estudiantes</text>
+          <rect x="374" y="218" width="143" height="26" rx="8" fill="#002845"/>
+          <text x="445" y="234" fill="white" font-size="8" font-weight="700" text-anchor="middle">📋 Ver estudiantes 5</text>
+          <rect x="374" y="250" width="66" height="20" rx="6" fill="#FBF6E6"/>
+          <text x="407" y="263" fill="#A87E1A" font-size="7.5" font-weight="700" text-anchor="middle">✏ Editar</text>
+          <rect x="446" y="250" width="66" height="20" rx="6" fill="#fef2f2"/>
+          <text x="479" y="263" fill="#dc2626" font-size="7.5" font-weight="700" text-anchor="middle">🗑 Borrar</text>
+
+          <!-- ── HIGHLIGHTS ── -->
+          <!-- ① Ver estudiantes card 1 -->
+          <rect x="190" y="214" width="151" height="34" rx="10" fill="none" stroke="#f97316" stroke-width="2.5" stroke-dasharray="5,3"/>
+          <circle cx="265" cy="204" r="11" fill="#f97316"/>
+          <text x="265" y="209" fill="white" font-size="11" font-weight="bold" text-anchor="middle">1</text>
+
+          <!-- ② Ver estudiantes card 2 -->
+          <rect x="370" y="214" width="151" height="34" rx="10" fill="none" stroke="#f97316" stroke-width="2.5" stroke-dasharray="5,3"/>
+          <circle cx="445" cy="204" r="11" fill="#f97316"/>
+          <text x="445" y="209" fill="white" font-size="11" font-weight="bold" text-anchor="middle">2</text>
         </svg>
-        <figcaption><strong>①</strong> Botón <em>"Ver estudiantes"</em> — abre la lista de inscritos con reserva activa para ese curso</figcaption>
+        <figcaption><strong>①</strong> Botón <em>"Ver estudiantes"</em> — muestra la lista de estudiantes únicos con reserva en ese curso &nbsp;·&nbsp; <strong>②</strong> El número indica estudiantes únicos (no total de reservas)</figcaption>
       </figure>
     </section>
 
     <section id="asistencia">
-      <h2><span class="n">4</span>Registrar asistencia</h2>
+      <h2><span class="n">5</span>Registrar asistencia</h2>
       <p>Después de cada sesión debes registrar quién asistió para que los estudiantes reciban la encuesta de satisfacción.</p>
       <ol class="steps">
         <li><p>En tu panel, haz clic en <strong>"Ver estudiantes"</strong> en la tarjeta del curso correspondiente.</p></li>
         <li><p>Verás la lista de estudiantes con reserva para esa sesión.</p></li>
-        <li><p>Para cada estudiante, marca el botón <strong>"Asistió"</strong> (verde) o <strong>"No asistió"</strong> (rojo).</p></li>
+        <li><p>Para cada estudiante, marca el botón <strong>"Asistió"</strong> (verde) o <strong>"Faltó"</strong> (rojo). También puedes usar <strong>"Quitar"</strong> para eliminar la inscripción.</p></li>
         <li><p>El sistema registra la evaluación y activa automáticamente la encuesta para los estudiantes que asistieron.</p></li>
       </ol>
       <div class="callout info">
@@ -220,60 +515,128 @@
       </div>
 
       <figure class="ui-fig">
-        <svg viewBox="0 0 620 238" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
-          <rect width="620" height="238" fill="#f1f5f9"/>
-          <!-- Table card -->
-          <rect x="10" y="18" width="600" height="196" rx="10" fill="white" stroke="#e2e8f0"/>
-          <!-- Header -->
-          <rect x="10" y="18" width="600" height="36" rx="10" fill="#002845"/>
-          <text x="30" y="42" font-size="11" font-weight="bold" fill="white">Estudiante</text>
-          <text x="192" y="42" font-size="11" font-weight="bold" fill="white">Cédula</text>
-          <text x="322" y="42" font-size="11" font-weight="bold" fill="white">Estado</text>
-          <text x="430" y="42" font-size="11" font-weight="bold" fill="white">Acciones</text>
-          <!-- Row 1 -->
-          <rect x="10" y="54" width="600" height="38" fill="white"/>
-          <text x="30" y="77" font-size="11" fill="#334155">Ana García</text>
-          <text x="192" y="77" font-size="11" fill="#334155">1.001.234.567</text>
-          <rect x="315" y="64" width="70" height="18" rx="9" fill="#f1f5f9"/>
-          <text x="350" y="77" font-size="9" fill="#475569" text-anchor="middle">Pendiente</text>
-          <rect x="408" y="63" width="72" height="20" rx="6" fill="#d1fae5"/>
-          <text x="444" y="77" font-size="9" font-weight="bold" fill="#065f46" text-anchor="middle">✓ Asistió</text>
-          <rect x="488" y="63" width="84" height="20" rx="6" fill="#fee2e2"/>
-          <text x="530" y="77" font-size="9" font-weight="bold" fill="#991b1b" text-anchor="middle">✗ No asistió</text>
-          <!-- Row 2 -->
-          <rect x="10" y="92" width="600" height="38" fill="#f8fafc"/>
-          <text x="30" y="115" font-size="11" fill="#334155">Carlos Mejía</text>
-          <text x="192" y="115" font-size="11" fill="#334155">1.002.345.678</text>
-          <rect x="315" y="102" width="70" height="18" rx="9" fill="#f1f5f9"/>
-          <text x="350" y="115" font-size="9" fill="#475569" text-anchor="middle">Pendiente</text>
-          <rect x="408" y="101" width="72" height="20" rx="6" fill="#d1fae5"/>
-          <text x="444" y="115" font-size="9" font-weight="bold" fill="#065f46" text-anchor="middle">✓ Asistió</text>
-          <rect x="488" y="101" width="84" height="20" rx="6" fill="#fee2e2"/>
-          <text x="530" y="115" font-size="9" font-weight="bold" fill="#991b1b" text-anchor="middle">✗ No asistió</text>
-          <!-- Row 3 -->
-          <rect x="10" y="130" width="600" height="38" fill="white"/>
-          <text x="30" y="153" font-size="11" fill="#334155">Laura Pérez</text>
-          <text x="192" y="153" font-size="11" fill="#334155">1.003.456.789</text>
-          <rect x="315" y="140" width="70" height="18" rx="9" fill="#f1f5f9"/>
-          <text x="350" y="153" font-size="9" fill="#475569" text-anchor="middle">Pendiente</text>
-          <rect x="408" y="139" width="72" height="20" rx="6" fill="#d1fae5"/>
-          <text x="444" y="153" font-size="9" font-weight="bold" fill="#065f46" text-anchor="middle">✓ Asistió</text>
-          <rect x="488" y="139" width="84" height="20" rx="6" fill="#fee2e2"/>
-          <text x="530" y="153" font-size="9" font-weight="bold" fill="#991b1b" text-anchor="middle">✗ No asistió</text>
-          <!-- Highlights -->
-          <rect x="404" y="59" width="80" height="32" rx="8" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="484" cy="49" r="11" fill="#f97316"/>
-          <text x="484" y="54" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
-          <rect x="484" y="59" width="92" height="32" rx="8" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <circle cx="576" cy="49" r="11" fill="#f97316"/>
-          <text x="576" y="54" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
+        <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" font-family="'Manrope',sans-serif">
+          <!-- bg-slate-50 -->
+          <rect width="700" height="420" fill="#f8fafc"/>
+
+          <!-- ── SIDEBAR w-64 bg-[#002845] ── -->
+          <rect x="0" y="0" width="168" height="420" fill="#002845"/>
+          <!-- Logo -->
+          <rect x="12" y="14" width="32" height="32" rx="8" fill="#C9A227"/>
+          <text x="28" y="35" fill="#002845" font-size="11" font-weight="900" text-anchor="middle">AU</text>
+          <text x="54" y="26" fill="white" font-size="10" font-weight="800">Agenda U</text>
+          <text x="54" y="40" fill="rgba(255,255,255,0.4)" font-size="8">Sistema de Asesorías</text>
+          <line x1="0" y1="56" x2="168" y2="56" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <text x="14" y="74" fill="#93c5fd" font-size="8" font-weight="800" letter-spacing="0.06em">MI CUENTA</text>
+          <circle cx="28" cy="98" r="15" fill="#0ea5e9"/>
+          <text x="28" y="104" fill="white" font-size="12" font-weight="800" text-anchor="middle">M</text>
+          <text x="50" y="94" fill="white" font-size="9.5" font-weight="700">María García</text>
+          <circle cx="50" cy="106" r="3.5" fill="#4ade80"/>
+          <text x="58" y="110" fill="#bfdbfe" font-size="8">Docente</text>
+          <!-- Nav: Centro de Control (not active since we are in estudiantes view) -->
+          <text x="40" y="138" fill="#bfdbfe" font-size="9" font-weight="600">Centro de Control</text>
+          <text x="40" y="162" fill="#bfdbfe" font-size="9" font-weight="600">Seguimiento</text>
+          <text x="40" y="186" fill="#bfdbfe" font-size="9" font-weight="600">Calendario Público</text>
+          <line x1="0" y1="396" x2="168" y2="396" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <text x="32" y="412" fill="#f87171" font-size="9" font-weight="700">Cerrar Sesión</text>
+
+          <!-- ── HEADER bg-white sticky ── -->
+          <rect x="168" y="0" width="532" height="58" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+          <text x="186" y="24" fill="#002845" font-size="13" font-weight="900">Gestión de Asistencia</text>
+          <text x="186" y="42" fill="#64748b" font-size="8.5">Estudiantes registrados en Cálculo Diferencial</text>
+          <!-- Volver button bg-gray-100 rounded-xl -->
+          <rect x="568" y="14" width="120" height="30" rx="10" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+          <text x="628" y="33" fill="#002845" font-size="8.5" font-weight="700" text-anchor="middle">← Volver a Clases</text>
+
+          <!-- ── MAIN CONTENT ── -->
+          <rect x="168" y="58" width="532" height="362" fill="#f8fafc"/>
+
+          <!-- COURSE INFO CARD border-t-8 #C9A227 rounded-3xl -->
+          <rect x="178" y="68" width="512" height="80" rx="16" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+          <rect x="178" y="68" width="512" height="8" rx="8" fill="#C9A227"/>
+          <text x="196" y="98" font-size="12" font-weight="900" fill="#002845" letter-spacing="0.3">CÁLCULO DIFERENCIAL</text>
+          <text x="196" y="118" fill="#6b7280" font-size="9">📅 <tspan font-weight="700" fill="#374151">Fecha:</tspan> Lunes 13/05/2026</text>
+          <text x="360" y="118" fill="#6b7280" font-size="9">⏰ <tspan font-weight="700" fill="#374151">Horario:</tspan> 08:00 a 10:00</text>
+          <text x="196" y="134" fill="#6b7280" font-size="9">📍 <tspan font-weight="700" fill="#374151">Ubicación:</tspan> Sede A | Bloque 2 | Aula 201</text>
+
+          <!-- TABLE CARD bg-white rounded-3xl shadow-lg -->
+          <rect x="178" y="158" width="512" height="252" rx="16" fill="white" stroke="#f1f5f9" stroke-width="1"/>
+
+          <!-- Navy header "Lista de Estudiantes Inscritos" -->
+          <rect x="178" y="158" width="512" height="34" rx="14" fill="#002845"/>
+          <rect x="178" y="178" width="512" height="14" fill="#002845"/>
+          <text x="196" y="179" font-size="10.5" font-weight="700" fill="white">Lista de Estudiantes Inscritos</text>
+
+          <!-- Column headers gray-50 -->
+          <rect x="178" y="192" width="512" height="24" fill="#f9fafb"/>
+          <text x="196" y="208" font-size="8" font-weight="900" fill="#6b7280" letter-spacing="0.5">DOCUMENTO</text>
+          <text x="308" y="208" font-size="8" font-weight="900" fill="#6b7280" letter-spacing="0.5">ESTUDIANTE</text>
+          <text x="440" y="208" font-size="8" font-weight="900" fill="#6b7280" letter-spacing="0.5">FECHA RESERVA</text>
+          <text x="546" y="208" font-size="8" font-weight="900" fill="#6b7280" letter-spacing="0.5">CONTROL ASIST.</text>
+
+          <!-- Row 1 — Programada (white bg) -->
+          <rect x="178" y="216" width="512" height="46" fill="white"/>
+          <line x1="178" y1="262" x2="690" y2="262" stroke="#f3f4f6" stroke-width="1"/>
+          <text x="196" y="243" font-size="9.5" font-weight="900" fill="#002845">1.001.234.567</text>
+          <text x="308" y="243" font-size="9.5" font-weight="700" fill="#1f2937">Ana García</text>
+          <text x="440" y="243" font-size="9.5" fill="#6b7280">06/05/2026</text>
+          <!-- ✅ Asistió -->
+          <rect x="546" y="225" width="54" height="22" rx="7" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+          <text x="573" y="240" font-size="8" font-weight="700" fill="#065f46" text-anchor="middle">✅ Asistió</text>
+          <!-- ❌ Faltó -->
+          <rect x="606" y="225" width="46" height="22" rx="7" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+          <text x="629" y="240" font-size="8" font-weight="700" fill="#991b1b" text-anchor="middle">❌ Faltó</text>
+
+          <!-- Row 2 — Programada (gray-50 bg) -->
+          <rect x="178" y="262" width="512" height="46" fill="#f9fafb"/>
+          <line x1="178" y1="308" x2="690" y2="308" stroke="#f3f4f6" stroke-width="1"/>
+          <text x="196" y="289" font-size="9.5" font-weight="900" fill="#002845">1.002.345.678</text>
+          <text x="308" y="289" font-size="9.5" font-weight="700" fill="#1f2937">Carlos Mejía</text>
+          <text x="440" y="289" font-size="9.5" fill="#6b7280">07/05/2026</text>
+          <rect x="546" y="271" width="54" height="22" rx="7" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+          <text x="573" y="286" font-size="8" font-weight="700" fill="#065f46" text-anchor="middle">✅ Asistió</text>
+          <rect x="606" y="271" width="46" height="22" rx="7" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+          <text x="629" y="286" font-size="8" font-weight="700" fill="#991b1b" text-anchor="middle">❌ Faltó</text>
+
+          <!-- Row 3 — Evaluada ASISTIÓ (white) -->
+          <rect x="178" y="308" width="512" height="56" fill="white"/>
+          <text x="196" y="338" font-size="9.5" font-weight="900" fill="#002845">1.003.456.789</text>
+          <text x="308" y="331" font-size="9.5" font-weight="700" fill="#1f2937">Laura Pérez</text>
+          <!-- Encuesta respondida badge -->
+          <rect x="308" y="337" width="92" height="15" rx="7" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1"/>
+          <text x="354" y="348" font-size="7" font-weight="700" fill="#065f46" text-anchor="middle">Encuesta respondida</text>
+          <text x="440" y="338" font-size="9.5" fill="#6b7280">05/05/2026</text>
+          <!-- ASISTIÓ badge verde -->
+          <rect x="546" y="315" width="58" height="18" rx="6" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1"/>
+          <text x="575" y="328" font-size="7.5" font-weight="900" fill="#059669" text-anchor="middle">✔️ ASISTIÓ</text>
+          <!-- 📝 Reporte navy -->
+          <rect x="546" y="337" width="50" height="18" rx="6" fill="#002845"/>
+          <text x="571" y="350" font-size="7.5" font-weight="700" fill="white" text-anchor="middle">📝 Reporte</text>
+          <!-- Corregir link -->
+          <text x="604" y="345" font-size="7.5" font-weight="700" fill="#9ca3af" text-anchor="middle">Corregir</text>
+
+          <!-- ── HIGHLIGHTS ── -->
+          <!-- ① ✅ Asistió row 1 -->
+          <rect x="542" y="221" width="62" height="30" rx="9" fill="rgba(249,115,22,0.06)" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="547" cy="215" r="11" fill="#f97316"/>
+          <text x="547" y="220" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
+
+          <!-- ② ❌ Faltó row 1 -->
+          <rect x="602" y="221" width="54" height="30" rx="9" fill="rgba(249,115,22,0.06)" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="608" cy="215" r="11" fill="#f97316"/>
+          <text x="608" y="220" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
+
+          <!-- ③ Fila evaluada con ASISTIÓ + Reporte + Corregir -->
+          <rect x="540" y="310" width="150" height="52" rx="9" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="546" cy="306" r="11" fill="#f97316"/>
+          <text x="546" y="311" font-size="11" font-weight="bold" fill="white" text-anchor="middle">3</text>
         </svg>
-        <figcaption><strong>①</strong> Botón <em>"Asistió"</em> — marca asistencia y activa la encuesta &nbsp;·&nbsp; <strong>②</strong> Botón <em>"No asistió"</em> — registra inasistencia sin activar encuesta</figcaption>
+        <figcaption><strong>①</strong> Botón <em>"Asistió"</em> (verde) — marca presencia y activa la encuesta automáticamente &nbsp;·&nbsp; <strong>②</strong> Botón <em>"Faltó"</em> (rojo) — registra inasistencia sin encuesta &nbsp;·&nbsp; <strong>③</strong> Fila ya evaluada: badge ASISTIÓ + Reporte + enlace Corregir</figcaption>
       </figure>
     </section>
 
     <section id="corregir">
-      <h2><span class="n">5</span>Corregir una asistencia</h2>
+      <h2><span class="n">6</span>Corregir una asistencia</h2>
       <p>Si cometiste un error al registrar la asistencia, puedes revertirlo <strong>siempre que el estudiante no haya respondido aún la encuesta</strong>.</p>
       <ol class="steps">
         <li><p>En la lista de estudiantes del curso, localiza la fila del estudiante a corregir.</p></li>
@@ -287,50 +650,134 @@
     </section>
 
     <section id="seguimiento">
-      <h2><span class="n">6</span>Seguimiento estudiantil</h2>
-      <p>Desde la pestaña <strong>"Seguimiento"</strong> puedes consultar el historial completo de un estudiante en tus cursos.</p>
+      <h2><span class="n">7</span>Seguimiento estudiantil</h2>
+      <p>Desde el enlace <strong>"Seguimiento"</strong> en la barra lateral puedes consultar el historial completo de un estudiante en tus cursos.</p>
       <ol class="steps">
-        <li><p>Ingresa a la pestaña <strong>"Seguimiento"</strong> desde el menú lateral.</p></li>
-        <li><p>Escribe el <strong>número de cédula</strong> del estudiante y haz clic en <strong>"Buscar"</strong>.</p></li>
+        <li><p>En la barra lateral, haz clic en <strong>"Seguimiento"</strong>.</p></li>
+        <li><p>Escribe el <strong>número de cédula</strong> del estudiante y haz clic en el botón dorado <strong>"Buscar"</strong>.</p></li>
         <li><p>Se mostrará el historial de asesorías: fechas, asistencias, notas de evolución y estado de encuesta.</p></li>
       </ol>
 
       <figure class="ui-fig">
-        <svg viewBox="0 0 620 222" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
-          <rect width="620" height="222" fill="#f1f5f9"/>
-          <!-- Page title -->
-          <rect x="0" y="0" width="620" height="44" fill="white" stroke="#e2e8f0" stroke-width="0" opacity=".6"/>
-          <text x="20" y="28" font-size="15" font-weight="bold" fill="#002845">Seguimiento Estudiantil</text>
-          <!-- Search bar -->
-          <rect x="52" y="56" width="398" height="36" rx="9" fill="white" stroke="#cbd5e1"/>
-          <text x="68" y="79" font-size="10" fill="#94a3b8">Número de cédula del estudiante...</text>
-          <rect x="458" y="56" width="92" height="36" rx="9" fill="#002845"/>
-          <text x="504" y="79" font-size="11" font-weight="bold" fill="white" text-anchor="middle">Buscar</text>
-          <!-- Results table -->
-          <rect x="20" y="108" width="580" height="30" rx="8" fill="#002845"/>
-          <text x="36" y="127" font-size="10" font-weight="bold" fill="white">Curso</text>
-          <text x="178" y="127" font-size="10" font-weight="bold" fill="white">Fecha</text>
-          <text x="318" y="127" font-size="10" font-weight="bold" fill="white">Asistencia</text>
-          <text x="448" y="127" font-size="10" font-weight="bold" fill="white">Encuesta</text>
-          <rect x="20" y="138" width="580" height="36" fill="white" stroke="#e2e8f0"/>
-          <text x="36" y="160" font-size="11" fill="#334155">Cálculo I</text>
-          <text x="178" y="160" font-size="11" fill="#334155">12/03/2026</text>
-          <rect x="308" y="148" width="68" height="18" rx="9" fill="#d1fae5"/>
-          <text x="342" y="161" font-size="9" font-weight="bold" fill="#065f46" text-anchor="middle">Asistió</text>
-          <rect x="438" y="148" width="76" height="18" rx="9" fill="#eff6ff"/>
-          <text x="476" y="161" font-size="9" font-weight="bold" fill="#1e40af" text-anchor="middle">Respondida</text>
-          <!-- Highlight ① cédula input -->
-          <rect x="48" y="52" width="406" height="44" rx="11" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <line x1="26" y1="74" x2="48" y2="74" stroke="#f97316" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <circle cx="15" cy="74" r="11" fill="#f97316"/>
-          <text x="15" y="79" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
-          <!-- Highlight ② Buscar button -->
-          <rect x="454" y="52" width="100" height="44" rx="11" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5 3"/>
-          <line x1="554" y1="74" x2="572" y2="74" stroke="#f97316" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <circle cx="583" cy="74" r="11" fill="#f97316"/>
-          <text x="583" y="79" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
+        <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" font-family="'Manrope',sans-serif">
+          <!-- bg-slate-50 -->
+          <rect width="700" height="380" fill="#f8fafc"/>
+
+          <!-- ── SIDEBAR w-64 bg-[#002845] ── -->
+          <rect x="0" y="0" width="168" height="380" fill="#002845"/>
+          <rect x="12" y="14" width="32" height="32" rx="8" fill="#C9A227"/>
+          <text x="28" y="35" fill="#002845" font-size="11" font-weight="900" text-anchor="middle">AU</text>
+          <text x="54" y="26" fill="white" font-size="10" font-weight="800">Agenda U</text>
+          <text x="54" y="40" fill="rgba(255,255,255,0.4)" font-size="8">Sistema de Asesorías</text>
+          <line x1="0" y1="56" x2="168" y2="56" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <text x="14" y="74" fill="#93c5fd" font-size="8" font-weight="800" letter-spacing="0.06em">MI CUENTA</text>
+          <circle cx="28" cy="98" r="15" fill="#0ea5e9"/>
+          <text x="28" y="104" fill="white" font-size="12" font-weight="800" text-anchor="middle">M</text>
+          <text x="50" y="94" fill="white" font-size="9.5" font-weight="700">María García</text>
+          <circle cx="50" cy="106" r="3.5" fill="#4ade80"/>
+          <text x="58" y="110" fill="#bfdbfe" font-size="8">Docente</text>
+          <!-- Nav: Centro de Control inactive -->
+          <text x="40" y="138" fill="#bfdbfe" font-size="9" font-weight="600">Centro de Control</text>
+          <!-- Nav: Seguimiento ACTIVE bg-blue-800 rounded-xl -->
+          <rect x="8" y="146" width="152" height="30" rx="10" fill="#1e3a8a"/>
+          <circle cx="24" cy="161" r="5" fill="none" stroke="white" stroke-width="1.5"/>
+          <line x1="28" y1="165" x2="34" y2="171" stroke="white" stroke-width="1.5"/>
+          <text x="40" y="165" fill="white" font-size="9" font-weight="800">Seguimiento</text>
+          <text x="40" y="192" fill="#bfdbfe" font-size="9" font-weight="600">Calendario Público</text>
+          <line x1="0" y1="356" x2="168" y2="356" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <text x="32" y="372" fill="#f87171" font-size="9" font-weight="700">Cerrar Sesión</text>
+
+          <!-- ── MAIN AREA ── -->
+          <rect x="168" y="0" width="532" height="58" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+          <text x="186" y="24" fill="#002845" font-size="13" font-weight="900">Seguimiento estudiantil</text>
+          <text x="186" y="42" fill="#64748b" font-size="8.5">Busca un estudiante o navega por materia.</text>
+          <rect x="568" y="14" width="120" height="30" rx="10" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+          <text x="628" y="33" fill="#002845" font-size="8.5" font-weight="700" text-anchor="middle">← Volver a Clases</text>
+
+          <rect x="168" y="58" width="532" height="322" fill="#f8fafc"/>
+
+          <!-- ── SEARCH CARD bg-white rounded-2xl ── -->
+          <rect x="178" y="68" width="512" height="82" rx="12" fill="white" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Navy header "Buscar estudiante por cédula" -->
+          <rect x="178" y="68" width="512" height="32" rx="12" fill="#002845"/>
+          <rect x="178" y="84" width="512" height="16" fill="#002845"/>
+          <text x="196" y="88" font-size="10.5" font-weight="700" fill="white">Buscar estudiante por cédula</text>
+          <!-- Input: bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-lg font-black -->
+          <rect x="196" y="108" width="392" height="34" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+          <text x="210" y="129" font-size="10.5" fill="#9ca3af">Ej: 1001234567</text>
+          <!-- Gold "Buscar" button bg-[#C9A227] text-[#002845] font-black rounded-xl -->
+          <rect x="596" y="108" width="86" height="34" rx="10" fill="#C9A227"/>
+          <!-- search SVG icon simplified -->
+          <circle cx="610" cy="124" r="5" fill="none" stroke="#002845" stroke-width="1.5"/>
+          <line x1="614" y1="128" x2="618" y2="132" stroke="#002845" stroke-width="1.5"/>
+          <text x="642" y="129" font-size="9.5" font-weight="900" fill="#002845" text-anchor="middle">Buscar</text>
+
+          <!-- ── RESULT CARD border-t-8 #10b981 rounded-3xl ── -->
+          <rect x="178" y="162" width="512" height="210" rx="16" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+          <rect x="178" y="162" width="512" height="8" rx="8" fill="#10b981"/>
+
+          <!-- Student profile bg-gray-50 -->
+          <rect x="178" y="170" width="512" height="58" fill="#f9fafb" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Navy square avatar w-16 h-16 rounded-xl -->
+          <rect x="196" y="176" width="44" height="44" rx="10" fill="#002845"/>
+          <text x="218" y="205" font-size="20" font-weight="900" fill="white" text-anchor="middle">A</text>
+          <!-- Student name + info -->
+          <text x="250" y="193" font-size="12" font-weight="900" fill="#002845">Ana García López</text>
+          <text x="250" y="210" font-size="9" font-weight="700" fill="#6b7280">C.C. 1001234567  |  Correo: ana.garcia@pascualbravo.edu.co</text>
+          <!-- Total Asesorías (text-emerald-500 text-4xl) -->
+          <text x="650" y="190" font-size="8" font-weight="700" fill="#9ca3af" text-anchor="middle">Total Asesorías</text>
+          <text x="650" y="217" font-size="24" font-weight="900" fill="#10b981" text-anchor="middle">3</text>
+
+          <!-- Table headers -->
+          <rect x="178" y="228" width="512" height="24" fill="white"/>
+          <text x="196" y="244" font-size="8" font-weight="900" fill="#9ca3af" letter-spacing="0.5">FECHA / CLASE</text>
+          <text x="340" y="244" font-size="8" font-weight="900" fill="#9ca3af" letter-spacing="0.5" text-anchor="middle">ESTADO</text>
+          <text x="490" y="244" font-size="8" font-weight="900" fill="#9ca3af" letter-spacing="0.5" text-anchor="middle">CALIFICACIÓN</text>
+          <text x="638" y="244" font-size="8" font-weight="900" fill="#9ca3af" letter-spacing="0.5" text-anchor="middle">REPORTE</text>
+
+          <!-- Row 1: Cálculo I — ASISTIÓ -->
+          <rect x="178" y="252" width="512" height="36" fill="white"/>
+          <line x1="178" y1="288" x2="690" y2="288" stroke="#f3f4f6" stroke-width="1"/>
+          <text x="196" y="265" font-size="9.5" font-weight="700" fill="#002845">Cálculo I</text>
+          <text x="196" y="279" font-size="8" fill="#6b7280">📅 12/05/2026  👨‍🏫 J. Torres</text>
+          <!-- ASISTIÓ badge bg-green-50 rounded-full -->
+          <rect x="300" y="258" width="76" height="18" rx="9" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+          <text x="338" y="271" font-size="8" font-weight="700" fill="#065f46" text-anchor="middle">✔️ Asistió</text>
+          <!-- Stars ★★★★★ gold -->
+          <text x="490" y="272" font-size="13" fill="#C9A227" text-anchor="middle">★★★★★</text>
+          <!-- Ver reporte link -->
+          <text x="638" y="272" font-size="8.5" font-weight="700" fill="#002845" text-anchor="middle">Ver reporte ↗</text>
+
+          <!-- Row 2: Álgebra Lineal — FALTÓ -->
+          <rect x="178" y="288" width="512" height="36" fill="#f9fafb"/>
+          <text x="196" y="301" font-size="9.5" font-weight="700" fill="#002845">Álgebra Lineal</text>
+          <text x="196" y="315" font-size="8" fill="#6b7280">📅 05/05/2026  👨‍🏫 J. Torres</text>
+          <rect x="300" y="294" width="68" height="18" rx="9" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+          <text x="334" y="307" font-size="8" font-weight="700" fill="#991b1b" text-anchor="middle">❌ Faltó</text>
+          <text x="490" y="308" font-size="9" fill="#9ca3af" text-anchor="middle">—</text>
+          <text x="638" y="308" font-size="8.5" fill="#9ca3af" text-anchor="middle">Sin reporte</text>
+
+          <!-- Row 3: Estadística — Pendiente -->
+          <rect x="178" y="324" width="512" height="34" fill="white"/>
+          <text x="196" y="337" font-size="9.5" font-weight="700" fill="#002845">Estadística</text>
+          <text x="196" y="351" font-size="8" fill="#6b7280">📅 28/04/2026  👨‍🏫 J. Torres</text>
+          <rect x="300" y="329" width="72" height="18" rx="9" fill="#fef3c7" stroke="#fde68a" stroke-width="1"/>
+          <text x="336" y="342" font-size="8" font-weight="700" fill="#92400e" text-anchor="middle">⏳ Pendiente</text>
+          <text x="490" y="342" font-size="9" fill="#9ca3af" text-anchor="middle">—</text>
+          <text x="638" y="342" font-size="8.5" fill="#9ca3af" text-anchor="middle">—</text>
+
+          <!-- ── HIGHLIGHTS ── -->
+          <!-- ① Input cédula -->
+          <rect x="192" y="104" width="400" height="42" rx="12" fill="rgba(249,115,22,0.05)" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="198" cy="100" r="11" fill="#f97316"/>
+          <text x="198" y="105" font-size="11" font-weight="bold" fill="white" text-anchor="middle">1</text>
+
+          <!-- ② Botón Buscar dorado -->
+          <rect x="592" y="104" width="94" height="42" rx="12" fill="rgba(249,115,22,0.05)" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+          <circle cx="680" cy="100" r="11" fill="#f97316"/>
+          <text x="680" y="105" font-size="11" font-weight="bold" fill="white" text-anchor="middle">2</text>
         </svg>
-        <figcaption><strong>①</strong> Campo de búsqueda por número de cédula &nbsp;·&nbsp; <strong>②</strong> Botón <em>"Buscar"</em> — muestra el historial de asesorías del estudiante</figcaption>
+        <figcaption><strong>①</strong> Campo de búsqueda — ingresa el número de cédula del estudiante (border-2 border-gray-200 rounded-xl) &nbsp;·&nbsp; <strong>②</strong> Botón <em>"Buscar"</em> (dorado bg-[#C9A227]) — muestra el historial completo de asesorías con estados y calificaciones</figcaption>
       </figure>
 
       <h3>Agregar notas de evolución</h3>
@@ -338,7 +785,7 @@
     </section>
 
     <section id="pdf">
-      <h2><span class="n">7</span>Generar PDFs</h2>
+      <h2><span class="n">8</span>Generar PDFs</h2>
       <h3>Lista de asistencia</h3>
       <ol class="steps">
         <li><p>Abre la lista de estudiantes de un curso.</p></li>
@@ -353,7 +800,7 @@
     </section>
 
     <section id="horarios">
-      <h2><span class="n">8</span>Períodos y horarios habilitados</h2>
+      <h2><span class="n">9</span>Períodos y horarios habilitados</h2>
       <p>Las asesorías funcionan durante los semestres académicos. Los horarios válidos son:</p>
       <table>
         <thead><tr><th>Semestre</th><th>Período</th></tr></thead>
@@ -376,7 +823,7 @@
     </section>
 
     <section id="faq">
-      <h2><span class="n">9</span>Preguntas frecuentes</h2>
+      <h2><span class="n">10</span>Preguntas frecuentes</h2>
       <h3>¿Cómo agrego una nueva asesoría a mi horario?</h3>
       <p>Los horarios son cargados por el administrador. Solicita a la coordinación que incluya tu nuevo horario en la próxima carga masiva de Excel.</p>
       <h3>¿Qué pasa si un estudiante cancela su reserva?</h3>
@@ -384,7 +831,7 @@
       <h3>¿Puedo ver las encuestas que respondieron mis estudiantes?</h3>
       <p>El administrador tiene acceso al resumen de satisfacción y puede generar el PDF de informe de tu desempeño desde la sección "Satisfacción". Solicítalo si lo necesitas.</p>
       <h3>¿Qué hago si olvidé mi contraseña?</h3>
-      <p>Comunícate con el administrador del sistema para que te restablezca el acceso con una contraseña temporal.</p>
+      <p>Puedes restablecerla tú mismo sin contactar al administrador. En la pantalla de inicio de sesión haz clic en <strong>"¿Olvidaste tu contraseña?"</strong>, ingresa tu correo institucional y sigue el enlace que llegará a tu bandeja. Consulta la sección <strong>3 "Recuperar contraseña olvidada"</strong> de este manual para el proceso paso a paso.</p>
     </section>
 
     <div style="text-align:center;padding:28px 0 0;border-top:1px solid var(--border);margin-top:40px;font-size:12px;color:var(--gray)">

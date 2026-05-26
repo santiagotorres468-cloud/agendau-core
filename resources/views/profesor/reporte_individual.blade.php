@@ -117,10 +117,10 @@
                     <td>
                         @if($registro->estado === 'Programada')
                             <span class="status-pendiente">Pendiente por Evaluar</span>
-                        @elseif($registro->asistencia === 1)
-                            <span class="status-presente">Presente</span>
-                        @elseif($registro->asistencia === 0)
-                            <span class="status-ausente">Ausente</span>
+                        @elseif($registro->asistencia === true)
+                            <span class="status-presente">Asistió</span>
+                        @elseif($registro->asistencia === false)
+                            <span class="status-ausente">Faltó</span>
                         @else
                             <span class="status-pendiente">Sin Registro</span>
                         @endif
